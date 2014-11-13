@@ -8,8 +8,7 @@ var gulp = require('gulp'),
     source = require('vinyl-source-stream');
 
 gulp.task('watch', function () {
-  gulp.watch('./assets/**')
-      .on('change', 'scripts');
+  gulp.watch('./assets/**', ['scripts'])
       .on('change', livereload.changed);
 });
 
