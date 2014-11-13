@@ -25,9 +25,18 @@ gulp.task('scripts', function () {
   console.log('starting scripts');
   browserify({
     entries: ['./assets/src/testing.js'],
-    extensions: ['.js']
+    extensions: ['.js'],
+    debug: true
   }).transform('jadeify')
     .bundle()
     .pipe(source('main.js'))
     .pipe(gulp.dest('public/js'))
+});
+
+
+// TODO finish this
+gulp.task('bower', function () {
+  gulp.src(mainBowerFiles(), {
+    base: 'bower_components'
+  }).pip(gulp.dest('public/lib'));
 });
