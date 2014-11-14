@@ -14,7 +14,7 @@ gulp.task('watch', function () {
 
 gulp.task('develop', function () {
   livereload.listen();
-  nodemon( {script: './bin/www', ext: 'html js'} )
+  nodemon( {script: 'app.js', ext: 'html js'} )
     .on('start', ['scripts', 'watch'])
     .on('restart', function () {
       console.log('restarting server');
@@ -24,19 +24,11 @@ gulp.task('develop', function () {
 gulp.task('scripts', function () {
   console.log('starting scripts');
   browserify({
-    entries: ['./assets/src/testing.js'],
+    entries: ['./src/testing.js'],
     extensions: ['.js'],
     debug: true
   }).transform('jadeify')
     .bundle()
     .pipe(source('main.js'))
     .pipe(gulp.dest('public/js'))
-});
-
-
-// TODO finish this
-gulp.task('bower', function () {
-  gulp.src(mainBowerFiles(), {
-    base: 'bower_components'
-  }).pip(gulp.dest('public/lib'));
 });
