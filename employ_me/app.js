@@ -1,10 +1,5 @@
-// server.js
-
-// set up ======================================================================
-// get all the tools we need
 var express  = require('express');
 var app      = express();
-var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
@@ -39,8 +34,9 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
-require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+app.use('/', require('./app/routes/index.js'));
 
 // launch ======================================================================
-app.listen(port);
-console.log('The magic happens on port ' + port);
+//app.listen(port);
+
+module.exports = app;

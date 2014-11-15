@@ -14,7 +14,7 @@ gulp.task('watch', function () {
 
 gulp.task('develop', function () {
   livereload.listen();
-  nodemon( {script: 'app.js', ext: 'html js'} )
+  nodemon( {script: './bin/www', ext: 'html js'} )
     .on('start', ['scripts', 'watch'])
     .on('restart', function () {
       console.log('restarting server');
@@ -24,7 +24,7 @@ gulp.task('develop', function () {
 gulp.task('scripts', function () {
   console.log('starting scripts');
   browserify({
-    entries: ['./src/testing.js'],
+    entries: ['./app/src/testing.js'],
     extensions: ['.js'],
     debug: true
   }).transform('jadeify')
