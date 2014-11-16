@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var classSchema = mongoose.Schema({
+var ClassSchema = mongoose.Schema({
 
 	name: String,
 	number : String,
@@ -9,5 +9,4 @@ var classSchema = mongoose.Schema({
 
 });
 
-// create the model for users and expose it to our app
-module.exports = mongoose.model('Class', classSchema);
+module.exports = ClassSchema;

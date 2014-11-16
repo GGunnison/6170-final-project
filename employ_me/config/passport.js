@@ -1,8 +1,8 @@
 // load all the things we need
 var LocalStrategy    = require('passport-local').Strategy;
 
-// load up the user model
-var User  = require('../app/models/user');
+// load up the student model
+var User = require('../app/models/UserModel');
 
 module.exports = function(passport) {
 
@@ -19,9 +19,9 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            done(err, user);
-        });
+      User.findById(id, function(err, user) {
+          done(err, user);
+      });
     });
 
     // =========================================================================
@@ -34,25 +34,32 @@ module.exports = function(passport) {
         passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, email, password, done) {
+        console.log('fffffffffffffooooo');
         if (email)
             email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
         // asynchronous
         process.nextTick(function() {
             User.findOne({ 'email' :  email }, function(err, user) {
                 // if there are any errors, return the error
-                if (err)
-                    return done(err);
+                if (err) {
+                  console.log(err);
+                  return done(err);
+                }
 
                 // if no user is found, return the message
-                if (!user)
-                    return done(null, false, req.flash('loginMessage', 'No user found.'));
+                if (!user) {
+                  console.log('no user');
+                  return done(null, false, req.flash('loginMessage', 'No user found.'));
+                }
 
-                if (!user.validPassword(password))
+                if (!user.validPassword(password)) {
+                    console.log('bad pass');
                     return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
-
                 // all is well, return user
-                else
+                } else {
+                    console.log('user', user);
                     return done(null, user);
+                }
             });
         });
     }));
@@ -67,6 +74,7 @@ module.exports = function(passport) {
         passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, email, password, done) {
+        console.log('baaaaaaaaaaaaaaaaaaaaar');
         if (email)
             email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
 

@@ -30,6 +30,7 @@ router.get('/logout', function(req, res) {
 // LOGIN ===============================
 // show the login form
 router.get('/login', function(req, res) {
+  console.log(req.flash('loginMessage'));
   res.render('login.jade', { message: req.flash('loginMessage') });
 });
 
@@ -43,7 +44,7 @@ router.post('/login', passport.authenticate('local-login', {
 // SIGNUP =================================
 // show the signup form
 router.get('/signup', function(req, res) {
-  res.render('signup.ejs', { message: req.flash('signupMessage')});
+  res.render('signup.jade', { message: req.flash('signupMessage')});
 });
 
 // process the signup form
