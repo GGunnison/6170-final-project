@@ -1,7 +1,16 @@
 extends layout
 include ./mixins/userCard
 
+block head
+  script(type='text/javascript', src='/js/searchResultsController.js')
+
 block content
+  script.
+    var searchResultsController = new SearchResultsController();
+    $(document).ready(function() {
+      searchResultsController.init();
+    });
+
   .container
     .row
       .col-md-4
@@ -10,16 +19,9 @@ block content
       .col-md-6
         .list-group
           each student in students
-            .list-group-item
+            .list-group-item.listed-student
               +userCard(student)
       .col-md-6
         .panel.panel-default
           .panel-body
-            h4.list-group-item-heading Ben Bitdiddle
-            h5 email here
-            h4 Skills
-            .col-md-12
-              h4(style="display: inline-block; padding: 3px")
-                span.label.label-default  skill
-              h4(style="display: inline-block; padding: 3px")
-                span.label.label-default  skill
+            p click on a student
