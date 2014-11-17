@@ -43,5 +43,8 @@ initPassport(passport);
 var index = require('./app/routes/index')(passport);
 app.use('/', index);
 
+var search = require('./app/routes/search');
+app.use('/search', search);
+
 // launch ======================================================================
 module.exports = app;
