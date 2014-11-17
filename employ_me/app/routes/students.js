@@ -166,9 +166,11 @@ router.post('/search', function(req, res) {
   var requiredSkills = req.body.requiredSkills;
   var desiredSkills = req.body.desiredSkills;
 
-  if ( (requiredSkills == undefined) || (desiredSkills == undefined) ) {
+  if (requiredSkills == undefined) {
     utils.sendErrResponse(res, 500, null);
   }
+
+  console.log("requiredSkills: " + requiredSkills);
 
   // Looking for a way to improve this. Currently, it queries for the
   // whole database, and filters afterward. We do this because we want
@@ -185,17 +187,22 @@ router.post('/search', function(req, res) {
       utils.sendErrResponse(res, 500, null);
 
     } else {
-      students = students.filter(function() {
-
+      students = students.filter(function(student) {
         for (tag in requiredSkills) {
-          for (stuSkill in this.skills) {
-            if (tag == stuSkill._id) {
+          // Skills
+          var skills = student.skills;
+          for (var i = 0; i < skills.length; i++) {
+            if (tag == skills[i]) {
               return true;
             }
           }
-          for (stuClass in this.classes) {
-            for (classSkill in stuClass.skills) {
-              if (tag == classSkill._id) {
+
+          // Classes
+          var classes = student.classes;
+          for (var i = 0; i < classes.length; i++) {
+            stuClass = classes[i];
+            for (var j = 0; j < stuClass.length; j++) {
+              if (tag == stuClass[j]) {
                 return true;
               }
             }
