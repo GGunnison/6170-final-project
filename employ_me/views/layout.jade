@@ -2,9 +2,24 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/css/style.css')
+
+    // jQuery
+    script(type="text/javascript", src="http://code.jquery.com/jquery-1.10.1.min.js")
+    script(type="text/javascript", src="http://code.jquery.com/jquery-migrate-1.2.1.min.js")
+
+    // Bootstrap
     link(rel="stylesheet", href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css")
+    script(type='text/javascript', src='//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js')
+    
+    // Font awesome
     link(rel="stylesheet", href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css")
-    script(src='/js/main.js')
+
+    // Main js
+    script(type='text/javascript', src='/js/main.js')
+
+    // Main css
+    link(rel='stylesheet', href='/css/style.css')
+
+    block head
   body
     block content

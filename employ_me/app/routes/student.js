@@ -150,4 +150,35 @@ router.post('/:studentId/skills', function (req, res) {
          });
 });
 
+/* POST /students/search
+ * Body:
+ *   - tags: a list of tags
+ *
+ * Response:
+ *
+ * Test:
+ *   curl --data "tags[]=java&tags[]=testing" localhost:3000/student/search
+ *
+ */
+router.post('/search', function(req, res) {
+  var tags = req.body.tags;
+
+  Student.$where(function(){
+    for (tag in tags) {
+      for (stuTag in this.tags) {
+        if (tag == stuTag.name) {
+          return true;
+        }
+      }
+    }
+    return false;
+
+  }).exec(function(err, students) {
+    console.log(students);
+
+    res.end();
+  });
+
+});
+
 module.exports = router;

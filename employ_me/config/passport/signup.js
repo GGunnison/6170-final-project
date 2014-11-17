@@ -1,6 +1,7 @@
 var LocalStrategy   = require('passport-local').Strategy;
 var User   = require('../../app/models/StudentModel');
 var bCrypt = require('bcrypt-nodejs');
+var validator = require('validator');
 
 module.exports = function(passport) {
     // =========================================================================
@@ -14,8 +15,7 @@ module.exports = function(passport) {
     },
     function(req, email, password, done) {
         if (email)
-            email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
-
+            email = validator.trim(email.toLowerCase()); // Use lower-case e-mails to avoid case-sensitive e-mail matching
         // asynchronous
         process.nextTick(function() {
             // if the user is not already logged in:
@@ -29,12 +29,15 @@ module.exports = function(passport) {
                     if (user) {
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
                     } else {
+                        if (!validator.isEmail(email)) {
+                            return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
+                        }
 
                         // create the user
                         var newUser = new User();
 
                         newUser.email    = email;
-                        newUser.password = newUser.generateHash(password);
+                        newUser.password = newUser.generateHash(validator.trim(password));
 
                         newUser.save(function(err) {
                             if (err)
