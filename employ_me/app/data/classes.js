@@ -8,7 +8,7 @@ classes =  [
 
   { name   : 'Introduction to EECS 1',
     _id    : '6.01',
-    skills : ["3"]
+    skills : ["2"]
   }
 
 ]

@@ -1,0 +1,1 @@
+SearchResultsController = require('./searchResultsController');

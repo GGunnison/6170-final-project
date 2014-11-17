@@ -41,12 +41,14 @@ initPassport(passport);
 
 // routes ======================================================================
 var index   = require('./app/routes/index')(passport);
-var student = require('./app/routes/student');
+var student = require('./app/routes/students');
+var skills  = require('./app/routes/skills');
+var classes = require('./app/routes/classes');
+
 app.use('/', index);
 app.use('/students', student);
-
-var student = require('./app/routes/student');
-app.use('/student', student);
+app.use('/skills', skills);
+app.use('/classes', classes);
 
 // launch ======================================================================
 module.exports = app;
