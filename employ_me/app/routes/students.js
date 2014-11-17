@@ -166,6 +166,10 @@ router.post('/search', function(req, res) {
   var requiredSkills = req.body.requiredSkills;
   var desiredSkills = req.body.desiredSkills;
 
+  if ( (requiredSkills == undefined) || (desiredSkills == undefined) ) {
+    utils.sendErrResponse(res, 500, null);
+  }
+
   // Looking for a way to improve this. Currently, it queries for the
   // whole database, and filters afterward. We do this because we want
   // to get every student with at least one Skill in the required skills,
@@ -182,17 +186,16 @@ router.post('/search', function(req, res) {
 
     } else {
       students = students.filter(function() {
-        var tags = desiredSkills.concat(requiredSkills);
 
-        for (tag in tags) {
+        for (tag in requiredSkills) {
           for (stuSkill in this.skills) {
-            if (tag == stuSkill.name) {
+            if (tag == stuSkill._id) {
               return true;
             }
           }
           for (stuClass in this.classes) {
             for (classSkill in stuClass.skills) {
-              if (tag == classSkill.name) {
+              if (tag == classSkill._id) {
                 return true;
               }
             }
