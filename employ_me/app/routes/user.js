@@ -15,7 +15,6 @@ router.get('/', function(req, res) {
  *
  * GET /users/:userId
  */
-router.get('/users/:userId', function(req, res) {
+router.get('/:userId', function(req, res) {
 
 });
-
