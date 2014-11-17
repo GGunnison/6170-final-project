@@ -1,4 +1,4 @@
-var SearchResultsController = function() {
+module.exports = function () {
 
   // Public variables, available outside controller
   var public = {};
@@ -7,7 +7,7 @@ var SearchResultsController = function() {
   var local = {};
 
   var setLocal = function() {
-
+    local.featuredUserHTML = require('../../views/templates/userInfo.jade');
   }
 
   // Helper functions
@@ -41,9 +41,10 @@ var SearchResultsController = function() {
 
   var eventListeners = function() {
     $(".listed-student").click(function() {
-      console.log('clicky');
+      helpers.clearNavSelect();
+      console.log(this);
+      $(this).addClass('active');
     });
-
   }
 
   return {

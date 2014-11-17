@@ -44,6 +44,7 @@ var index   = require('./app/routes/index')(passport);
 var student = require('./app/routes/students');
 var skills  = require('./app/routes/skills');
 var classes = require('./app/routes/classes');
+
 app.use('/', index);
 app.use('/students', student);
 app.use('/skills', skills);

@@ -1,14 +1,12 @@
 extends layout
 include ./mixins/userCard
 
-block head
-  script(type='text/javascript', src='/js/searchResultsController.js')
-
 block content
   script.
-    var searchResultsController = new SearchResultsController();
     $(document).ready(function() {
-      searchResultsController.init();
+      test();
+      //var searchResultsController = new SearchResultsController();
+      //searchResultsController.init();
     });
 
   .container
@@ -19,7 +17,7 @@ block content
       .col-md-6
         .list-group
           each student in students
-            .list-group-item.listed-student
+            a.list-group-item.listed-student
               +userCard(student)
       .col-md-6
         .panel.panel-default
