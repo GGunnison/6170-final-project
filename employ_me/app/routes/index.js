@@ -49,7 +49,7 @@ module.exports = function(passport) {
   });
 
   // process the signup form
-  router.post('/signup', passport.authenticate('signup', {
+  router.post('/signup/:userType', passport.authenticate('signup/:userType', {
     successRedirect : '/profile', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
