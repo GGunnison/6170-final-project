@@ -19,11 +19,12 @@ module.exports = function (passport) {
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
     Student.findById(id,function(err,user){
-        if(err) done(err);
+        console.log("1");
         if(user){
             done(null,user);
         }else{
             Employer.findById(id, function(err,user){
+                console.log("got here");
                 if(err) done(err);
                 done(null,user);
             });
