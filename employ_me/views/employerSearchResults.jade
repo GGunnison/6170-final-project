@@ -9,11 +9,17 @@ block content
     .row
       .col-md-6
         .list-group
-          .list-group-item
-            +userCard()
+          each student in students
+            .list-group-item
+              +userCard(student)
       .col-md-6
         .panel.panel-default
           .panel-body
             h4.list-group-item-heading Ben Bitdiddle
             h5 email here
             h4 Skills
+            .col-md-12
+              h4(style="display: inline-block; padding: 3px")
+                span.label.label-default  skill
+              h4(style="display: inline-block; padding: 3px")
+                span.label.label-default  skill

@@ -11,7 +11,7 @@ module.exports = function(passport) {
 
   // PROFILE SECTION =========================
   router.get('/profile', isLoggedIn, function(req, res) {
-    res.render('profile.ejs', {
+    res.render('profile.jade', {
       user : req.user
     });
   });

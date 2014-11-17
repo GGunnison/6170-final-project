@@ -10,7 +10,10 @@ var Skill   = require('../models/SkillModel');
  *
  */
 router.get('/', function (req, res) {
-  res.render('employerSearchResults');
+  Student.find({}, function (err, students) {
+    res.render('employerSearchResults', {students: students});
+    //utils.sendSuccessResponse(res, students);
+  });
 });
 
 /* Get a specified student.
