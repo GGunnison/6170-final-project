@@ -45,8 +45,8 @@ var student = require('./app/routes/student');
 app.use('/', index);
 app.use('/students', student);
 
-var search = require('./app/routes/search');
-app.use('/search', search);
+var student = require('./app/routes/student');
+app.use('/student', student);
 
 // launch ======================================================================
 module.exports = app;
