@@ -11,7 +11,7 @@ module.exports = function(passport) {
 
   // PROFILE SECTION =========================
   router.get('/profile', isLoggedIn, function(req, res) {
-    res.render('profile.ejs', {
+    res.render('profile.jade', {
       user : req.user
     });
   });
@@ -38,7 +38,7 @@ module.exports = function(passport) {
   // process the login form
   router.post('/login', passport.authenticate('login', {
     successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/login', // redirect back to the signup page if there is an error
+    failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
 
@@ -51,7 +51,7 @@ module.exports = function(passport) {
   // process the signup form
   router.post('/signup/:userType', passport.authenticate('signup/:userType', {
     successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
 
