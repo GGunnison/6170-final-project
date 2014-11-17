@@ -25,7 +25,7 @@ block content
                   h1 Sign in
             td.lineContainer
               div.wordSeparatorLine
-      .inputContainer
+      form.inputContainer(method="POST", action="/login")
         table
           tbody
             tr
@@ -34,15 +34,16 @@ block content
               td
                 &nbsp;
               td.inputCol
-                input.form-control(placeholder="email")
-        
+                input.form-control(name="email", placeholder="email")
             tr
               td
                 h4 Password
               td
                 &nbsp;
               td.inputCol
-                input.form-control(placeholder="password")
+                input.form-control(name="password", type="password", placeholder="password")
+        br
+        button.btn.btn-primary.sessionBtn(type="submit") Sign in
       table.g-wordSeparator
         tbody
           tr
@@ -63,7 +64,8 @@ block content
 
         div.tab-content
           div(id="studentTab", class="tabElement" role="tabpanel", class="tab-pane active")
-            .inputContainer
+            form.inputContainer(method='POST', action="/signup/student")
+              input(type="hidden", name="type", value="student")
               table
                 tbody
                   tr
@@ -72,7 +74,7 @@ block content
                     td
                       &nbsp;
                     td.inputCol
-                      input.form-control(placeholder="name")
+                      input.form-control(name="name", placeholder="name")
 
                   tr
                     td
@@ -80,7 +82,7 @@ block content
                     td
                       &nbsp;
                     td.inputCol
-                      input.form-control(placeholder="email")
+                      input.form-control(name="email", placeholder="email")
               
                   tr
                     td
@@ -88,7 +90,7 @@ block content
                     td
                       &nbsp;
                     td.inputCol
-                      input.form-control(placeholder="password")
+                      input.form-control(type="password", placeholder="password")
 
                   tr
                     td
@@ -96,12 +98,13 @@ block content
                     td
                       &nbsp;
                     td.inputCol
-                      input.form-control(placeholder="confirm password")
+                      input.form-control(name="password", type="password", placeholder="confirm password")
 
               br
-              button.btn.btn-success.sessionBtn Register
-          div(id="employerTab", class="tabElement" role="tabpanel", class="tab-pane")
-            .inputContainer
+              button.btn.btn-success.sessionBtn(type="submit") Register
+          div(id="employerTab", class="tabElement" role="tabpanel", class="tab-pane ")
+            form.inputContainer(method='POST', action="/signup/employer")
+              input(type="hidden", name="type", value="employer")
               table
                 tbody
                   tr
@@ -110,7 +113,7 @@ block content
                     td
                       &nbsp;
                     td.inputCol
-                      input.form-control(placeholder="company")
+                      input.form-control(name="company", placeholder="company")
 
                   tr
                     td
@@ -118,7 +121,7 @@ block content
                     td
                       &nbsp;
                     td.inputCol
-                      input.form-control(placeholder="name")
+                      input.form-control(name="name", placeholder="name")
               
                   tr
                     td
@@ -128,13 +131,14 @@ block content
                     td.inputCol
                       input.form-control(placeholder="email")
 
+
                   tr
                     td
                       h4 Password
                     td
                       &nbsp;
                     td.inputCol
-                      input.form-control(placeholder="password")
+                      input.form-control(type="password", placeholder="password")
 
                   tr
                     td
@@ -142,7 +146,7 @@ block content
                     td
                       &nbsp;
                     td.inputCol
-                      input.form-control(placeholder="confirm password")
+                      input.form-control(name="password", type="password", placeholder="confirm password")
 
               br
-              button.btn.btn-success.sessionBtn Register
+              button.btn.btn-success.sessionBtn(type="submit") Register

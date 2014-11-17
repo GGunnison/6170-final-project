@@ -1,5 +1,6 @@
 var LocalStrategy   = require('passport-local').Strategy;
-var User   = require('../../app/models/UserModel');
+var Student   = require('../../app/models/StudentModel');
+var Employer = require('../../app/models/EmployerModel');
 var bCrypt = require('bcrypt-nodejs');
 
 module.exports = function(passport) {
@@ -10,19 +11,20 @@ module.exports = function(passport) {
         // by default, local strategy uses username and password, we will override with email
         usernameField : 'email',
         passwordField : 'password',
-        var userType = req.params("userType");
         passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, email, password, done) {
+        var userType = req.params.userType;
         if (email)
             email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
 
         // asynchronous
         process.nextTick(function() {
+            console.log("student");
             // if the user is not already logged in:
-            if (!req.user && userType == 'student') {
+            if (!req.user && userType === 'student') {
 
-                User.findOne({ 'email' :  email }, function(err, user) {
+                Student.findOne({ 'email' :  email }, function(err, user) {
                     // if there are any errors, return the error
                     if (err)
                         return done(err);
@@ -32,7 +34,7 @@ module.exports = function(passport) {
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
                     } else {                        
 
-                        var newUser = new User();
+                        var newUser = new Student();
                         
                         newUser.email    = email;
                         newUser.password = newUser.generateHash(password);
@@ -49,8 +51,8 @@ module.exports = function(passport) {
                 
 
                 });
-            } else if (!req.user && userType == 'employer') {
-
+            } else if (!req.user && userType === 'employer') {
+                console.log("employer");
                 Employer.findOne({ 'email' :  email }, function(err, user) {
                     // if there are any errors, return the error
                     if (err)

@@ -1,6 +1,7 @@
 var login  = require('./login');
 var signup = require('./signup');
-var User   = require('../../app/models/UserModel');
+var Student   = require('../../app/models/StudentModel');
+var Employer = require('../../app/models/EmployerModel')
 
 module.exports = function (passport) {
     // =========================================================================
@@ -17,11 +18,18 @@ module.exports = function (passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-      User.findById(id, function(err, user) {
-          console.log('deserializing user:',user);
-          done(err, user);
-      });
+    Student.findById(id,function(err,user){
+        if(err) done(err);
+        if(user){
+            done(null,user);
+        }else{
+            Employer.findById(id, function(err,user){
+                if(err) done(err);
+                done(null,user);
+            });
+        }
     });
+});
 
     // Setting up Passport Strategies for Login and SignUp/Registration
     login(passport);

@@ -7,4 +7,4 @@ var EmployerSchema = UserSchema.extend({
   company : String
 });
 
-module.exports = StudentSchema;
+module.exports = EmployerSchema;

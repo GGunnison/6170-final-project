@@ -9,7 +9,9 @@ var StudentSchema = UserSchema.extend({
   interests    : [{type: Schema.ObjectId, ref: 'Interest'}],
   jobInterests : [{type: Schema.ObjectId, ref: 'Job'}],
   skills       : [{type: Schema.ObjectId, ref: 'Skill'}],
-  sports       : [{type: Schema.ObjectId, ref: 'VaristySport'}]
+  sports       : [{type: Schema.ObjectId, ref: 'VaristySport'}],
+
+  tags         : [{type: Schema.ObjectId, ref: 'Tag'}]
 });
 
 module.exports = StudentSchema;
