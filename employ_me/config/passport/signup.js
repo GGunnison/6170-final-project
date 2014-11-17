@@ -27,32 +27,34 @@ module.exports = function(passport) {
 
                 Student.findOne({ 'email' :  email }, function(err, user) {
                     // if there are any errors, return the error
-                    if (err)
+                    if (err) {
+                        console.log(err);
                         return done(err);
+                    }
 
                     // check to see if theres already a user with that email
                     if (user) {
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-                    } else {                        
-                          if (!validator.isEmail(email)) {
-                            return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
-                        }else{
-                        var newUser = new Student();
-                        
-                        newUser.email    = email;
-                        newUser.password = newUser.generateHash(password);
-                        newUser.name = req.body.name
-               
-                        newUser.save(function(err) {
-                            if (err)
-                                return done(err);
+                    } else {
+                        if (!validator.isEmail(email)) {
+                          return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
+                        } else {
+                          var newUser = new Student();
 
-                            return done(null, newUser);
+                          newUser.email    = email;
+                          newUser.password = newUser.generateHash(password);
+                          newUser.name     = req.body.name
 
-                        });
+                          newUser.save(function(err) {
+                              if (err)
+                                  return done(err);
+
+                              return done(null, newUser);
+
+                          });
                         }
                     }
-                
+
 
                 });
             } else if (!req.user && userType === 'employer') {
@@ -65,16 +67,16 @@ module.exports = function(passport) {
                     // check to see if theres already a user with that email
                     if (user) {
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-                    } else {                        
+                    } else {
                         if (!validator.isEmail(email)) {
                             return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
                         }else{
                         var newUser = new Employer();
-                        
+
                         newUser.email    = email;
                         newUser.password = newUser.generateHash(password);
                         newUser.name = req.body.name
-               
+
 
                         newUser.save(function(err) {
                             if (err)

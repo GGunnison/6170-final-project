@@ -10,7 +10,9 @@ module.exports = function(passport) {
 
   // show the home page (will also have our login links) router.get('/', function(req, res) {
   router.get('/', function(req, res) {
-    res.render('index.jade');
+    res.render('index.jade', {signupMessage: req.flash('signupMessage'),
+                              loginMessage: req.flash('loginMessage')
+                             });
   });
 
   // PROFILE SECTION =========================
@@ -56,26 +58,26 @@ module.exports = function(passport) {
   // show the login form
   router.get('/login', function(req, res) {
     console.log('message ', req.flash('loginMessage'));
-    res.render('login.jade', { message: req.flash('loginMessage') });
+    res.render('index.jade', { message: req.flash('loginMessage') });
   });
 
   // process the login form
   router.post('/login', passport.authenticate('login', {
     successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/login', // redirect back to the signup page if there is an error
+    failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
 
   // SIGNUP =================================
   // show the signup form
   router.get('/signup', function(req, res) {
-    res.render('signup.jade', { message: req.flash('signupMessage')});
+    res.render('index.jade', { message: req.flash('signupMessage')});
   });
 
   // process the signup form
   router.post('/signup/:userType', passport.authenticate('signup/:userType', {
     successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
 

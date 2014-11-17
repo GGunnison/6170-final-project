@@ -32,6 +32,7 @@ router.get('/:studentId', function (req, res) {
       console.log(err);
       utils.sendErrResponse(res, 500, null);
     } else if (student) {
+      console.log(req);
       utils.sendSuccessResponse(res, student);
     } else {
       utils.sendErrResponse(res, 404, 'student was not found');
