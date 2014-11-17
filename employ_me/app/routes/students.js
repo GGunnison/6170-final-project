@@ -159,35 +159,53 @@ router.post('/:studentId/skills', function (req, res) {
  * Response:
  *
  * Test:
- *   curl --data "tags[]=java&tags[]=testing" localhost:3000/students/search
+ *   curl --data "desiredSkills[]=java&desiredSkills[]=testing&requiredSkills[]=c" localhost:3000/students/search
  *
  */
 router.post('/search', function(req, res) {
-  var tags = req.body.tags;
+  var requiredSkills = req.body.requiredSkills;
+  var desiredSkills = req.body.desiredSkills;
 
-  Student.$where(function(){
-    for (tag in tags) {
-      for (stuSkill in this.skills) {
-        if (tag == stuSkill.name) {
-          return true;
-        }
-      }
-      for (stuClass in this.classes) {
-        for (classSkill in stuClass.skills) {
-          if (tag == classSkill.name) {
-            return true;
+  // Looking for a way to improve this. Currently, it queries for the
+  // whole database, and filters afterward. We do this because we want
+  // to get every student with at least one Skill in the required skills,
+  // or one Class Skill in the required skills. I was unable to figure out
+  // a way to write a mongo query to accomplish this.
+  //
+  //.find({ $or: [ { skills: { $in: requiredSkills }},
+  //               { at least one class has a skill that is in requiredSkills }
+  //     ]})
+  Student.find({}).exec(function(err, students) {
+    if (err) {
+      console.log(err);
+      utils.sendErrResponse(res, 500, null);
+
+    } else {
+      students = students.filter(function() {
+        var tags = desiredSkills.concat(requiredSkills);
+
+        for (tag in tags) {
+          for (stuSkill in this.skills) {
+            if (tag == stuSkill.name) {
+              return true;
+            }
+          }
+          for (stuClass in this.classes) {
+            for (classSkill in stuClass.skills) {
+              if (tag == classSkill.name) {
+                return true;
+              }
+            }
           }
         }
-      }
+        return false;
+      });
+
+      console.log(students);
+      utils.sendSuccessResponse(res, students);
     }
-    return false;
-
-  }).exec(function(err, students) {
-    console.log(students);
-
-    res.end();
   });
-
 });
+
 
 module.exports = router;
