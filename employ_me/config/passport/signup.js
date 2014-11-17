@@ -15,6 +15,7 @@ module.exports = function(passport) {
     },
     function(req, email, password, done) {
         var userType = req.params.userType;
+        console.log(userType);
         if (email)
             email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
 
