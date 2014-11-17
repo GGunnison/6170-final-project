@@ -1,9 +1,9 @@
 var IndexController = function() {
-  
+
   // Public variables, available outside controller
   var public = {};
 
-  // Private variables, 
+  // Private variables,
   var local = {};
 
   var setLocal = function() {
@@ -40,7 +40,7 @@ var IndexController = function() {
   }
 
   return {
-    public: public, 
+    public: public,
     init: init
   }
 }
