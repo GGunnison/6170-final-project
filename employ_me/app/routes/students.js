@@ -158,7 +158,7 @@ router.post('/:studentId/skills', function (req, res) {
  * Response:
  *
  * Test:
- *   curl --data "tags[]=java&tags[]=testing" localhost:3000/student/search
+ *   curl --data "tags[]=java&tags[]=testing" localhost:3000/students/search
  *
  */
 router.post('/search', function(req, res) {
@@ -166,9 +166,16 @@ router.post('/search', function(req, res) {
 
   Student.$where(function(){
     for (tag in tags) {
-      for (stuTag in this.tags) {
-        if (tag == stuTag.name) {
+      for (stuSkill in this.skills) {
+        if (tag == stuSkill.name) {
           return true;
+        }
+      }
+      for (stuClass in this.classes) {
+        for (classSkill in stuClass.skills) {
+          if (tag == classSkill.name) {
+            return true;
+          }
         }
       }
     }
