@@ -1,0 +1,19 @@
+extends layout
+include ./mixins/userCard
+
+block content
+  .container
+    .row
+      .col-md-4
+        h3 Search Results
+    .row
+      .col-md-6
+        .list-group
+          .list-group-item
+            +userCard()
+      .col-md-6
+        .panel.panel-default
+          .panel-body
+            h4.list-group-item-heading Ben Bitdiddle
+            h5 email here
+            h4 Skills
