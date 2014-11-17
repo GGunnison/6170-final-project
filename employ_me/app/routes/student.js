@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var utils  = require('../utils/utils.js');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 // database models
 var Student = require('../models/UserModel');
@@ -24,7 +25,10 @@ router.get('/', function (req, res) {
  *        if the studentId is not valid
  */
 router.get('/:studentId', function (req, res) {
-  Student.findById(req.params.studentId, function (err, student) {
+  console.log(req.params.studentId);
+  var a = new ObjectId.fromString(req.params.studentId);
+  console.log(a);
+  Student.findById(a, function (err, student) {
     if (err) {
       console.log(err);
       utils.sendErrResponse(res, 500, null);
@@ -146,3 +150,5 @@ router.post('/:studentId/skills', function (req, res) {
            }
          });
 });
+
+module.exports = router;

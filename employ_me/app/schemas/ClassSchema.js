@@ -5,7 +5,7 @@ var ClassSchema = mongoose.Schema({
 
 	name: String,
 	number : String,
-	skills : [{type: Schema.ObjectId, ref:'Skill'}]
+	skills : [{type: String, ref:'Skill'}] // this is a string because Skill _id is a string
 
 });
 
