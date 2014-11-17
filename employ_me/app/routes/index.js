@@ -1,6 +1,9 @@
 var express  = require('express');
 var router   = express.Router();
 
+// database models
+var Class = require('../models/ClassModel');
+
 module.exports = function(passport) {
   // normal routes ===============================================================
 
@@ -16,12 +19,25 @@ module.exports = function(passport) {
     });
   });
 
+  router.get('/profile/create', isLoggedIn, function(req, res) {
+    //Class.find({}, function() {
+    //  Skills.find....
+    //    res.render('asdf.jade', {skills: skills, classes: classes});
+    //});
+  });
+
+
+  // SEARCH PAGE ========================
+  router.get('/search', function(req, res) {
+    res.render('employerSearchCreation.jade');
+  });
 
   // LOGOUT ==============================
   router.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
   });
+
 
   // =============================================================================
   // AUTHENTICATE (FIRST LOGIN) ==================================================
