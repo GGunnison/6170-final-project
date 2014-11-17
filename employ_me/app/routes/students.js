@@ -170,8 +170,6 @@ router.post('/search', function(req, res) {
     utils.sendErrResponse(res, 500, null);
   }
 
-  console.log("requiredSkills: " + requiredSkills);
-
   // Looking for a way to improve this. Currently, it queries for the
   // whole database, and filters afterward. We do this because we want
   // to get every student with at least one Skill in the required skills,
@@ -211,8 +209,7 @@ router.post('/search', function(req, res) {
         return false;
       });
 
-      console.log(students);
-      utils.sendSuccessResponse(res, students);
+      res.render('employerSearchResults', {students: students});
     }
   });
 });
