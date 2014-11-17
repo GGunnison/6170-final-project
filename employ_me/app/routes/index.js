@@ -11,6 +11,7 @@ router.get('/', function(req, res) {
 
 // PROFILE SECTION =========================
 router.get('/profile', isLoggedIn, function(req, res) {
+  console.log("profile");
   res.render('profile.ejs', {
     user : req.user
   });

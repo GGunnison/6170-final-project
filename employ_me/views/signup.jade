@@ -2,14 +2,14 @@ extends layout
 
 block content
   .container
-    .col-sm-6.col-sm-offset-3
+    .col-sm-offset-0
       h1 Signup
         span.fa.fa-sign-in
 
     if (message.length > 0)
       .alert.alert-danger= message
 
-    form(action"/signup", method="post")
+    form(action="/signup", method="post")
       .form-group
         label Email
         input.form-control(type="text", name="email")

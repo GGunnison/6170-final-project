@@ -2,21 +2,21 @@ extends layout
 
 block content
   .container
-    .col-sm-6.col-sm-offset-3
+    .col-sm-offset-0
       h1 Login
         span.fa.fa-sign-in
+
     if (message.length > 0)
       .alert.alert-danger= message
+
     form(action="/login", method="post")
       .form-group
         label Email
-        input.form-control(type="text", "email")
+        input.form-control(type="text", name="email")
       .form-group
         label Password
         input.form-control(type="password", name="password")
       button.btn.btn-warning.btn-lg(type="submit") Login
-
-    hr
 
     p Need an account?
       a(href="/signup") Signup
