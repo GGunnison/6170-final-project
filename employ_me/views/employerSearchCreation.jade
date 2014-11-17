@@ -1,1 +1,22 @@
-p hi
+extends layout
+
+block content
+  .container
+    .row
+      h2 Search For a Student
+    .row
+      h4 Required
+      .col-md-8
+        each skill in skills
+          .checkbox
+            input(type="checkbox")
+            label(for="checkbox1")= skill.name
+    .row
+      h4 Desired
+      .col-md-8
+        each skill in skills
+          .checkbox
+            input(type="checkbox")
+            label(for="checkbox1")= skill.name
+    .row
+      a.btn.btn-primary Search

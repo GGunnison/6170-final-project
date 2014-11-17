@@ -3,6 +3,7 @@ var router   = express.Router();
 
 // database models
 var Class = require('../models/ClassModel');
+var Skill = require('../models/SkillModel');
 
 module.exports = function(passport) {
   // normal routes ===============================================================
@@ -29,7 +30,14 @@ module.exports = function(passport) {
 
   // SEARCH PAGE ========================
   router.get('/search', function(req, res) {
-    res.render('employerSearchCreation.jade');
+    Skill.find({}, function (err, skills) {
+      if (err) {
+        console.log(err);
+        utils.sendErrResponse(res, 500, null);
+      } else {
+        res.render('employerSearchCreation.jade', {skills: skills});
+      }
+    });
   });
 
   // LOGOUT ==============================
