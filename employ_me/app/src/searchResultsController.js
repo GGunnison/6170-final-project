@@ -1,4 +1,4 @@
-var IndexController = function() {
+module.exports = function () {
 
   // Public variables, available outside controller
   var public = {};
@@ -7,12 +7,16 @@ var IndexController = function() {
   var local = {};
 
   var setLocal = function() {
-
+    local.featuredUserHTML = require('../../views/templates/userInfo.jade');
   }
 
   // Helper functions
   var helpers = (function() {
     var exports = {};
+
+    exports.clearNavSelect = function () {
+      $('.listed-student').removeClass('active');
+    }
 
     return exports
   })();
@@ -36,11 +40,16 @@ var IndexController = function() {
   }
 
   var eventListeners = function() {
-
+    $(".listed-student").click(function() {
+      helpers.clearNavSelect();
+      console.log(this);
+      $(this).addClass('active');
+    });
   }
 
   return {
     public: public,
     init: init
   }
+
 }

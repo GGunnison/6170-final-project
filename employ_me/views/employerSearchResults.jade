@@ -1,0 +1,25 @@
+extends layout
+include ./mixins/userCard
+
+block content
+  script.
+    $(document).ready(function() {
+      test();
+      //var searchResultsController = new SearchResultsController();
+      //searchResultsController.init();
+    });
+
+  .container
+    .row
+      .col-md-4
+        h3 Search Results
+    .row
+      .col-md-6
+        .list-group
+          each student in students
+            a.list-group-item.listed-student
+              +userCard(student)
+      .col-md-6
+        .panel.panel-default
+          .panel-body
+            p click on a student
