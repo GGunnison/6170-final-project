@@ -21,7 +21,8 @@
     "mongoose-schema-extend": "^0.1.7",
     "morgan": "~1.0.0",
     "passport": "~0.1.17",
-    "passport-local": "~0.1.6"
+    "passport-local": "~0.1.6",
+    "validator": "^3.22.1"
   },
   "devDependencies": {
     "browserify": "^6.2.0",

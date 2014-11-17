@@ -2,6 +2,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 var Student   = require('../../app/models/StudentModel');
 var Employer = require('../../app/models/EmployerModel');
 var bCrypt = require('bcrypt-nodejs');
+var validator = require('validator');
 
 module.exports = function(passport) {
     // =========================================================================
@@ -17,8 +18,7 @@ module.exports = function(passport) {
         var userType = req.params.userType;
         console.log(userType);
         if (email)
-            email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
-
+            email = validator.trim(email.toLowerCase()); // Use lower-case e-mails to avoid case-sensitive e-mail matching
         // asynchronous
         process.nextTick(function() {
             console.log("student");
@@ -34,7 +34,9 @@ module.exports = function(passport) {
                     if (user) {
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
                     } else {                        
-
+                          if (!validator.isEmail(email)) {
+                            return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
+                        }else{
                         var newUser = new Student();
                         
                         newUser.email    = email;
@@ -42,12 +44,16 @@ module.exports = function(passport) {
                         newUser.name = req.body.name
                
 
+                        
+
                         newUser.save(function(err) {
                             if (err)
                                 return done(err);
 
                             return done(null, newUser);
+
                         });
+                        }
                     }
                 
 
@@ -63,7 +69,9 @@ module.exports = function(passport) {
                     if (user) {
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
                     } else {                        
-
+                        if (!validator.isEmail(email)) {
+                            return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
+                        }else{
                         var newUser = new Employer();
                         
                         newUser.email    = email;
@@ -78,7 +86,7 @@ module.exports = function(passport) {
                             return done(null, newUser);
                         });
                     }
-                
+                }
 
                 });
 

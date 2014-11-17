@@ -1,20 +1,21 @@
 var router = require('express').Router();
 var utils  = require('../utils/utils.js');
-var ObjectId = require('mongoose').Types.ObjectId;
 
 // database models
 var Student = require('../models/StudentModel');
 var Class   = require('../models/ClassModel');
+var Skill   = require('../models/SkillModel');
 
 /* Search for students
  *
  */
 router.get('/', function (req, res) {
-
+  Student.find({}, function (err, students) {
+    utils.sendSuccessResponse(res, students);
+  });
 });
 
-
-/* Get a specified student. TODO test this
+/* Get a specified student.
  *
  * GET /students/:studentId
  *
@@ -25,10 +26,7 @@ router.get('/', function (req, res) {
  *        if the studentId is not valid
  */
 router.get('/:studentId', function (req, res) {
-  console.log(req.params.studentId);
-  var a = new ObjectId.fromString(req.params.studentId);
-  console.log(a);
-  Student.findById(a, function (err, student) {
+  Student.findById(req.params.studentId, function (err, student) {
     if (err) {
       console.log(err);
       utils.sendErrResponse(res, 500, null);
@@ -40,7 +38,7 @@ router.get('/:studentId', function (req, res) {
   });
 });
 
-/* Get a student's classes TODO test this
+/* Get a student's classes
  *
  * GET /students/:studentId/classes
  * Response:
@@ -73,7 +71,7 @@ router.get('/:studentId/classes', function (req, res) {
          });
 });
 
-/* Set the classes for a student TODO test this
+/* Set the classes for a student
  *
  * POST /students/:studentId/classes
  * Body:
@@ -86,9 +84,9 @@ router.get('/:studentId/classes', function (req, res) {
  *        if the studentId is not valid
  */
 router.post('/:studentId/classes', function (req, res) {
-  Student.findById(req.params.userId)
-         .update({classes: req.body.classes})
-         .exec( function (err, student) {
+  Student.findByIdAndUpdate(req.params.studentId,
+         {classes: JSON.parse(req.body.classes)},
+         function (err, student) {
            if (err) {
              console.log(err);
              utils.sendErrResponse(res, 500, null);
@@ -100,7 +98,7 @@ router.post('/:studentId/classes', function (req, res) {
          });
 });
 
-/* Get a student's skills TODO test this
+/* Get a student's skills
  *
  * GET /students/:studentId/skills
  * Response:
@@ -117,14 +115,15 @@ router.get('/:studentId/skills', function (req, res) {
               console.log(err);
               utils.sendErrResponse(res, 500, null);
             } else if (student) {
-              utils.sendSuccessResponse(res, student.classes);
+              console.log(student);
+              utils.sendSuccessResponse(res, student.skills);
             } else {
               utils.sendErrResponse(res, 404, 'student was not found');
             }
          });
 });
 
-/* Set the student input skills for a student TODO test this
+/* Set the student input skills for a student
  *
  * POST /students/:studentId/skills
  * Body:
@@ -137,9 +136,9 @@ router.get('/:studentId/skills', function (req, res) {
  *        if the studentId is not valid
  */
 router.post('/:studentId/skills', function (req, res) {
-  Student.findById(req.params.userId)
-         .update({classes: req.body.classes})
-         .exec( function (err, student) {
+  Student.findByIdAndUpdate(req.params.studentId,
+         {skills: JSON.parse(req.body.skills)},
+         function (err, student) {
            if (err) {
              console.log(err);
              utils.sendErrResponse(res, 500, null);

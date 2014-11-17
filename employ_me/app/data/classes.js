@@ -7,7 +7,7 @@ mongoose.connect(configDB.url);
 classes =  [
 
   { name   : 'Introduction to EECS 1',
-    number : '6.01',
+    _id    : '6.01',
     skills : ["3"]
   }
 
