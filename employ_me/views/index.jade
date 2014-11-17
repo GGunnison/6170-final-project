@@ -1,18 +1,156 @@
 extends layout
 
-block content
-  h1= title
-  p Welcome to #{title}
-  #test
+block head
+  script(type='text/javascript', src='/js/indexController.js')
+  link(rel='stylesheet', href='/css/index.css')
 
-  span.label.label-default test
+block content
+
+  script.
+    var indexController = new IndexController();
+    $(document).ready(function() {
+      indexController.init();
+    });
 
   .container
-    .jumbotron.text-center
-      h1 Node Authentication
-        span.fa.fa-lock
-      p Login or Register with:
-      a.btn.btn-default(href="/login") Login
-        span.fa.fa-user
-      a.btn.btn-default(href="/signup") Signup
-        span.fa.fa-user
+    .indexCont.text-center
+      table.g-wordSeparator
+        tbody
+          tr
+            td.lineContainer
+              div.wordSeparatorLine
+            td.wordContainer
+              div.wordTextContainer
+                span.wordText 
+                  h1 Sign in
+            td.lineContainer
+              div.wordSeparatorLine
+      .inputContainer
+        table
+          tbody
+            tr
+              td
+                h4 Email
+              td
+                &nbsp;
+              td.inputCol
+                input.form-control(placeholder="email")
+        
+            tr
+              td
+                h4 Password
+              td
+                &nbsp;
+              td.inputCol
+                input.form-control(placeholder="password")
+      table.g-wordSeparator
+        tbody
+          tr
+            td.lineContainer
+              div.wordSeparatorLine
+            td.wordContainer
+              div.wordTextContainer
+                span.wordText 
+                  h1 Register
+            td.lineContainer
+              div.wordSeparatorLine
+      div.tabpanel
+        ul.nav.nav-tabs.nav-justified
+          li(role="presentation" class="active")
+            a(href="#studentTab", aria-controls="student", role="tab", data-toggle="tab") Student
+          li(role="presentation")
+            a(href="#employerTab", aria-controls="employer", role="tab", data-toggle="tab") Employer
+
+        div.tab-content
+          div(id="studentTab", class="tabElement" role="tabpanel", class="tab-pane active")
+            .inputContainer
+              table
+                tbody
+                  tr
+                    td
+                      h4 Name
+                    td
+                      &nbsp;
+                    td.inputCol
+                      input.form-control(placeholder="name")
+
+                  tr
+                    td
+                      h4 Email
+                    td
+                      &nbsp;
+                    td.inputCol
+                      input.form-control(placeholder="email")
+              
+                  tr
+                    td
+                      h4 Password
+                    td
+                      &nbsp;
+                    td.inputCol
+                      input.form-control(placeholder="password")
+
+                  tr
+                    td
+                      h4 Confirm
+                    td
+                      &nbsp;
+                    td.inputCol
+                      input.form-control(placeholder="confirm password")
+
+              br
+              button.btn.btn-success.sessionBtn Register
+          div(id="employerTab", class="tabElement" role="tabpanel", class="tab-pane")
+            .inputContainer
+              table
+                tbody
+                  tr
+                    td
+                      h4 Company
+                    td
+                      &nbsp;
+                    td.inputCol
+                      input.form-control(placeholder="company")
+
+                  tr
+                    td
+                      h4 Name
+                    td
+                      &nbsp;
+                    td.inputCol
+                      input.form-control(placeholder="name")
+              
+                  tr
+                    td
+                      h4 Email
+                    td
+                      &nbsp;
+                    td.inputCol
+                      input.form-control(placeholder="email")
+
+                  tr
+                    td
+                      h4 Phone
+                    td
+                      &nbsp;
+                    td.inputCol
+                      input.form-control(placeholder="phone number")
+
+                  tr
+                    td
+                      h4 Password
+                    td
+                      &nbsp;
+                    td.inputCol
+                      input.form-control(placeholder="password")
+
+                  tr
+                    td
+                      h4 Confirm
+                    td
+                      &nbsp;
+                    td.inputCol
+                      input.form-control(placeholder="confirm password")
+
+              br
+              button.btn.btn-success.sessionBtn Register
