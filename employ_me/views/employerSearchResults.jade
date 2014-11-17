@@ -4,9 +4,8 @@ include ./mixins/userCard
 block content
   script.
     $(document).ready(function() {
-      test();
-      //var searchResultsController = new SearchResultsController();
-      //searchResultsController.init();
+      var searchResultsController = new SearchResultsController();
+      searchResultsController.init();
     });
 
   .container
@@ -19,7 +18,7 @@ block content
           each student in students
             a.list-group-item.listed-student
               +userCard(student)
-      .col-md-6
+      .col-md-6.fixed
         .panel.panel-default
-          .panel-body
+          .panel-body#featuredStudent
             p click on a student

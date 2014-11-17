@@ -25,6 +25,7 @@ gulp.task('scripts', function () {
   console.log('starting scripts');
   browserify({
     entries: ['./app/src/main.js'],
+    standalone: 'main',
     extensions: ['.js'],
     debug: true
   }).transform('jadeify')
