@@ -87,6 +87,9 @@ module.exports = function(passport) {
   // =============================================================================
 
   // PROFILE CREATION PAGE =======================================================
+  /**
+   * author: Daniel Sanchez
+   */
   router.get('/create/student', isLoggedIn, function(req, res, next) {
 
     // Get all skills to display on page
@@ -116,6 +119,9 @@ module.exports = function(passport) {
   });
 
   // EMPLOYER DIRECTED TO SEARCH =================================================
+  /**
+   * author: Daniel Sanchez
+   */
   router.get('/create/employer', isLoggedIn, function(req, res) {
     res.redirect('/search');
   });
