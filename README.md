@@ -19,3 +19,6 @@ Employ.Me
  - Ensure that students have an MIT email
 - UI redesign
 - Student profile creation questonaire  
+ 
+
+###Note: Do not register as an Employer and a Student with the same email! Our app does not support this, but we have not handled this edge case yet.
