@@ -21,5 +21,10 @@ Our document can be found [here](./MVPImplementation.pdf).
 - UI redesign
 - Student profile creation questonaire  
  
+##Code Sources
+
+We pulled passport functionality from 
+
+http://scotch.io/tutorials/javascript/easy-node-authentication-setup-and-local
 
 ###Note: Do not register as an Employer and a Student with the same email! Our app does not support this, but we have not handled this edge case yet.
