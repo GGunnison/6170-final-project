@@ -19,3 +19,4 @@ Employ.Me
  - Ensure that students have an MIT email
 - UI redesign
 - Student profile creation questonaire  
+- Might need fixing: Duplicate tags when skill and class tag
