@@ -32,6 +32,7 @@ router.get('/:studentId', function (req, res) {
       console.log(err);
       utils.sendErrResponse(res, 500, null);
     } else if (student) {
+      console.log(req);
       utils.sendSuccessResponse(res, student);
     } else {
       utils.sendErrResponse(res, 404, 'student was not found');
@@ -86,7 +87,7 @@ router.get('/:studentId/classes', function (req, res) {
  */
 router.post('/:studentId/classes', function (req, res) {
   Student.findByIdAndUpdate(req.params.studentId,
-         {classes: JSON.parse(req.body.classes)},
+         {classes: req.body.classes},
          function (err, student) {
            if (err) {
              console.log(err);
@@ -138,7 +139,7 @@ router.get('/:studentId/skills', function (req, res) {
  */
 router.post('/:studentId/skills', function (req, res) {
   Student.findByIdAndUpdate(req.params.studentId,
-         {skills: JSON.parse(req.body.skills)},
+         {skills: req.body.skills},
          function (err, student) {
            if (err) {
              console.log(err);
@@ -158,28 +159,60 @@ router.post('/:studentId/skills', function (req, res) {
  * Response:
  *
  * Test:
- *   curl --data "tags[]=java&tags[]=testing" localhost:3000/student/search
+ *   curl --data "desiredSkills[]=java&desiredSkills[]=testing&requiredSkills[]=c" localhost:3000/students/search
  *
  */
 router.post('/search', function(req, res) {
-  var tags = req.body.tags;
+  var requiredSkills = req.body.requiredSkills;
+  var desiredSkills = req.body.desiredSkills;
 
-  Student.$where(function(){
-    for (tag in tags) {
-      for (stuTag in this.tags) {
-        if (tag == stuTag.name) {
-          return true;
+  if (requiredSkills == undefined) {
+    utils.sendErrResponse(res, 500, null);
+  }
+
+  // Looking for a way to improve this. Currently, it queries for the
+  // whole database, and filters afterward. We do this because we want
+  // to get every student with at least one Skill in the required skills,
+  // or one Class Skill in the required skills. I was unable to figure out
+  // a way to write a mongo query to accomplish this.
+  //
+  //.find({ $or: [ { skills: { $in: requiredSkills }},
+  //               { at least one class has a skill that is in requiredSkills }
+  //     ]})
+  Student.find({}).exec(function(err, students) {
+    if (err) {
+      console.log(err);
+      utils.sendErrResponse(res, 500, null);
+
+    } else {
+      students = students.filter(function(student) {
+        for (tag in requiredSkills) {
+          // Skills
+          var skills = student.skills;
+          for (var i = 0; i < skills.length; i++) {
+            if (tag == skills[i]) {
+              return true;
+            }
+          }
+
+          // Classes
+          var classes = student.classes;
+          for (var i = 0; i < classes.length; i++) {
+            stuClass = classes[i];
+            for (var j = 0; j < stuClass.length; j++) {
+              if (tag == stuClass[j]) {
+                return true;
+              }
+            }
+          }
         }
-      }
+        return false;
+      });
+
+      res.render('employerSearchResults', {students: students});
     }
-    return false;
-
-  }).exec(function(err, students) {
-    console.log(students);
-
-    res.end();
   });
-
 });
+
 
 module.exports = router;

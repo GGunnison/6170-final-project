@@ -2,7 +2,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var Student   = require('../../app/models/StudentModel');
 var Employer   = require('../../app/models/EmployerModel');
 
-var bCrypt = require('bcrypt-nodejs');
+var bCrypt    = require('bcrypt-nodejs');
+var validator = require('validator');
 
 module.exports = function(passport){
     // =========================================================================
@@ -22,7 +23,10 @@ module.exports = function(passport){
         // asynchronous
 
         process.nextTick(function() {
-            Student.findOne({ 'email' :  email }, function(err, user) {
+            if (!validator.isEmail(email)) {
+              return done(null, false, req.flash('loginMessage', 'Invalid email.'));
+            }
+            Student.findOne({ 'email' :  email }, function(err, student) {
                 // if there are any errors, return the error
                 if (err) {
                   console.log(err);
@@ -30,8 +34,8 @@ module.exports = function(passport){
                 }
 
                 // if no user is found, return the message
-                if (!user) {
-                    Employer.findOne({ 'email' :  email }, function(err, user) {
+                if (!student) {
+                    Employer.findOne({ 'email' :  email }, function(err, employer) {
                         // if there are any errors, return the error
                         if (err) {
                           console.log(err);
@@ -39,32 +43,34 @@ module.exports = function(passport){
                         }
 
                         // if no user is found, return the message
-                        if (!user) {
+                        if (!employer) {
                           console.log('no user');
                           return done(null, false, req.flash('loginMessage', 'No user found.'));
                         }
 
-                        if (!user.validPassword(password)) {
+                        if (!employer.validPassword(password)) {
                             console.log('bad pass');
                             return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
                         // all is well, return user
                         } else {
-                            console.log('user', user);
-                            return done(null, user);
+                            console.log('user', employer);
+                            return done(null, employer);
                         }
                     });
+                } else {
+                  if (!student.validPassword(password)) {
+                      console.log('bad pass');
+                      return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
+                  // all is well, return user
+                  } else {
+                      console.log('user', student);
+                      return done(null, student);
+                  }
+
                 }
 
-                if (!user.validPassword(password)) {
-                    console.log('bad pass');
-                    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
-                // all is well, return user
-                } else {
-                    console.log('user', user);
-                    return done(null, user);
-                }
             });
-             
+
         });
     }));
 

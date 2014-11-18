@@ -23,17 +23,17 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Using the flash middleware provided by connect-flash to store messages in session
+// and displaying in templates
+var flash = require('connect-flash');
+app.use(flash()); // use connect-flash for flash messages stored in session
+
 // Configure Passport
 var passport = require('passport');
 var session  = require('express-session');
 app.use(session({ secret: 'employMeSecret' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-
-// Using the flash middleware provided by connect-flash to store messages in session
-// and displaying in templates
-var flash = require('connect-flash');
-app.use(flash()); // use connect-flash for flash messages stored in session
 
 // Initialize Passport
 var initPassport = require('./config/passport/init');

@@ -1,12 +1,18 @@
 var express  = require('express');
 var router   = express.Router();
 
+// database models
+var Class = require('../models/ClassModel');
+var Skill = require('../models/SkillModel');
+
 module.exports = function(passport) {
   // normal routes ===============================================================
 
   // show the home page (will also have our login links) router.get('/', function(req, res) {
   router.get('/', function(req, res) {
-    res.render('index.jade');
+    res.render('index.jade', {signupMessage: req.flash('signupMessage'),
+                              loginMessage: req.flash('loginMessage')
+                             });
   });
 
   // PROFILE SECTION =========================
@@ -16,12 +22,32 @@ module.exports = function(passport) {
     });
   });
 
+  router.get('/profile/create', isLoggedIn, function(req, res) {
+    //Class.find({}, function() {
+    //  Skills.find....
+    //    res.render('asdf.jade', {skills: skills, classes: classes});
+    //});
+  });
+
+
+  // SEARCH PAGE ========================
+  router.get('/search', function(req, res) {
+    Skill.find({}, function (err, skills) {
+      if (err) {
+        console.log(err);
+        utils.sendErrResponse(res, 500, null);
+      } else {
+        res.render('employerSearchCreation.jade', {skills: skills});
+      }
+    });
+  });
 
   // LOGOUT ==============================
   router.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
   });
+
 
   // =============================================================================
   // AUTHENTICATE (FIRST LOGIN) ==================================================
@@ -32,7 +58,7 @@ module.exports = function(passport) {
   // show the login form
   router.get('/login', function(req, res) {
     console.log('message ', req.flash('loginMessage'));
-    res.render('login.jade', { message: req.flash('loginMessage') });
+    res.render('index.jade', { message: req.flash('loginMessage') });
   });
 
   // process the login form
@@ -45,15 +71,60 @@ module.exports = function(passport) {
   // SIGNUP =================================
   // show the signup form
   router.get('/signup', function(req, res) {
-    res.render('signup.jade', { message: req.flash('signupMessage')});
+    res.render('index.jade', { message: req.flash('signupMessage')});
   });
 
   // process the signup form
+<<<<<<< HEAD
   router.post('/signup/:userType', passport.authenticate('signup/:userType', {
     successRedirect : '/profile', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
+=======
+  router.post('/signup/student', passport.authenticate('signup/student', {
+    successRedirect : '/create/student', // redirect to the secure profile section
+    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+>>>>>>> a0c1b8022978b6cb06fce387bdc5a43911706b05
     failureFlash : true // allow flash messages
   }));
+
+  // Separated two post requests because we cannot get req.params from successRedirect
+  router.post('/signup/employer', passport.authenticate('signup/employer', {
+    successRedirect : '/create/employer', // redirect to the secure profile section
+    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+  }));
+
+  // =============================================================================
+  // RENDER OTHER PAGES ==========================================================
+  // =============================================================================
+
+  router.get('/create/student', isLoggedIn, function(req, res, next) {
+    Skill.find({}, function (err, skills) {
+      if (err) {
+        console.log(err);
+        return next(err);
+      } else {
+        Class.find({}, function (err, classes) {
+          if (err) {
+            console.log(err);
+            return next(err);
+          } else {
+            var viewData = {
+              studentId: req.user._id, 
+              skills: skills, 
+              classes: classes
+            };
+
+            res.render('studentProfileCreation.jade', viewData);
+          }
+        })
+      }
+    });
+  });
+
+  router.get('/create/employer', isLoggedIn, function(req, res) {
+    res.redirect('/profile');
+  });
 
   return router;
 }
