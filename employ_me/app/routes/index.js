@@ -4,15 +4,29 @@ var router   = express.Router();
 // database models
 var Class = require('../models/ClassModel');
 var Skill = require('../models/SkillModel');
+var Student = require('../models/StudentModel');
+var Employer = require('../models/EmployerModel');
 
 module.exports = function(passport) {
   // normal routes ===============================================================
 
   // show the home page (will also have our login links) router.get('/', function(req, res) {
   router.get('/', function(req, res) {
+
+    //TODO this is hacky we should come up with a cleaner version of this
+    if (!req.user){
     res.render('index.jade', {signupMessage: req.flash('signupMessage'),
                               loginMessage: req.flash('loginMessage')
                              });
+    }else {
+      Student.find({email : req.user.email}, function(err, user){
+        if (user){
+          res.redirect('/profile')
+        }else{
+          res.redirect('/search')
+        }
+      });
+    }
   });
 
   // PROFILE SECTION =========================
