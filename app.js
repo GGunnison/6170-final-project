@@ -9,6 +9,7 @@ var bodyParser   = require('body-parser');
 var configDB = require('./config/database.js');
 
 // configuration ===============================================================
+console.log(configDB.url);
 mongoose.connect(configDB.url); // connect to our database
 
 // view engine setup
