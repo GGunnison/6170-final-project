@@ -86,20 +86,25 @@ module.exports = function(passport) {
   // RENDER OTHER PAGES ==========================================================
   // =============================================================================
 
+  // PROFILE CREATION PAGE =======================================================
   router.get('/create/student', isLoggedIn, function(req, res, next) {
+
+    // Get all skills to display on page
     Skill.find({}, function (err, skills) {
       if (err) {
         console.log(err);
         return next(err);
       } else {
+
+        // Get all classes to display on page
         Class.find({}, function (err, classes) {
           if (err) {
             console.log(err);
             return next(err);
           } else {
             var viewData = {
-              studentId: req.user._id, 
-              skills: skills, 
+              studentId: req.user._id,
+              skills: skills,
               classes: classes
             };
 
@@ -110,12 +115,10 @@ module.exports = function(passport) {
     });
   });
 
+  // EMPLOYER DIRECTED TO SEARCH =================================================
   router.get('/create/employer', isLoggedIn, function(req, res) {
     res.redirect('/search');
   });
-
-  return router;
-}
 
   // SEARCH PAGE ========================
   router.get('/search', function(req, res) {
@@ -129,10 +132,12 @@ module.exports = function(passport) {
     });
   });
 
+  return router;
+}
+
+
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-	if (req.isAuthenticated())
-		return next();
-
-	res.redirect('/');
+	//TODO after MVP: Authentication check goes here
+  return next();
 }
