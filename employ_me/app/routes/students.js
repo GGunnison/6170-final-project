@@ -1,3 +1,5 @@
+// Authors: Sabrian Drammis, Samuel Edson
+
 var router = require('express').Router();
 var utils  = require('../utils/utils.js');
 
