@@ -38,19 +38,11 @@ module.exports = function(passport) {
     });
   });
 
-  router.get('/profile/create', isLoggedIn, function(req, res) {
-    //Class.find({}, function() {
-    //  Skills.find....
-    //    res.render('asdf.jade', {skills: skills, classes: classes});
-    //});
-  });
-
   // LOGOUT ==============================
   router.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
   });
-
 
   // =============================================================================
   // AUTHENTICATE (FIRST LOGIN) ==================================================
