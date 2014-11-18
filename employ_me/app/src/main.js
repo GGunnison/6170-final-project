@@ -1,3 +1,1 @@
-var test = function() {
-  console.log('foobar');
-}
+SearchResultsController = require('./searchResultsController');

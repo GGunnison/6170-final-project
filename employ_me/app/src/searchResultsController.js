@@ -7,7 +7,7 @@ module.exports = function () {
   var local = {};
 
   var setLocal = function() {
-    local.featuredUserHTML = require('../../views/templates/userInfo.jade');
+    local.featuredStudentTemplate = require('../../views/templates/userInfo.jade');
   }
 
   // Helper functions
@@ -16,6 +16,15 @@ module.exports = function () {
 
     exports.clearNavSelect = function () {
       $('.listed-student').removeClass('active');
+    }
+
+    exports.renderFeaturedStudent = function (studentId) {
+      $.get('/students/' + studentId)
+       .done(function (data) {
+         var student = data.content;
+         var featuredStudentHTML = local.featuredStudentTemplate({student: student});
+         $('#featuredStudent').html(featuredStudentHTML);
+       });
     }
 
     return exports
@@ -42,8 +51,8 @@ module.exports = function () {
   var eventListeners = function() {
     $(".listed-student").click(function() {
       helpers.clearNavSelect();
-      console.log(this);
       $(this).addClass('active');
+      helpers.renderFeaturedStudent($(this).children('#id').text());
     });
   }
 
