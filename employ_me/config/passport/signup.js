@@ -32,7 +32,6 @@ module.exports = function(passport) {
 
                     // check to see if theres already a user with that email
                     if (user) {
-                        console.log("error message");
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));                    } else {
                         if (!validator.isEmail(email)) {
                           return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
@@ -83,7 +82,6 @@ module.exports = function(passport) {
 
                     // check to see if theres already a user with that email
                     if (user) {
-                        console.log("error message");
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
                     } else {
                         if (!validator.isEmail(email)) {
