@@ -2,6 +2,7 @@ Employ.Me
 =========
 
 ##MVP Functionality
+Our document can be found [here](./MVPImplementation.pdf).
 
 - simple search to find Students using tags  
   - only required tags apply  
