@@ -9,7 +9,6 @@ var bodyParser   = require('body-parser');
 var configDB = require('./config/database.js');
 
 // configuration ===============================================================
-console.log(configDB.url);
 mongoose.connect(configDB.url); // connect to our database
 
 // view engine setup
@@ -52,4 +51,9 @@ app.use('/skills', skills);
 app.use('/classes', classes);
 
 // launch ======================================================================
+app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 3000);
+
+var server = app.listen(app.get('port'), process.env.OPENSHIFT_NODEJS_IP);
+
+
 module.exports = app;
