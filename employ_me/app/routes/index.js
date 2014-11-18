@@ -86,12 +86,17 @@ module.exports = function(passport) {
   // RENDER OTHER PAGES ==========================================================
   // =============================================================================
 
+  // PROFILE CREATION PAGE =======================================================
   router.get('/create/student', isLoggedIn, function(req, res, next) {
+
+    // Get all skills to display on page
     Skill.find({}, function (err, skills) {
       if (err) {
         console.log(err);
         return next(err);
       } else {
+
+        // Get all classes to display on page
         Class.find({}, function (err, classes) {
           if (err) {
             console.log(err);
@@ -110,6 +115,7 @@ module.exports = function(passport) {
     });
   });
 
+  // EMPLOYER DIRECTED TO SEARCH =================================================
   router.get('/create/employer', isLoggedIn, function(req, res) {
     res.redirect('/search');
   });
@@ -132,8 +138,6 @@ module.exports = function(passport) {
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-	if (req.isAuthenticated())
-		return next();
-
-	res.redirect('/');
+	//TODO after MVP: Authentication check goes here
+  return next();
 }

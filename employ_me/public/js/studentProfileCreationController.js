@@ -35,6 +35,24 @@ var StudentProfileCreationController = function() {
   var eventListeners = function() {
 
     $("#allSkillsForm").on("submit", function(e) {
+      var skillsDone = false;
+      var classesDone = false;
+
+      // Deferred that is resolved when both skills and classes are submitted
+      var submitDeferred = new $.Deferred();
+
+      // Redirects to profile page if skills and classes submitted successfully
+      var getProfile = function() {
+        if (skillsDone && classesDone) {
+          window.location = "/profile";
+        } else {
+          submitDeferred = new $.Deferred();
+          submitDeferred.done(getProfile);
+        }
+      }
+      submitDeferred.done(getProfile);
+
+      // Prevent page reload
       e.preventDefault();
 
       var studentId = $(this)[0].elements["studentId"][0].value;
@@ -46,17 +64,15 @@ var StudentProfileCreationController = function() {
           skills.push(skill_id);
         }
       }
-      var data = {
-        skills: skills
-      }
-
-      console.log("data: ", data);
 
       $.ajax({
         datatype: "json", 
         type: "POST", 
         url: "/students/" + studentId + "/skills", 
-        data: data
+        data: {skill: skills}
+      }).done(function(res) {
+        skillsDone = true;
+        submitDeferred.resolve();
       });
 
       var classesInputArray = $(this)[0].elements["classes[]"];
@@ -67,17 +83,15 @@ var StudentProfileCreationController = function() {
           classes.push(class_id);
         }
       }
-      var data = {
-        classes: classes
-      }
-
-      console.log("data: ", data);
 
       $.ajax({
         datatype: "json", 
         type: "POST", 
         url: "/students/" + studentId + "/classes", 
-        data: data
+        data: {classes: classes}
+      }).done(function(res) {
+        classesDone = true;
+        submitDeferred.resolve();
       });
     })
 
