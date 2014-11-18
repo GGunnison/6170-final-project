@@ -51,11 +51,4 @@ app.use('/skills', skills);
 app.use('/classes', classes);
 
 // launch ======================================================================
-app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 3000);
-
-var server = app.listen(app.get('port'), process.env.OPENSHIFT_NODEJS_IP, function() {
-  debug('Express server listening on port ' + server.address().port);
-});
-
-
 module.exports = app;
