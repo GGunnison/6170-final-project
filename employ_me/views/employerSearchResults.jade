@@ -1,6 +1,9 @@
 extends layout
 include ./mixins/userCard
 
+block nav_right
+ a.navbar-brand(href="/logout") Logout
+
 block content
   script.
     $(document).ready(function() {
