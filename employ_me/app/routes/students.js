@@ -27,17 +27,29 @@ router.get('/', function (req, res) {
  *        if the studentId is not valid
  */
 router.get('/:studentId', function (req, res) {
-  Student.findById(req.params.studentId, function (err, student) {
-    if (err) {
-      console.log(err);
-      utils.sendErrResponse(res, 500, null);
-    } else if (student) {
-      console.log(req);
-      utils.sendSuccessResponse(res, student);
-    } else {
-      utils.sendErrResponse(res, 404, 'student was not found');
-    }
-  });
+  Student.findById(req.params.studentId)
+         .populate('skills')
+         .populate('classes')
+         .exec( function (err, student) {
+            if (err) {
+              console.log(err);
+              utils.sendErrResponse(res, 500, null);
+            } else if (student) {
+              var opts = { path: 'classes.skills',
+                           select: 'name',
+                           model: Skill
+                         }
+              Class.populate(student, opts, function (err, doc) {
+                if (err) {
+                  utils.sendErrResponse(res, 500, null);
+                } else {
+                  utils.sendSuccessResponse(res, student);
+                }
+              });
+            } else {
+              utils.sendErrResponse(res, 404, 'student was not found');
+            }
+         });
 });
 
 /* Get a student's classes
@@ -58,8 +70,11 @@ router.get('/:studentId/classes', function (req, res) {
               console.log(err);
               utils.sendErrResponse(res, 500, null);
             } else if (student) {
-              // deep population
-              Class.populate(student, 'skills', function (err, student) {
+              var opts = { path: 'classes.skills',
+                           select: 'name',
+                           model: Skill
+                         }
+              Class.populate(student, opts, function (err, doc) {
                 if (err) {
                   console.log(err);
                   utils.sendErrResponse(res, 500, null);
