@@ -29,19 +29,6 @@ module.exports = function(passport) {
     //});
   });
 
-
-  // SEARCH PAGE ========================
-  router.get('/search', function(req, res) {
-    Skill.find({}, function (err, skills) {
-      if (err) {
-        console.log(err);
-        utils.sendErrResponse(res, 500, null);
-      } else {
-        res.render('employerSearchCreation.jade', {skills: skills});
-      }
-    });
-  });
-
   // LOGOUT ==============================
   router.get('/logout', function(req, res) {
     req.logout();
@@ -61,9 +48,16 @@ module.exports = function(passport) {
     res.render('index.jade', { message: req.flash('loginMessage') });
   });
 
-  // process the login form
-  router.post('/login', passport.authenticate('login', {
+  // process the login form for student
+  router.post('/login/student', passport.authenticate('login/student', {
     successRedirect : '/profile', // redirect to the secure profile section
+    failureRedirect : '/', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+  }));
+
+  // process the login form for employer
+  router.post('/login/employer', passport.authenticate('login/employer', {
+    successRedirect : '/search', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
@@ -75,15 +69,9 @@ module.exports = function(passport) {
   });
 
   // process the signup form
-<<<<<<< HEAD
-  router.post('/signup/:userType', passport.authenticate('signup/:userType', {
-    successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/', // redirect back to the signup page if there is an error
-=======
   router.post('/signup/student', passport.authenticate('signup/student', {
     successRedirect : '/create/student', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
->>>>>>> a0c1b8022978b6cb06fce387bdc5a43911706b05
     failureFlash : true // allow flash messages
   }));
 
@@ -123,11 +111,23 @@ module.exports = function(passport) {
   });
 
   router.get('/create/employer', isLoggedIn, function(req, res) {
-    res.redirect('/profile');
+    res.redirect('/search');
   });
 
   return router;
 }
+
+  // SEARCH PAGE ========================
+  router.get('/search', function(req, res) {
+    Skill.find({}, function (err, skills) {
+      if (err) {
+        console.log(err);
+        utils.sendErrResponse(res, 500, null);
+      } else {
+        res.render('employerSearchCreation.jade', {skills: skills});
+      }
+    });
+  });
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
