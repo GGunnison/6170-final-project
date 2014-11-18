@@ -1,5 +1,6 @@
 var assert = require('assert');
 
+/* This utils is taken from the 6.170 examples */
 var utils = {};
 
 /* Send a success response back to the client
