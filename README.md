@@ -2,6 +2,7 @@ Employ.Me
 =========
 
 ##MVP Functionality
+Our document can be found [here](./MVPImplementation.pdf).
 
 - simple search to find Students using tags  
   - only required tags apply  
@@ -20,8 +21,6 @@ Employ.Me
 - UI redesign
 - Student profile creation questonaire  
 - Might need fixing: Duplicate tags when skill and class tag
+ 
 
-The OpenShift `nodejs` cartridge documentation can be found at:
-
-http://openshift.github.io/documentation/oo_cartridge_guide.html#nodejs
-
+###Note: Do not register as an Employer and a Student with the same email! Our app does not support this, but we have not handled this edge case yet.

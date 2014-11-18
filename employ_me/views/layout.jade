@@ -24,4 +24,12 @@ html
 
     block head
   body
+    // navigation bar at top of all pages
+    nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+      // left title
+      .navbar-header
+        a.navbar-brand(href="/") Employ.Me
+      div.pull-right
+        // contains username info if logged in
+        block nav_right
     block content

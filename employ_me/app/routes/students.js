@@ -194,7 +194,7 @@ router.post('/search', function(req, res) {
     requiredSkills = [];
   }
 
-  // Looking for a way to improve this. Currently, it queries for the
+  // TODO: Looking for a way to improve this. Currently, it queries for the
   // whole database, and filters afterward. We do this because we want
   // to get every student with at least one Skill in the required skills,
   // or one Class Skill in the required skills. I was unable to figure out

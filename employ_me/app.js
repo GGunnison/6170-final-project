@@ -23,8 +23,8 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Using the flash middleware provided by connect-flash to store messages in session
-// and displaying in templates
+// Using the flash middleware provided by connect-flash to store messages
+// in session and displaying in templates
 var flash = require('connect-flash');
 app.use(flash()); // use connect-flash for flash messages stored in session
 
