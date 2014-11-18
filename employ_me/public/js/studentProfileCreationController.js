@@ -4,38 +4,16 @@ var StudentProfileCreationController = function() {
   var public = {};
 
   // Private variables,
-  var local = {
-    questionsIndex: 0, 
-    questions: [
-      {
-        name: "Question 1 name", 
-        question: "Question 1 text goes here"
-      }, 
-      {
-        name: "Question 2 name", 
-        question: "Question 2 text goes here"
-      }, 
-      {
-        name: "Question 3 name", 
-        question: "Question 3 text goes here"
-      }, 
-    ]
-  };
+  var local = {};
 
-  var setLocal = function() {
-
-  }
-
-  var setView = function() {
-    $("#questionTitle").text(local.questions[local.questionsIndex].name);
-    $("#question").text(local.questions[local.questionsIndex].question);
-  }
+  // Occurs after document.ready
+  var setLocal = function() {}
 
   // Helper functions
   var helpers = (function() {
     var exports = {};
 
-    return exports
+    return exports;
   })();
 
   // Starts all processes
@@ -45,23 +23,16 @@ var StudentProfileCreationController = function() {
     sizingJS();
     $(window).resize(responsiveJS);
 
-    // setView();
     eventListeners();
   }
 
-  var sizingJS = function() {
-
-  }
+  var sizingJS = function() {}
 
   var responsiveJS = function() {
     sizingJS();
   }
 
   var eventListeners = function() {
-    $("#submitSkillsBtn").on("click", function() {
-      $("#skillsForm")[0].submit();
-      $("#classesForm")[0].submit();
-    });
 
     $("#allSkillsForm").on("submit", function(e) {
       e.preventDefault();

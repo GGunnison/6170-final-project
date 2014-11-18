@@ -105,7 +105,7 @@ router.post('/:studentId/classes', function (req, res) {
          {classes: req.body.classes},
          function (err, student) {
            if (err) {
-             console.log(err);
+             console.log("error at /:studentId/classes", err);
              utils.sendErrResponse(res, 500, null);
            } else if (student) {
              utils.sendSuccessResponse(res, null);
@@ -129,7 +129,7 @@ router.get('/:studentId/skills', function (req, res) {
          .populate('skills')
          .exec( function (err, student) {
             if (err) {
-              console.log(err);
+              console.log("error at /:studentId/skills", err);
               utils.sendErrResponse(res, 500, null);
             } else if (student) {
               console.log(student);
