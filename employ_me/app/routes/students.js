@@ -169,22 +169,27 @@ router.post('/:studentId/skills', function (req, res) {
          });
 });
 
-/* POST /students/search
+/* Redirect to a page with every student that has at least
+ * one of the required skills in his/her skills or any classes'
+ * skills.
+ *
+ * POST /students/search
  * Body:
- *   - tags: a list of tags
- *
+ *   - requiredSkills: a list of Tag _ids
+ *   - desiredSkills: a list of Tag _ids
+
  * Response:
- *
- * Test:
- *   curl --data "desiredSkills[]=java&desiredSkills[]=testing&requiredSkills[]=c" localhost:3000/students/search
+ *   - success: 200:
+ *       if the search worked and renders a results page
  *
  */
 router.post('/search', function(req, res) {
   var requiredSkills = req.body.requiredSkills;
   var desiredSkills = req.body.desiredSkills;
 
+  // When you check nothing, requiredSkills is undefined
   if (requiredSkills == undefined) {
-    utils.sendErrResponse(res, 500, null);
+    requiredSkills = [];
   }
 
   // Looking for a way to improve this. Currently, it queries for the
@@ -194,7 +199,7 @@ router.post('/search', function(req, res) {
   // a way to write a mongo query to accomplish this.
   //
   //.find({ $or: [ { skills: { $in: requiredSkills }},
-  //               { at least one class has a skill that is in requiredSkills }
+  //               { at least one class has a skill in requiredSkills }
   //     ]})
   Student.find({}).exec(function(err, students) {
     if (err) {
@@ -202,8 +207,11 @@ router.post('/search', function(req, res) {
       utils.sendErrResponse(res, 500, null);
 
     } else {
+      // Remove all students that do not have at least one requiredSkill
+      // in his/her skills or any classes' skills
       students = students.filter(function(student) {
         for (tag in requiredSkills) {
+
           // Skills
           var skills = student.skills;
           for (var i = 0; i < skills.length; i++) {
