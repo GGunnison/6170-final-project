@@ -20,3 +20,8 @@ Employ.Me
 - UI redesign
 - Student profile creation questonaire  
 - Might need fixing: Duplicate tags when skill and class tag
+
+The OpenShift `nodejs` cartridge documentation can be found at:
+
+http://openshift.github.io/documentation/oo_cartridge_guide.html#nodejs
+
