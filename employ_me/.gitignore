@@ -21,3 +21,5 @@ config/secretAuth.js
 
 app/data/db
 .DS_Store
+
+public/js/main.js
