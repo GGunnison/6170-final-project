@@ -101,8 +101,9 @@ router.get('/:studentId/classes', function (req, res) {
  *        if the studentId is not valid
  */
 router.post('/:studentId/classes', function (req, res) {
+  var classes = req.body.classes || [];
   Student.findByIdAndUpdate(req.params.studentId,
-         {classes: req.body.classes},
+         {classes: classes},
          function (err, student) {
            if (err) {
              console.log("error at /:studentId/classes", err);
@@ -153,6 +154,7 @@ router.get('/:studentId/skills', function (req, res) {
  *        if the studentId is not valid
  */
 router.post('/:studentId/skills', function (req, res) {
+  var skills = req.body.skills || [];
   Student.findByIdAndUpdate(req.params.studentId,
          {skills: req.body.skills},
          function (err, student) {

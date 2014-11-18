@@ -98,8 +98,8 @@ module.exports = function(passport) {
             return next(err);
           } else {
             var viewData = {
-              studentId: req.user._id, 
-              skills: skills, 
+              studentId: req.user._id,
+              skills: skills,
               classes: classes
             };
 
@@ -114,9 +114,6 @@ module.exports = function(passport) {
     res.redirect('/search');
   });
 
-  return router;
-}
-
   // SEARCH PAGE ========================
   router.get('/search', function(req, res) {
     Skill.find({}, function (err, skills) {
@@ -128,6 +125,10 @@ module.exports = function(passport) {
       }
     });
   });
+
+  return router;
+}
+
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
