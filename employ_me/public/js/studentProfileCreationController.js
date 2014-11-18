@@ -1,3 +1,7 @@
+/*
+ * Author: Daniel Sanchez
+ */
+ 
 var StudentProfileCreationController = function() {
 
   // Public variables, available outside controller

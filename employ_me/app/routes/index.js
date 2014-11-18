@@ -19,8 +19,10 @@ module.exports = function(passport) {
                               loginMessage: req.flash('loginMessage')
                              });
     }else {
-      Student.find({email : req.user.email}, function(err, user){
+      Student.findOne({email : req.user.email}, function(err, user){
         if (user){
+          console.log(user);
+          console.log(req.user.email);
           res.redirect('/profile')
         }else{
           res.redirect('/search')
@@ -101,6 +103,9 @@ module.exports = function(passport) {
   // =============================================================================
 
   // PROFILE CREATION PAGE =======================================================
+  /**
+   * author: Daniel Sanchez
+   */
   router.get('/create/student', isLoggedIn, function(req, res, next) {
 
     // Get all skills to display on page
@@ -130,6 +135,9 @@ module.exports = function(passport) {
   });
 
   // EMPLOYER DIRECTED TO SEARCH =================================================
+  /**
+   * author: Daniel Sanchez
+   */
   router.get('/create/employer', isLoggedIn, function(req, res) {
     res.redirect('/search');
   });
