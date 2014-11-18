@@ -5,3 +5,7 @@ h4 Skills
   each skill in student.skills
     h4(style="display: inline-block; padding: 3px")
       span.label.label-default= skill.name
+  each klass in student.classes
+    each skill in klass.skills
+      h4(style="display: inline-block; padding: 3px")
+        span.label.label-default= skill.name
