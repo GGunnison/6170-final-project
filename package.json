@@ -1,35 +1,38 @@
 {
-  "name": "OpenShift-Sample-App",
-  "version": "1.0.0",
-  "description": "OpenShift Sample Application",
-  "keywords": [
-    "OpenShift",
-    "Node.js",
-    "application",
-    "openshift"
-  ],
-  "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url": "http://www.openshift.com/"
-  },
-  "homepage": "http://www.openshift.com/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/openshift/origin-server"
-  },
-
-  "engines": {
-    "node": ">= 0.6.0",
-    "npm": ">= 1.0.0"
-  },
-
-  "dependencies": {
-    "express": "~3.4.4"
-  },
-  "devDependencies": {},
-  "bundleDependencies": [],
-
+  "name": "Employ.me",
+  "main": "app.js",
   "private": true,
-  "main": "server.js"
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "latest",
+    "body-parser": "~1.0.0",
+    "connect-flash": "~0.1.1",
+    "cookie-parser": "~1.0.0",
+    "debug": "~2.0.0",
+    "express": "~4.0.0",
+    "express-session": "~1.0.0",
+    "jade": "~1.6.0",
+    "less": "^2.0.0",
+    "less-middleware": "^1.0.4",
+    "method-override": "~1.0.0",
+    "mongoose": "~3.8.1",
+    "mongoose-schema-extend": "^0.1.7",
+    "morgan": "~1.0.0",
+    "passport": "~0.1.17",
+    "passport-local": "~0.1.6",
+    "validator": "^3.22.1"
+  },
+  "devDependencies": {
+    "browserify": "^6.2.0",
+    "gulp": "^3.8.10",
+    "gulp-concat": "^2.4.1",
+    "gulp-jade": "^0.9.0",
+    "gulp-livereload": "^2.1.1",
+    "gulp-nodemon": "^1.0.4",
+    "gulp-watch": "^1.1.0",
+    "jadeify": "^3.0.0",
+    "vinyl-source-stream": "^1.0.0"
+  }
 }
