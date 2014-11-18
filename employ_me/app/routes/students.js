@@ -43,7 +43,6 @@ router.get('/:studentId', function (req, res) {
                 if (err) {
                   utils.sendErrResponse(res, 500, null);
                 } else {
-                  console.log(doc);
                   utils.sendSuccessResponse(res, student);
                 }
               });
@@ -103,7 +102,7 @@ router.get('/:studentId/classes', function (req, res) {
  */
 router.post('/:studentId/classes', function (req, res) {
   Student.findByIdAndUpdate(req.params.studentId,
-         {classes: JSON.parse(req.body.classes)},
+         {classes: req.body.classes},
          function (err, student) {
            if (err) {
              console.log(err);
@@ -155,7 +154,7 @@ router.get('/:studentId/skills', function (req, res) {
  */
 router.post('/:studentId/skills', function (req, res) {
   Student.findByIdAndUpdate(req.params.studentId,
-         {skills: JSON.parse(req.body.skills)},
+         {skills: req.body.skills},
          function (err, student) {
            if (err) {
              console.log(err);

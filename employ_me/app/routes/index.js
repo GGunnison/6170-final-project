@@ -75,11 +75,50 @@ module.exports = function(passport) {
   });
 
   // process the signup form
-  router.post('/signup/:userType', passport.authenticate('signup/:userType', {
-    successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/', // redirect back to the signup page if there is an error
+  router.post('/signup/student', passport.authenticate('signup/student', {
+    successRedirect : '/create/student', // redirect to the secure profile section
+    failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
+
+  // Separated two post requests because we cannot get req.params from successRedirect
+  router.post('/signup/employer', passport.authenticate('signup/employer', {
+    successRedirect : '/create/employer', // redirect to the secure profile section
+    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+  }));
+
+  // =============================================================================
+  // RENDER OTHER PAGES ==========================================================
+  // =============================================================================
+
+  router.get('/create/student', isLoggedIn, function(req, res, next) {
+    Skill.find({}, function (err, skills) {
+      if (err) {
+        console.log(err);
+        return next(err);
+      } else {
+        Class.find({}, function (err, classes) {
+          if (err) {
+            console.log(err);
+            return next(err);
+          } else {
+            var viewData = {
+              studentId: req.user._id, 
+              skills: skills, 
+              classes: classes
+            };
+
+            res.render('studentProfileCreation.jade', viewData);
+          }
+        })
+      }
+    });
+  });
+
+  router.get('/create/employer', isLoggedIn, function(req, res) {
+    res.redirect('/profile');
+  });
 
   return router;
 }

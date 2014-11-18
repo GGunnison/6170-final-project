@@ -8,22 +8,20 @@ module.exports = function(passport) {
     // =========================================================================
     // LOCAL SIGNUP ============================================================
     // =========================================================================
-    passport.use('signup/:userType', new LocalStrategy({
+    passport.use('signup/student', new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
         usernameField : 'email',
         passwordField : 'password',
         passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, email, password, done) {
-        var userType = req.params.userType;
-        console.log(userType);
         if (email)
             email = validator.trim(email.toLowerCase()); // Use lower-case e-mails to avoid case-sensitive e-mail matching
         // asynchronous
         process.nextTick(function() {
             console.log("student");
             // if the user is not already logged in:
-            if (!req.user && userType === 'student') {
+            if (!req.user) {
 
                 Student.findOne({ 'email' :  email }, function(err, user) {
                     // if there are any errors, return the error
@@ -34,8 +32,7 @@ module.exports = function(passport) {
 
                     // check to see if theres already a user with that email
                     if (user) {
-                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-                    } else {
+                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));                    } else {
                         if (!validator.isEmail(email)) {
                           return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
                         } else {
@@ -57,7 +54,26 @@ module.exports = function(passport) {
 
 
                 });
-            } else if (!req.user && userType === 'employer') {
+            } else {
+                // user is logged in and already has a local account. Ignore signup. (You should log out before trying to create a new account, user!)
+                return done(null, req.user);
+            }
+        });
+    }));
+
+    passport.use('signup/employer', new LocalStrategy({
+        usernameField : 'email',
+        passwordField : 'password',
+        passReqToCallback : true
+    }, 
+    function(req, email, password, done) {
+        if (email)
+            email = validator.trim(email.toLowerCase());
+        
+        process.nextTick(function() {
+            console.log("employer");
+
+            if (!req.user) {
                 console.log("employer");
                 Employer.findOne({ 'email' :  email }, function(err, user) {
                     // if there are any errors, return the error
@@ -88,12 +104,10 @@ module.exports = function(passport) {
                 }
 
                 });
-
-            }else {
-                // user is logged in and already has a local account. Ignore signup. (You should log out before trying to create a new account, user!)
+            } else {
                 return done(null, req.user);
             }
-        });
-    }));
+        })
+    }))
 }
 
