@@ -69,7 +69,7 @@ var StudentProfileCreationController = function() {
         datatype: "json", 
         type: "POST", 
         url: "/students/" + studentId + "/skills", 
-        data: {skill: skills}
+        data: {skills: skills}
       }).done(function(res) {
         skillsDone = true;
         submitDeferred.resolve();
