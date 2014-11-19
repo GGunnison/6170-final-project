@@ -4,7 +4,7 @@ var utils  = require('../utils/utils.js');
 // database models
 var Skill = require('../models/SkillModel');
 
-// author: sabrina
+// author: Sabrina Drammis
 
 /* Get all of the skills
  *

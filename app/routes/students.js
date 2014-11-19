@@ -2,6 +2,7 @@
 
 var router = require('express').Router();
 var utils  = require('../utils/utils.js');
+var assert = require('assert');
 
 // database models
 var Student = require('../models/StudentModel');
@@ -21,15 +22,20 @@ router.get('/', function (req, res) {
  *
  * GET /students/:studentId
  *
+ * Params:
+ *    - studentId:
+ *        _id of the desired student
+ *
  * Response:
  *    - success: 200:
  *        responds with the requested student
  *    - error 404:
  *        if the studentId is not valid
  *
- * author: sabrina
+ * author: Sabrina Drammis
  */
 router.get('/:studentId', function (req, res) {
+
   Student.findById(req.params.studentId)
          .populate('skills')
          .populate('classes')
@@ -58,6 +64,11 @@ router.get('/:studentId', function (req, res) {
 /* Get a student's classes
  *
  * GET /students/:studentId/classes
+ *
+ * Params:
+ *    - studentId:
+ *        _id of student whose classes to get
+ *
  * Response:
  *    - success: 200:
  *        responds with the requested student's classes
@@ -65,7 +76,7 @@ router.get('/:studentId', function (req, res) {
  *    - error 404:
  *        if the studentId is not valid
  *
- * author: sabrina
+ * author: Sabrina Drammis
  */
 router.get('/:studentId/classes', function (req, res) {
   Student.findById(req.params.studentId)
@@ -96,6 +107,11 @@ router.get('/:studentId/classes', function (req, res) {
 /* Set the classes for a student
  *
  * POST /students/:studentId/classes
+ *
+ * Params:
+ *    - studentId:
+ *        _id of student to set classes for
+ *
  * Body:
  *    - classes: list of class mongo _ids
  *               set as the student's classes
@@ -105,7 +121,7 @@ router.get('/:studentId/classes', function (req, res) {
  *    - error 404:
  *        if the studentId is not valid
  *
- * author: sabrina
+ * author: Sabrina Drammis
  */
 router.post('/:studentId/classes', function (req, res) {
   var classes = req.body.classes || [];
@@ -126,13 +142,18 @@ router.post('/:studentId/classes', function (req, res) {
 /* Get a student's skills
  *
  * GET /students/:studentId/skills
+ *
+ * Params:
+ *    - studentId:
+ *        _id of student whose skills to get
+ *
  * Response:
  *    - success: 200:
  *        responds with the requested student's skills
  *    - error 404:
  *        if the studentId is not valid
  *
- * author: sabrina
+ * author: Sabrina Drammis
  */
 router.get('/:studentId/skills', function (req, res) {
   Student.findById(req.params.studentId)
@@ -153,6 +174,11 @@ router.get('/:studentId/skills', function (req, res) {
 /* Set the student input skills for a student
  *
  * POST /students/:studentId/skills
+ *
+ * Params:
+ *    - studentId:
+ *        _id of student to set skills for
+ *
  * Body:
  *    - skills: list of skill mongo _ids
  *              to be set as the student's skills
@@ -162,7 +188,7 @@ router.get('/:studentId/skills', function (req, res) {
  *    - error 404:
  *        if the studentId is not valid
  *
- * author: sabrina
+ * author: Sabrina Drammis
  */
 router.post('/:studentId/skills', function (req, res) {
   var skills = req.body.skills || [];
@@ -185,6 +211,7 @@ router.post('/:studentId/skills', function (req, res) {
  * skills.
  *
  * POST /students/search
+ *
  * Body:
  *   - requiredSkills: a list of Tag _ids
  *   - desiredSkills: a list of Tag _ids
@@ -193,7 +220,7 @@ router.post('/:studentId/skills', function (req, res) {
  *   - success: 200:
  *       if the search worked and renders a results page
  *
- * author: sam
+ * author: Sam Edson
  */
 router.post('/search', function(req, res) {
   var requiredSkills = req.body.requiredSkills;

@@ -6,7 +6,7 @@ var bCrypt    = require('bcrypt-nodejs');
 var validator = require('validator');
 
 // TODO simplify this down to one route for users and employers
-// author: grant
+// author: Grant Gunnison
 module.exports = function(passport){
     // =========================================================================
     // LOCAL LOGIN =============================================================

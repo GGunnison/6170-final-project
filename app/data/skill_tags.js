@@ -4,7 +4,7 @@ var Skill     = require('../models/SkillModel.js')
 
 mongoose.connect(configDB.url);
 
-// authors: sabrina, grant
+// authors: Sabrina Drammis, Grant Gunnison
 tags = [
 
     //Languages

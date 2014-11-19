@@ -13,7 +13,7 @@ module.exports = function(passport) {
   // normal routes ===============================================================
 
   // show the home page (will also have our login links)
-  // author: grant
+  // author: Grant Gunnison
   router.get('/', function(req, res) {
 
     //TODO this is hacky we should come up with a cleaner version of this

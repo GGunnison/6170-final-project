@@ -17,7 +17,7 @@ module.exports = function (passport) {
     });
 
     // used to deserialize the user
-    // author: grant
+    // author: Grant Gunnison
     passport.deserializeUser(function(id, done) {
       Student.findById(id,function(err,user){
           if(user){

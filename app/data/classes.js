@@ -4,7 +4,7 @@ var Class    = require('../models/ClassModel.js')
 
 mongoose.connect(configDB.url);
 
-// authors: sabrina, grant
+// authors: Sabrina Drammis, Grant Gunnison
 classes =  [
 
   { name   : 'Introduction to EECS 1',

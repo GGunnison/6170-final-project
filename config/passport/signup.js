@@ -5,7 +5,7 @@ var bCrypt = require('bcrypt-nodejs');
 var validator = require('validator');
 
 // TODO simplify to only one signup route here that works for both users and employers
-// author: grant, sabrina
+// author: Grant Gunnison, Sabrina Drammis
 module.exports = function(passport) {
     // =========================================================================
     // LOCAL SIGNUP ============================================================

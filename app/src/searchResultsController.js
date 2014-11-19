@@ -1,4 +1,4 @@
-// author: sabrina
+// author: Sabrina Drammis
 module.exports = function () {
 
   // Public variables, available outside controller
