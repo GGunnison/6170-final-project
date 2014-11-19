@@ -220,16 +220,12 @@ router.post('/:studentId/skills', function (req, res) {
  *   - success: 200:
  *       if the search worked and renders a results page
  *
- * author: Sam Edson
+ * author: Sam Edson, Sabrina Drammis
+ * TODO clean this code up
  */
 router.post('/search', function(req, res) {
-  var requiredSkills = req.body.requiredSkills;
-  var desiredSkills = req.body.desiredSkills;
-
-  // When you check nothing, requiredSkills is undefined
-  if (requiredSkills == undefined) {
-    requiredSkills = [];
-  }
+  var requiredSkills = req.body.requiredSkills || [];
+  var desiredSkills  = req.body.desiredSkills || [];
 
   // TODO: Looking for a way to improve this. Currently, it queries for the
   // whole database, and filters afterward. We do this because we want
@@ -244,30 +240,28 @@ router.post('/search', function(req, res) {
     if (err) {
       console.log(err);
       utils.sendErrResponse(res, 500, null);
-
     } else {
       // Remove all students that do not have at least one requiredSkill
       // in his/her skills or any classes' skills
-      students = students.filter(function(student) {
-        for (tag in requiredSkills) {
+      students = students.filter( function(student) {
+
+        for (var idx = 0; idx < requiredSkills.length; idx++) {
+          var tag = requiredSkills[idx];
 
           // Skills
           var skills = student.skills;
           for (var i = 0; i < skills.length; i++) {
-            if (tag == skills[i]) {
-              return true;
-            }
+            if (tag === skills[i]) return true;
           }
 
           // Classes
-          var classes = student.classes;
-          for (var i = 0; i < classes.length; i++) {
-            stuClass = classes[i];
-            for (var j = 0; j < stuClass.length; j++) {
-              if (tag == stuClass[j]) {
-                return true;
+          for (var i = 0; i < student.classes.length; i++) {
+            var c = student.classes[i];
+            Class.findById(c, function (err, klass) {
+              for (var j = 0; j < klass.skills.length; j++) {
+                if (klass.skills[j] === tag) return true;
               }
-            }
+            });
           }
         }
         return false;
