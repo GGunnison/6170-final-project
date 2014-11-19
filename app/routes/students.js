@@ -9,12 +9,11 @@ var Class   = require('../models/ClassModel');
 var Skill   = require('../models/SkillModel');
 
 /* Search for students
- *
+ * TODO integrate this route with the search functionality
  */
 router.get('/', function (req, res) {
   Student.find({}, function (err, students) {
     res.render('employerSearchResults', {students: students});
-    //utils.sendSuccessResponse(res, students);
   });
 });
 
@@ -27,6 +26,8 @@ router.get('/', function (req, res) {
  *        responds with the requested student
  *    - error 404:
  *        if the studentId is not valid
+ *
+ * author: sabrina
  */
 router.get('/:studentId', function (req, res) {
   Student.findById(req.params.studentId)
@@ -63,6 +64,8 @@ router.get('/:studentId', function (req, res) {
  *        classes contain the skills assocaited with them
  *    - error 404:
  *        if the studentId is not valid
+ *
+ * author: sabrina
  */
 router.get('/:studentId/classes', function (req, res) {
   Student.findById(req.params.studentId)
@@ -101,6 +104,8 @@ router.get('/:studentId/classes', function (req, res) {
  *        if the classes were sucessfully set
  *    - error 404:
  *        if the studentId is not valid
+ *
+ * author: sabrina
  */
 router.post('/:studentId/classes', function (req, res) {
   var classes = req.body.classes || [];
@@ -126,6 +131,8 @@ router.post('/:studentId/classes', function (req, res) {
  *        responds with the requested student's skills
  *    - error 404:
  *        if the studentId is not valid
+ *
+ * author: sabrina
  */
 router.get('/:studentId/skills', function (req, res) {
   Student.findById(req.params.studentId)
@@ -154,6 +161,8 @@ router.get('/:studentId/skills', function (req, res) {
  *        if the skills were sucessfully set
  *    - error 404:
  *        if the studentId is not valid
+ *
+ * author: sabrina
  */
 router.post('/:studentId/skills', function (req, res) {
   var skills = req.body.skills || [];
@@ -179,11 +188,12 @@ router.post('/:studentId/skills', function (req, res) {
  * Body:
  *   - requiredSkills: a list of Tag _ids
  *   - desiredSkills: a list of Tag _ids
-
+ *
  * Response:
  *   - success: 200:
  *       if the search worked and renders a results page
  *
+ * author: sam
  */
 router.post('/search', function(req, res) {
   var requiredSkills = req.body.requiredSkills;

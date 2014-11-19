@@ -1,3 +1,5 @@
+// author: Sabrina Drammis
+
 var gulp = require('gulp'),
     watch = require('gulp-watch'),
     livereload = require('gulp-livereload'),
@@ -21,6 +23,7 @@ gulp.task('develop', function () {
     });
 });
 
+// TODO fix this to have multiple entries
 gulp.task('scripts', function () {
   console.log('starting scripts');
   browserify({

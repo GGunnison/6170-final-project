@@ -4,6 +4,7 @@ var Skill     = require('../models/SkillModel.js')
 
 mongoose.connect(configDB.url);
 
+// authors: sabrina, grant
 tags = [
 
     //Languages
@@ -27,13 +28,13 @@ tags = [
     //6.005
     { _id  : "9",
       name : 'Software Development'},
-    { _id  : "10", 
+    { _id  : "10",
       name : "Concurrency"},
     //6.006
-    { _id  : "11", 
+    { _id  : "11",
       name : "Algorithms"},
     //6.170
-   
+
     { _id  : "12",
       name : 'Software Design'},
     { _id  : "13",
@@ -62,12 +63,12 @@ tags = [
       name : 'Machine Learning'},
 
     //Extra Skills
-  
+
     { _id  : "22",
       name : 'Computer Vision'},
 
 
-    
+
 
 
 

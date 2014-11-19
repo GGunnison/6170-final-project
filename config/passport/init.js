@@ -17,18 +17,17 @@ module.exports = function (passport) {
     });
 
     // used to deserialize the user
+    // author: grant
     passport.deserializeUser(function(id, done) {
-    Student.findById(id,function(err,user){
-        console.log("1");
-        if(user){
-            done(null,user);
-        }else{
-            Employer.findById(id, function(err,user){
-                console.log("got here");
-                if(err) done(err);
-                done(null,user);
-            });
-        }
+      Student.findById(id,function(err,user){
+          if(user){
+              done(null,user);
+          }else{
+              Employer.findById(id, function(err,user){
+                  if(err) done(err);
+                  done(null,user);
+              });
+          }
     });
 });
 

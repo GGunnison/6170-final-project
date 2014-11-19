@@ -5,6 +5,8 @@ var Employer   = require('../../app/models/EmployerModel');
 var bCrypt    = require('bcrypt-nodejs');
 var validator = require('validator');
 
+// TODO simplify this down to one route for users and employers
+// author: grant
 module.exports = function(passport){
     // =========================================================================
     // LOCAL LOGIN =============================================================
@@ -36,7 +38,7 @@ module.exports = function(passport){
                 if (!student) {
                   console.log('no user');
                   return done(null, false, req.flash('loginMessage', 'No user found.'));
-                
+
                 } else {
                   if (!student.validPassword(password)) {
                       console.log('bad pass');
@@ -98,6 +100,6 @@ passport.use('login/employer', new LocalStrategy({
     }));
 
 
-                    
+
 }
 

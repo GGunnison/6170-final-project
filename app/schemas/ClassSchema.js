@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+// authors: grant, sabrina
+
 var ClassSchema = mongoose.Schema({
 
   _id: String,

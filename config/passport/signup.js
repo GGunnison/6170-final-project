@@ -4,6 +4,8 @@ var Employer = require('../../app/models/EmployerModel');
 var bCrypt = require('bcrypt-nodejs');
 var validator = require('validator');
 
+// TODO simplify to only one signup route here that works for both users and employers
+// author: grant, sabrina
 module.exports = function(passport) {
     // =========================================================================
     // LOCAL SIGNUP ============================================================
@@ -65,11 +67,11 @@ module.exports = function(passport) {
         usernameField : 'email',
         passwordField : 'password',
         passReqToCallback : true
-    }, 
+    },
     function(req, email, password, done) {
         if (email)
             email = validator.trim(email.toLowerCase());
-        
+
         process.nextTick(function() {
             console.log("employer");
 

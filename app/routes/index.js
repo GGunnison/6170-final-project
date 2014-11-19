@@ -12,7 +12,8 @@ var Employer = require('../models/EmployerModel');
 module.exports = function(passport) {
   // normal routes ===============================================================
 
-  // show the home page (will also have our login links) router.get('/', function(req, res) {
+  // show the home page (will also have our login links)
+  // author: grant
   router.get('/', function(req, res) {
 
     //TODO this is hacky we should come up with a cleaner version of this

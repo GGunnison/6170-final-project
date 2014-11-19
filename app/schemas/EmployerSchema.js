@@ -3,6 +3,8 @@ var mongoose   = require('mongoose'),
     UserSchema = require('./UserSchema.js'),
     extend     = require('mongoose-schema-extend');
 
+// author: grant
+
 var EmployerSchema = UserSchema.extend({
   company : String
 });

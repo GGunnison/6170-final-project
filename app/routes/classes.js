@@ -4,6 +4,8 @@ var utils  = require('../utils/utils.js');
 // database models
 var Class = require('../models/ClassModel');
 
+// author: sabrina
+
 /* Get all classes
  *
  * GET /classes

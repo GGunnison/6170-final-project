@@ -4,15 +4,16 @@ var Class    = require('../models/ClassModel.js')
 
 mongoose.connect(configDB.url);
 
+// authors: sabrina, grant
 classes =  [
 
   { name   : 'Introduction to EECS 1',
     _id    : '6.01',
     skills : ["2"]
-  }, 
+  },
 
-  { name   : 'Software Studio', 
-    _id    : '6.170', 
+  { name   : 'Software Studio',
+    _id    : '6.170',
     skills : ["3", "4", "12", "13", "14", "15"]
   }
 

@@ -3,6 +3,8 @@ var mongoose   = require('mongoose'),
     UserSchema = require('./UserSchema.js'),
     extend     = require('mongoose-schema-extend');
 
+// author: grant, sabrina
+
 var StudentSchema = UserSchema.extend({
   classes      : [{type: String, ref: 'Class'}],
   clubs        : [{type: Schema.ObjectId, ref: 'Club'}],
