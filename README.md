@@ -1,8 +1,9 @@
 Employ.Me
 =========
+Deployed [here](http://employme-dsan.rhcloud.com/)
 
 ##MVP Functionality
-Our document can be found [here](./MVPImplementation.pdf).
+Our document can be found [here](./documents/MVPImplementation.pdf).
 
 - simple search to find Students using tags  
   - only required tags apply  
