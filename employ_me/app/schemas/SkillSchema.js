@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var SkillSchema = mongoose.Schema({
 
-  _id: String,
+  	_id: String,
 	name: String
 
 });

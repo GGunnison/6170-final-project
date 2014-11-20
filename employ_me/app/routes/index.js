@@ -17,7 +17,7 @@ module.exports = function(passport) {
 
     //TODO this is hacky we should come up with a cleaner version of this
     if (!req.user){
-    res.render('index.jade', {signupMessage: req.flash('signupMessage'),
+      res.render('index.jade', {signupMessage: req.flash('signupMessage'),
                               loginMessage: req.flash('loginMessage')
                              });
     }else {
@@ -81,14 +81,14 @@ module.exports = function(passport) {
   // process the signup form
   router.post('/signup/student', passport.authenticate('signup/student', {
     successRedirect : '/create/student', // redirect to the secure profile section
-    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
 
   // Separated two post requests because we cannot get req.params from successRedirect
   router.post('/signup/employer', passport.authenticate('signup/employer', {
     successRedirect : '/create/employer', // redirect to the secure profile section
-    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
 

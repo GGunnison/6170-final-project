@@ -24,15 +24,18 @@ module.exports = function(passport) {
             if (!req.user) {
 
                 Student.findOne({ 'email' :  email }, function(err, user) {
+                    Employer.findOne({ 'email' :  email }, function(error, user1) {
                     // if there are any errors, return the error
-                    if (err) {
+                    if (err || error) {
                         console.log(err);
                         return done(err);
                     }
 
                     // check to see if theres already a user with that email
-                    if (user) {
-                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));                    } else {
+                    if (user || user1) {
+                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));  
+
+                    } else {
                         if (!validator.isEmail(email)) {
                           return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
                         } else {
@@ -52,7 +55,7 @@ module.exports = function(passport) {
                         }
                     }
 
-
+                });
                 });
             } else {
                 // user is logged in and already has a local account. Ignore signup. (You should log out before trying to create a new account, user!)
@@ -74,35 +77,39 @@ module.exports = function(passport) {
             console.log("employer");
 
             if (!req.user) {
-                console.log("employer");
                 Employer.findOne({ 'email' :  email }, function(err, user) {
+                    Student.findOne({ 'email' :  email }, function(error, user1) {
                     // if there are any errors, return the error
-                    if (err)
+                    if (err || error) {
+                     
                         return done(err);
+                    }
 
                     // check to see if theres already a user with that email
-                    if (user) {
-                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                    if (user || user1) {
+                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));  
+
                     } else {
                         if (!validator.isEmail(email)) {
-                            return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
-                        }else{
-                        var newUser = new Employer();
+                          return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
+                        } else {
+                          var newUser = new Employer();
 
-                        newUser.email    = email;
-                        newUser.password = newUser.generateHash(password);
-                        newUser.name = req.body.name
+                          newUser.email    = email;
+                          newUser.password = newUser.generateHash(password);
+                          newUser.name     = req.body.name
 
+                          newUser.save(function(err) {
+                              if (err)
+                                  return done(err);
 
-                        newUser.save(function(err) {
-                            if (err)
-                                return done(err);
+                              return done(null, newUser);
 
-                            return done(null, newUser);
-                        });
+                          });
+                        }
                     }
-                }
 
+                });
                 });
             } else {
                 return done(null, req.user);
