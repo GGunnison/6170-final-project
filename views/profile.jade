@@ -1,5 +1,5 @@
 // TODO finish this view
-// author: Sabrina Drammis
+// author: Samuel Edson
 
 extends layout
 
@@ -7,5 +7,21 @@ block nav_right
   a.navbar-brand(href="/logout") Logout
 
 block content
-  h4 Welcome #{user.name}. Your profile will go here
-
+  .container
+    h4 #{user.name}'s Profile
+    .row
+      h4 Skills
+      .col-md-8
+        each skill in skills
+          label()= skill.name
+          br
+      h4 Classes
+      .col-md-8
+        each klass in classes
+          label()= klass.name
+          br
+      h4 Job Interests
+      .col-md-8
+        each job in user.jobInterests
+          label()= job
+          br

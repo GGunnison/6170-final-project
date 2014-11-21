@@ -19,8 +19,8 @@ module.exports = function(passport) {
     //TODO this is hacky we should come up with a cleaner version of this
     if (!req.user){
       res.render('index.jade', {signupMessage: req.flash('signupMessage'),
-                              loginMessage: req.flash('loginMessage')
-                             });
+                                loginMessage: req.flash('loginMessage')
+                               });
     }else {
       Student.findOne({email : req.user.email}, function(err, user){
         if (user){
@@ -36,8 +36,27 @@ module.exports = function(passport) {
 
   // PROFILE SECTION =========================
   router.get('/profile', isLoggedIn, function(req, res) {
-    res.render('profile.jade', {
-      user : req.user
+    console.log("USER: " + req.user);
+    Class.find({ _id : { $in : req.user.classes } }, function(err, classes) {
+      if (err) {
+        console.log(err);
+        utils.sendErrResponse(res, 500, null);
+      } else {
+        console.log(classes);
+        Skill.find({ _id : { $in : req.user.skills } }, function(err, skills) {
+          if (err) {
+            console.log(err);
+            utils.sendErrResponse(res, 500, null);
+          } else {
+            console.log(skills);
+            res.render('profile.jade', {
+              user : req.user,
+              classes : classes,
+              skills : skills
+            });
+          }
+        });
+      }
     });
   });
 
