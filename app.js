@@ -53,7 +53,5 @@ app.use('/classes', classes);
 // launch ======================================================================
 app.set('port', 3000);
 
-var server = app.listen(app.get('port'), process.env.OPENSHIFT_NODEJS_IP);
-
 
 module.exports = app;
