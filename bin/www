@@ -2,7 +2,7 @@
 var debug = require('debug')('employ_me');
 var app   = require('../app');
 
-app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 3000);
+app.set('port', 3000);
 
 var server = app.listen(app.get('port'), process.env.OPENSHIFT_NODEJS_IP, function() {
   debug('Express server listening on port ' + server.address().port);
