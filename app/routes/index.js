@@ -4,10 +4,15 @@ var express  = require('express');
 var router   = express.Router();
 
 // database models
-var Class = require('../models/ClassModel');
-var Skill = require('../models/SkillModel');
-var Student = require('../models/StudentModel');
+var Class    = require('../models/ClassModel');
+var Skill    = require('../models/SkillModel');
+var Student  = require('../models/StudentModel');
 var Employer = require('../models/EmployerModel');
+var Job      = require('../models/JobModel');
+var Interest = require('../models/InterestModel');
+var Sport    = require('../models/SportModel');
+var Club     = require('../models/ClubModel');
+
 
 module.exports = function(passport) {
   // normal routes ===============================================================
@@ -41,6 +46,10 @@ module.exports = function(passport) {
       Student.findById(req.user._id)
        .populate('skills')
        .populate('classes')
+       .populate('jobInterests')
+       .populate('interests')
+       .populate('sports')
+       .populate('clubs')
        .exec(function(err, student) {
           if (err) {
             console.log(err);
