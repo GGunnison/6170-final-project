@@ -23,20 +23,20 @@ block content
       h4 Job Interests
       .col-md-8
         each job in user.jobInterests
-          label()= job
+          label()= job.name
           br
       h4 Interests
       .col-md-8
-        each job in user.interests
-          label()= job
+        each interest in user.interests
+          label()= interest.name
           br
       h4 Sports
       .col-md-8
-        each job in user.sports
-          label()= job
+        each sport in user.sports
+          label()= sport.name
           br
       h4 Clubs
       .col-md-8
-        each job in user.clubs
-          label()= job
+        each club in user.clubs
+          label()= club.name
           br

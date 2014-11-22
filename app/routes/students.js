@@ -39,6 +39,10 @@ router.get('/:studentId', function (req, res) {
   Student.findById(req.params.studentId)
          .populate('skills')
          .populate('classes')
+         .populate('jobInterests')
+         .populate('interests')
+         .populate('sports')
+         .populate('clubs')
          .exec( function (err, student) {
             if (err) {
               console.log(err);
