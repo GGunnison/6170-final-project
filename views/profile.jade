@@ -12,16 +12,31 @@ block content
     .row
       h4 Skills
       .col-md-8
-        each skill in skills
+        each skill in user.skills
           label()= skill.name
           br
       h4 Classes
       .col-md-8
-        each klass in classes
+        each klass in user.classes
           label()= klass.name
           br
       h4 Job Interests
       .col-md-8
         each job in user.jobInterests
+          label()= job
+          br
+      h4 Interests
+      .col-md-8
+        each job in user.interests
+          label()= job
+          br
+      h4 Sports
+      .col-md-8
+        each job in user.sports
+          label()= job
+          br
+      h4 Clubs
+      .col-md-8
+        each job in user.clubs
           label()= job
           br

@@ -36,28 +36,28 @@ module.exports = function(passport) {
 
   // PROFILE SECTION =========================
   router.get('/profile', isLoggedIn, function(req, res) {
-    console.log("USER: " + req.user);
-    Class.find({ _id : { $in : req.user.classes } }, function(err, classes) {
-      if (err) {
-        console.log(err);
-        utils.sendErrResponse(res, 500, null);
-      } else {
-        console.log(classes);
-        Skill.find({ _id : { $in : req.user.skills } }, function(err, skills) {
+    // Student
+    if (req.user.__t = 'Student') {
+      Student.findById(req.user._id)
+       .populate('skills')
+       .populate('classes')
+       .exec(function(err, student) {
           if (err) {
             console.log(err);
             utils.sendErrResponse(res, 500, null);
           } else {
-            console.log(skills);
+            console.log("STUDENT: " + student);
             res.render('profile.jade', {
-              user : req.user,
-              classes : classes,
-              skills : skills
+              user : student
             });
           }
-        });
-      }
-    });
+       });
+
+    // Employer TODO: Render something
+    } else {
+      //res.render('profile.jade', {
+      //});
+    }
   });
 
   // LOGOUT ==============================
