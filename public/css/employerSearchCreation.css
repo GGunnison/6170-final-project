@@ -1,0 +1,50 @@
+html, body {
+  padding: 0;
+  height: 100%;
+}
+
+table {
+  width: 100%;
+  height: 100%;
+}
+
+.mainCol {
+  padding: 0 10px;
+}
+
+.mainCol.rightCol {
+  border-left: 1px solid #aaa;
+}
+
+.skillsCol {
+  height: 100%;
+  overflow: auto;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+}
+
+.cont {
+  height: 100%;
+  padding: 70px 15px 15px 15px;
+}
+
+.skill {
+  font-size: 18px;
+  margin: 5px;
+}
+
+.draggable {
+  cursor: move;
+}
+
+.skillsDrop {
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  height: 100%;
+  background-color: #eee;
+  padding: 10px;
+}
+
+#skillSubmit {
+  float: right;
+}
