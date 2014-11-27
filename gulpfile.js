@@ -10,7 +10,7 @@ var gulp = require('gulp'),
     source = require('vinyl-source-stream');
 
 gulp.task('watch', function () {
-  gulp.watch('./assets/**', ['scripts'])
+  gulp.watch('./view/**/*.jade', ['scripts'])
       .on('change', livereload.changed);
 });
 

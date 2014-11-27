@@ -3,3 +3,5 @@
 // author: sabrina
 // TODO split up Browserify build to have multiple entires so that we can require the javascript files in their appropriate views
 SearchResultsController = require('./searchResultsController');
+IndexController  = require('./indexController');
+SignupController = require('./signupController');

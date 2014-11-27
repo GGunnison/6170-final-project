@@ -1,4 +1,4 @@
-//Author Grant Gunnison/ Sabrina Drammis
+// author: Grant Gunnison, Sabrina Drammis
 
 // load the things we need
 var mongoose = require('mongoose');
@@ -9,10 +9,18 @@ var bcrypt   = require('bcrypt-nodejs');
 // define the schema for our user model
 var UserSchema = mongoose.Schema({
 
-        email    : String,
-        password : String,
-        name	 : String,
+        name	   : String, // User's full name
+        email    : String, // User's login and contact email
+        password : String, // User's account password
+        summary  : String, // Summary about the user (either a student or company bio)
+        website  : String, // Link to personal or company website
 
+       /*  TODO mailbox schema
+        mailbox  : {
+                    inbox   : [messageSchema],
+                    sentbox : [messageSchema]
+                   }
+        */
 });
 
 // generating a hash

@@ -27,61 +27,32 @@ block content
                   h1 Sign in
             td.lineContainer
               div.wordSeparatorLine
-      div.tabpanel
+
+      div(id="Login")
         if (loginMessage && loginMessage.length > 0)
           .alert.alert-danger= loginMessage
-        ul.nav.nav-tabs.nav-justified
-          li(role="presentation" class="active")
-            a(href="#studentSigninTab", aria-controls="student", role="tab", data-toggle="tab") Student
-          li(role="presentation")
-            a(href="#employerSigninTab", aria-controls="employer", role="tab", data-toggle="tab") Employer
+        form.inputContainer(method='POST', action="/login")
+          input(type="hidden", name="type", value="user")
+          table
+            tbody
 
-        div.tab-content
-          div(id="studentSigninTab", class="tabElement" role="tabpanel", class="tab-pane active")
-            form.inputContainer(method='POST', action="/login/student")
-              input(type="hidden", name="type", value="student")
-              table
-                tbody
-                  
-                  tr
-                    td
-                      h4 Email
-                    td &nbsp;
-                    td.inputCol
-                      input.form-control(name="email", placeholder="email")
-
-                  tr
-                    td
-                      h4 Password
-                    td &nbsp;
-                    td.inputCol
-                      input.form-control(name="password", type="password", placeholder="password")
-
-              br
-              button.btn.btn-success.sessionBtn(type="submit") Login
-          div(id="employerSigninTab", class="tabElement" role="tabpanel", class="tab-pane")
-            form.inputContainer(method='POST', action="/login/employer")
-              input(type="hidden", name="type", value="employer")
-              table
-                tbody
-
-                  tr
-                    td
-                      h4 Email
-                    td &nbsp;
-                    td.inputCol
-                      input.form-control(name="email", placeholder="email")
+              tr
+                td
+                  h4 Email
+                td &nbsp;
+                td.inputCol
+                  input.form-control(name="email", placeholder="email")
 
 
-                  tr
-                    td
-                      h4 Password
-                    td &nbsp;
-                    td.inputCol
-                      input.form-control(name="password", type="password", placeholder="password")
+              tr
+                td
+                  h4 Password
+                td &nbsp;
+                td.inputCol
+                  input.form-control(name="password", type="password", placeholder="password")
 
-              br
-              button.btn.btn-success.sessionBtn(type="submit") Login
+          br
+          button.btn.btn-success.sessionBtn(type="submit") Login
        
        
       table.g-wordSeparator

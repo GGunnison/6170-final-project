@@ -17,10 +17,13 @@ var Club     = require('../models/ClubModel');
 module.exports = function(passport) {
   // normal routes ===============================================================
 
-  // show the home page (will also have our login links)
-  // author: Grant Gunnison
-  router.get('/', function(req, res) {
+  router.get('/test', function(req, res) {
+    res.render('home.jade');
+  });
 
+  // show the home page (will also have our login links)
+
+  router.get('/', function(req, res) {
     //TODO this is hacky we should come up with a cleaner version of this
     if (!req.user){
       res.render('index.jade', {signupMessage: req.flash('signupMessage'),
@@ -88,15 +91,8 @@ module.exports = function(passport) {
   });
 
   // process the login form for student
-  router.post('/login/student', passport.authenticate('login/student', {
+  router.post('/login', passport.authenticate('login', {
     successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
-  }));
-
-  // process the login form for employer
-  router.post('/login/employer', passport.authenticate('login/employer', {
-    successRedirect : '/search', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));

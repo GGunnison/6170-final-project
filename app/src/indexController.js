@@ -7,12 +7,23 @@ var IndexController = function() {
   var local = {};
 
   var setLocal = function() {
-
+    local.loginTemplate = require('../../views/templates/login.jade');
+    local.signupTemplate = require('../../views/templates/signup.jade');
   }
 
   // Helper functions
   var helpers = (function() {
     var exports = {};
+
+    exports.renderLogin = function() {
+      var loginHTML = local.loginTemplate();
+      $('#login-signup-form').html(loginHTML);
+    }
+
+    exports.renderSignup = function() {
+      var signupHTML = local.signupTemplate();
+      $('#login-signup-form').html(signupHTML);
+    }
 
     return exports
   })();
@@ -36,7 +47,13 @@ var IndexController = function() {
   }
 
   var eventListeners = function() {
+    $('#login').click( function() {
+      helpers.renderLogin();
+    });
 
+    $('#signup').click( function() {
+      helpers.renderSignup();
+    });
   }
 
   return {
@@ -44,3 +61,5 @@ var IndexController = function() {
     init: init
   }
 }
+
+module.exports = IndexController;
