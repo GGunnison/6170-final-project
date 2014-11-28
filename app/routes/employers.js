@@ -89,7 +89,7 @@ router.get('/:employerId/listings/:listingId', function (req, res) {
 /* Update a listing
  * TODO
  */
-router.put('/:employerId/listing/:listingId', function (req res) {
+router.put('/:employerId/listing/:listingId', function (req, res) {
 });
 
 /* Remove an employer's listing
@@ -104,7 +104,7 @@ router.delete('/:employerId/listings/:listingId', function (req, res) {
     {$pull: {listings: {_id: req.params.listingId}}},
     function (err, employer) {
       if (err) {
-        console.log("error at DELETE /employers/:employerId/listings/:listingId", err):
+        console.log("error at DELETE /employers/:employerId/listings/:listingId", err);
         utils.sendErrResponse(res, 500, null);
       } else if (employer) {
         utils.sendSuccessResponse(res, null);
@@ -113,3 +113,5 @@ router.delete('/:employerId/listings/:listingId', function (req, res) {
       }
   });
 });
+
+module.exports = router;

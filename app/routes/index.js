@@ -11,9 +11,8 @@ var Employer = require('../models/EmployerModel');
 
 
 module.exports = function (passport) {
-  // route to test new landing page
-  router.get('/test', function(req, res) {
-    res.render('home.jade');
+  router.get('/tests', function(req, res) {
+    res.render('tests.jade');
   });
 
   // show the home page (will also have our login links)
@@ -46,7 +45,6 @@ module.exports = function (passport) {
             console.log(err);
             utils.sendErrResponse(res, 500, null);
           } else {
-            console.log("STUDENT: " + student);
             res.render('profile.jade', {
               user : student
             });
@@ -74,7 +72,6 @@ module.exports = function (passport) {
   // LOGIN ===============================
   // show the login form
   router.get('/login', function(req, res) {
-    console.log('message ', req.flash('loginMessage'));
     res.render('index.jade', { message: req.flash('loginMessage') });
   });
 

@@ -58,15 +58,7 @@ classes =  [
   { name   : 'Computer Networks',
     _id    : '6.829',
     skills : ["2", "58", "59", "60", "61"]
-  },
-
-
-
-
-
-
-
-
+  }
 ]
 
 Class.collection.remove( function () {

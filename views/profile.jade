@@ -3,9 +3,6 @@
 
 extends layout
 
-block nav_right
-  a.navbar-brand(href="/logout") Logout
-
 block content
   .container
     h4 #{user.name}'s Profile
@@ -19,24 +16,4 @@ block content
       .col-md-8
         each klass in user.classes
           label()= klass.name
-          br
-      h4 Job Interests
-      .col-md-8
-        each job in user.jobInterests
-          label()= job.name
-          br
-      h4 Interests
-      .col-md-8
-        each interest in user.interests
-          label()= interest.name
-          br
-      h4 Sports
-      .col-md-8
-        each sport in user.sports
-          label()= sport.name
-          br
-      h4 Clubs
-      .col-md-8
-        each club in user.clubs
-          label()= club.name
           br

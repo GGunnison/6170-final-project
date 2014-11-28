@@ -35,7 +35,7 @@ module.exports = function(passport) {
 
                     // check to see if theres already a user with that email
                     if (user || user1) {
-                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));  
+                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
 
                     } else {
                         if (!validator.isEmail(email)) {
@@ -50,7 +50,6 @@ module.exports = function(passport) {
                           newUser.save(function(err) {
                               if (err)
                                   return done(err);
-
                               return done(null, newUser);
 
                           });
@@ -83,13 +82,13 @@ module.exports = function(passport) {
                     Student.findOne({ 'email' :  email }, function(error, user1) {
                     // if there are any errors, return the error
                     if (err || error) {
-                     
+
                         return done(err);
                     }
 
                     // check to see if theres already a user with that email
                     if (user || user1) {
-                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));  
+                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
 
                     } else {
                         if (!validator.isEmail(email)) {

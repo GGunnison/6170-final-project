@@ -40,7 +40,7 @@ router.get('/:studentId', function (req, res) {
            .exec( function (err, student) {
               if (err) {
                 console.log(err);
-                utils.sendErrResponse(res, 500, null);
+                utils.sendErrResponse(res, 500, err);
               } else if (student) {
                 student.deepPopulate('classes.skills', function (err) {
                   if (err) {
@@ -179,7 +179,7 @@ router.get('/:studentId/skills', function (req, res) {
 router.put('/:studentId/skills', function (req, res) {
   var skills = req.body.skills || [];
   Student.findByIdAndUpdate(req.params.studentId,
-         {skills: req.body.skills},
+         {skills: skills},
          function (err, student) {
            if (err) {
              console.log(err);

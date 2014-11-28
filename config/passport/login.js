@@ -30,10 +30,10 @@ module.exports = function(passport){
             }
                    Student.findOne({ 'email' :  email }, function(err, user) {
                     Employer.findOne({ 'email' :  email }, function(error, user1) {
-                    
+
                     // check to see if theres already a user with that email
                     if (!user && !user1) {
-                        return done(null, false, req.flash('loginMessage', 'No user found.'));  
+                        return done(null, false, req.flash('loginMessage', 'No user found.'));
 
                     }
                     // if there are any errors, return the error
@@ -43,7 +43,7 @@ module.exports = function(passport){
                         return done(err);
                       }
                       if (!user.validPassword(password)) {
-                        return done(null, false, req.flash('signupMessage', 'That email is invalid.')); 
+                        return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
                       }else{
                         return done(null, user);
                       }
@@ -56,11 +56,11 @@ module.exports = function(passport){
                         return done(err);
                       }
                       if (!user1.validPassword(password)) {
-                        return done(null, false, req.flash('signupMessage', 'That email is invalid.')); 
+                        return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
                       }else{
                         return done(null, user1);
                       }
-                    }    
+                    }
 
                 });
                 });
