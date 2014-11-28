@@ -93,7 +93,7 @@ router.get('/:studentId/classes', function (req, res) {
 
 /* Set the classes for a student
  *
- * POST /students/:studentId/classes
+ * PUT /students/:studentId/classes
  *
  * Params:
  *    - studentId:
@@ -110,7 +110,7 @@ router.get('/:studentId/classes', function (req, res) {
  *
  * author: Sabrina Drammis
  */
-router.post('/:studentId/classes', function (req, res) {
+router.put('/:studentId/classes', function (req, res) {
   var classes = req.body.classes || [];
   Student.findByIdAndUpdate(req.params.studentId,
          {classes: classes},
@@ -160,7 +160,7 @@ router.get('/:studentId/skills', function (req, res) {
 
 /* Set the student input skills for a student
  *
- * POST /students/:studentId/skills
+ * PUT /students/:studentId/skills
  *
  * Params:
  *    - studentId:
@@ -177,7 +177,7 @@ router.get('/:studentId/skills', function (req, res) {
  *
  * author: Sabrina Drammis
  */
-router.post('/:studentId/skills', function (req, res) {
+router.put('/:studentId/skills', function (req, res) {
   var skills = req.body.skills || [];
   Student.findByIdAndUpdate(req.params.studentId,
          {skills: req.body.skills},
@@ -211,6 +211,46 @@ router.get('/:studentId/experience', function (req, res) {
       utils.sendErrResponse(res, 404, 'student was not found');
     }
   });
+});
+
+/* Add a new experience
+ *
+ * POST /students/:studentId/experience
+ *
+ * TODO write the spec
+ */
+router.post('/:studentId/experience', function (req, res) {
+  Student.findByIdAndUpdate(
+    req.params.studentId,
+    {$push: {experience: req.body.experience}},
+    function (err, student) {
+      if (err) {
+        console.log(err);
+       utils.sendErrResponse(res, 500, null);
+      } else if (student) {
+        utils.sendSuccessResponse(res, null);
+      } else {
+        utils.sendErrResponse(res, 404, 'student was not found');
+      }
+    });
+});
+
+/* Update a specific experience
+ *
+ * PUT /students/:studentId/experience/:experienceId
+ *
+ * TODO write this
+ */
+router.put('/:studentId/experience/:experienceId', function (req, res) {
+});
+
+/* Remove a specific experience
+ *
+ * DELETE /students/:studentId/experience/:experienceId
+ *
+ * TODO write this
+ */
+router.delete('/:studentId/experience/:experienceId', function (req, res) {
 });
 
 /* Redirect to a page with every student that has at least

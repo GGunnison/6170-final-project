@@ -7,7 +7,7 @@ var mongoose      = require('mongoose'),
 // author(s): Grant Gunnison, Sabrina Drammis
 
 var EmployerSchema = UserSchema.extend({
-  company    : String,
+  company    : {type: Schema.ObjectId, ref: 'Employer'},
   isVerified : Boolean,
   listings   : [ListingSchema]
 });
