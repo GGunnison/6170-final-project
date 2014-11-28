@@ -8,21 +8,15 @@ var Class    = require('../models/ClassModel');
 var Skill    = require('../models/SkillModel');
 var Student  = require('../models/StudentModel');
 var Employer = require('../models/EmployerModel');
-var Job      = require('../models/JobModel');
-var Interest = require('../models/InterestModel');
-var Sport    = require('../models/SportModel');
-var Club     = require('../models/ClubModel');
 
 
-module.exports = function(passport) {
-  // normal routes ===============================================================
-
+module.exports = function (passport) {
+  // route to test new landing page
   router.get('/test', function(req, res) {
     res.render('home.jade');
   });
 
   // show the home page (will also have our login links)
-
   router.get('/', function(req, res) {
     //TODO this is hacky we should come up with a cleaner version of this
     if (!req.user){
@@ -32,8 +26,6 @@ module.exports = function(passport) {
     }else {
       Student.findOne({email : req.user.email}, function(err, user){
         if (user){
-          console.log(user);
-          console.log(req.user.email);
           res.redirect('/profile')
         }else{
           res.redirect('/search')
@@ -49,10 +41,6 @@ module.exports = function(passport) {
       Student.findById(req.user._id)
        .populate('skills')
        .populate('classes')
-       .populate('jobInterests')
-       .populate('interests')
-       .populate('sports')
-       .populate('clubs')
        .exec(function(err, student) {
           if (err) {
             console.log(err);

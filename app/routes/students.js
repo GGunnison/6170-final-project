@@ -35,30 +35,24 @@ router.get('/', function (req, res) {
  * author: Sabrina Drammis
  */
 router.get('/:studentId', function (req, res) {
-
-  Student.findById(req.params.studentId)
-         .populate('skills')
-         .populate('classes')
-         .exec( function (err, student) {
-            if (err) {
-              console.log(err);
-              utils.sendErrResponse(res, 500, null);
-            } else if (student) {
-              var opts = { path: 'classes.skills',
-                           select: 'name',
-                           model: Skill
-                         }
-              Class.populate(student, opts, function (err, doc) {
-                if (err) {
-                  utils.sendErrResponse(res, 500, null);
-                } else {
-                  utils.sendSuccessResponse(res, student);
-                }
-              });
-            } else {
-              utils.sendErrResponse(res, 404, 'student was not found');
-            }
-         });
+    Student.findById(req.params.studentId)
+           .populate('skills')
+           .exec( function (err, student) {
+              if (err) {
+                console.log(err);
+                utils.sendErrResponse(res, 500, null);
+              } else if (student) {
+                student.deepPopulate('classes.skills', function (err) {
+                  if (err) {
+                    utils.sendErrResponse(res, 500, null);
+                  } else {
+                    utils.sendSuccessResponse(res, student);
+                  }
+                });
+              } else {
+                utils.sendErrResponse(res, 404, 'student was not found');
+              }
+           });
 });
 
 /* Get a student's classes
@@ -79,29 +73,22 @@ router.get('/:studentId', function (req, res) {
  * author: Sabrina Drammis
  */
 router.get('/:studentId/classes', function (req, res) {
-  Student.findById(req.params.studentId)
-         .populate('classes')
-         .exec( function (err, student) {
-            if (err) {
-              console.log(err);
-              utils.sendErrResponse(res, 500, null);
-            } else if (student) {
-              var opts = { path: 'classes.skills',
-                           select: 'name',
-                           model: Skill
-                         }
-              Class.populate(student, opts, function (err, doc) {
-                if (err) {
-                  console.log(err);
-                  utils.sendErrResponse(res, 500, null);
-                } else {
-                  utils.sendSuccessResponse(res, student.classes);
-                }
-              });
-            } else {
-              utils.sendErrResponse(res, 404, 'student was not found');
-            }
-         });
+  Student.findById(req.params.studentId, function (err, student) {
+    if (err) {
+      console.log(err);
+      utils.sendErrResponse(res, 500, null);
+    } else if (student) {
+      student.deepPopulate('classes.skills', function (err) {
+        if (err) {
+          utils.sendErrResponse(res, 500, null);
+        } else {
+          utils.sendSuccessResponse(res, student.classes);
+        }
+      });
+    } else {
+      utils.sendErrResponse(res, 404, 'student was not found');
+    }
+  });
 });
 
 /* Set the classes for a student
@@ -204,6 +191,26 @@ router.post('/:studentId/skills', function (req, res) {
              utils.sendErrResponse(res, 404, 'student was not found');
            }
          });
+});
+
+
+/* Get all of the student's experience
+ *
+ * GET /students/:studentId/experience
+ *
+ * TODO write the spec
+ */
+router.get('/:studentId/experience', function (req, res) {
+  Student.findById(req.params.studentId, function (err, student) {
+    if (err) {
+      console.log(err);
+      utils.sendErrResponse(res, 500, null);
+    } else if (student) {
+      utils.sendSuccessResponse(res, student.experience);
+    } else {
+      utils.sendErrResponse(res, 404, 'student was not found');
+    }
+  });
 });
 
 /* Redirect to a page with every student that has at least
