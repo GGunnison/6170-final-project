@@ -1,4 +1,9 @@
-var mongoose   = require('mongoose');
+var mongoose       = require('mongoose');
 var EmployerSchema = require('../schemas/EmployerSchema');
+var utils          = require('../utils/utils.js');
 
-module.exports = mongoose.model('Employer', EmployerSchema);
+var Employer = mongoose.model('Employer', EmployerSchema);
+
+Employer.schema.path('company').validate(utils.checkLength, "company cannot be empty");
+
+module.exports = Employer;

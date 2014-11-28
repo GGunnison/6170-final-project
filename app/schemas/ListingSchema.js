@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var ListingSchema = mongoose.Schema({
   title       : String, // name of the listing
   description : String, // about the listing
+  position    : String,
   location    : String,
   skills      : [{type: String, ref:'Skill'}] // skills associated with this listing
 });

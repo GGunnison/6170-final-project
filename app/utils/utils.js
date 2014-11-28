@@ -25,4 +25,12 @@ utils.sendErrResponse = function(res, errcode, err) {
   res.status(errcode).json({ error: err });
 };
 
+/* Ensure that a string is not empty
+ *
+ * @s string to check
+ */
+utils.checkLength = function (s) {
+  return s.length > 0;
+};
+
 module.exports = utils;
