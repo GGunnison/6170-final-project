@@ -147,10 +147,9 @@ router.get('/:studentId/skills', function (req, res) {
          .populate('skills')
          .exec( function (err, student) {
             if (err) {
-              console.log("error at /:studentId/skills", err);
+              console.log("error at GET /students/:studentId/skills", err);
               utils.sendErrResponse(res, 500, null);
             } else if (student) {
-              console.log(student);
               utils.sendSuccessResponse(res, student.skills);
             } else {
               utils.sendErrResponse(res, 404, 'student was not found');
@@ -226,7 +225,7 @@ router.post('/:studentId/experience', function (req, res) {
     function (err, student) {
       if (err) {
         console.log(err);
-       utils.sendErrResponse(res, 500, null);
+        utils.sendErrResponse(res, 500, null);
       } else if (student) {
         utils.sendSuccessResponse(res, null);
       } else {

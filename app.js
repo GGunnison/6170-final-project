@@ -40,13 +40,15 @@ var initPassport = require('./config/passport/init');
 initPassport(passport);
 
 // routes ======================================================================
-var index   = require('./app/routes/index')(passport);
-var student = require('./app/routes/students');
-var skills  = require('./app/routes/skills');
-var classes = require('./app/routes/classes');
+var index     = require('./app/routes/index')(passport);
+var student   = require('./app/routes/students');
+var employers = require('./app/routes/employers');
+var skills    = require('./app/routes/skills');
+var classes   = require('./app/routes/classes');
 
 app.use('/', index);
 app.use('/students', student);
+app.use('/employers', employers);
 app.use('/skills', skills);
 app.use('/classes', classes);
 
