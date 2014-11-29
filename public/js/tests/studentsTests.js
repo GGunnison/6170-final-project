@@ -1,4 +1,5 @@
 var testStudentId = '4edd40c86762e0fb12000003';
+QUnit.config.reorder = false;
 
 QUnit.module("Student", {
   setup: function () {
@@ -145,4 +146,86 @@ QUnit.asyncTest( "PUT /students/:studentId/skills --set skills as empty", functi
       }
     }).always(start);
   });
+});
+
+// add an experience to the test student
+QUnit.asyncTest( "POST /students/:studentId/experience --add an experience for a student", function( assert ) {
+  expect(1);
+  $.ajax({
+    type: 'POST',
+    url: '/students/4edd40c86762e0fb12000003/experience',
+    data: { experience : { company     : "Test Company",
+                           position    : "Software Developer",
+                           description : "a lot of work",
+                           startTime   : "2014-11-28T22:31:10-05:00",
+                           endTime     : "2014-11-28T22:31:10-05:00"
+                         }
+          },
+    success: function (data, status, res) {
+      equal(res.status, 200, "200 status, success");
+    }
+  }).always(start);
+});
+
+var experienceId = null;
+
+// get the student's experience and ensure the one we added is there
+QUnit.asyncTest( "GET /students/:studentId/experience --get experience for a student", function( assert ) {
+  expect(3);
+  $.ajax({
+    type: 'GET',
+    url: '/students/4edd40c86762e0fb12000003/experience',
+    success: function (data, status, res) {
+      console.log(data.content);
+      experienceId = data.content[0]._id;
+      equal(data.content.length, 1, "only 1 experience set");
+      equal(data.content[0].company, "Test Company", "Experience is set correctly");
+      equal(res.status, 200, "200 status, success");
+    }
+  }).always(start);
+});
+
+// TODO these last two here
+// update a specific experience
+QUnit.asyncTest( "PUT /students/:studentId/experience/:experienceId --update specific experience for a student", function( assert ) {
+  console.log(experienceId);
+  expect(3);
+  $.ajax({
+    type: 'PUT',
+    url: '/students/4edd40c86762e0fb12000003/experience/' + experienceId,
+    data: { experience : { company     : "Test Company Updated",
+                           position    : "Software Developer",
+                           description : "a lot of work",
+                           startTime   : "2014-11-28T22:31:10-05:00",
+                           endTime     : "2014-11-28T22:31:10-05:00"
+                         }
+          },
+    success: function (data, status, res) {
+      equal(data.content.length, 1, "only 1 experience");
+      equal(data.content[0].company, "Test Company Updated", "Experience was updated correctly");
+      equal(res.status, 200, "200 status, success");
+    }
+  }).always(start);
+});
+
+// delete a specific experience
+QUnit.asyncTest( "DELETE /students/:studentId/experience/:experienceId --delete specific experience for a student", function( assert ) {
+  expect(3);
+  $.ajax({
+    type: 'DELETE',
+    url: '/students/4edd40c86762e0fb12000003/experience/' + experienceId,
+    data: { experience : { company     : "Test Company Updated",
+                           position    : "Software Developer",
+                           description : "a lot of work",
+                           startTime   : "2014-11-28T22:31:10-05:00",
+                           endTime     : "2014-11-28T22:31:10-05:00"
+                         }
+          },
+    success: function (data, status, res) {
+      console.log(data.content);
+      equal(data.content.length, 1, "only 1 experience");
+      equal(data.content[0].company, "Test Company Updated", "Experience was updated correctly");
+      equal(res.status, 200, "200 status, success");
+    }
+  }).always(start);
 });

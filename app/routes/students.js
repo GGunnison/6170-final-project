@@ -197,7 +197,19 @@ router.put('/:studentId/skills', function (req, res) {
  *
  * GET /students/:studentId/experience
  *
- * TODO write the spec
+ * Body:
+ *    - experience: ExperinceSchema object
+ *        { company: String,
+ *          position: String,
+ *          description: String,
+ *          startTime: String,  -- moment().format()
+ *          endTime: String,    -- moment().format()
+ *        }
+ * Response:
+ *    - success 200
+ *        responds with specified student's experience
+ *    - error 404
+ *        if the id given does not match a student
  */
 router.get('/:studentId/experience', function (req, res) {
   Student.findById(req.params.studentId, function (err, student) {
@@ -205,6 +217,7 @@ router.get('/:studentId/experience', function (req, res) {
       console.log(err);
       utils.sendErrResponse(res, 500, null);
     } else if (student) {
+      console.log(student);
       utils.sendSuccessResponse(res, student.experience);
     } else {
       utils.sendErrResponse(res, 404, 'student was not found');
@@ -241,6 +254,13 @@ router.post('/:studentId/experience', function (req, res) {
  * TODO write this
  */
 router.put('/:studentId/experience/:experienceId', function (req, res) {
+  console.log(req.body.experience);
+  Student.update({_id: req.params.studentId, "experience._id" : req.params.experienceId},
+         { $set: { "experience.$" : req.body.experience } },
+         function (err, data) {
+           if (err) console.log(err);
+           console.log(data);
+         });
 });
 
 /* Remove a specific experience
