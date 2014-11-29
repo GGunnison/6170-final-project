@@ -3,16 +3,9 @@
 extends layout
 
 block head
-  script(type='text/javascript', src='/js/indexController.js')
   link(rel='stylesheet', href='/css/index.css')
 
 block content
-
-  script.
-    var indexController = new IndexController();
-    $(document).ready(function() {
-      indexController.init();
-    });
 
   .container
     .indexCont.text-center
@@ -53,8 +46,8 @@ block content
 
           br
           button.btn.btn-success.sessionBtn(type="submit") Login
-       
-       
+
+
       table.g-wordSeparator
         tbody
           tr
