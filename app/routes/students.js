@@ -287,17 +287,21 @@ router.post('/search', function(req, res) {
       console.log(err);
       utils.sendErrResponse(res, 500, null);
     } else {
+      // Keeps track of each student's score so the we can sort them later
+      scores = {};
+
       // Remove all students that do not have at least one requiredSkill
       // in his/her skills or any classes' skills
       students = students.filter( function(student) {
-
+        var score = 0;
+        // Required
         for (var idx = 0; idx < requiredSkills.length; idx++) {
           var tag = requiredSkills[idx];
 
           // Skills
           var skills = student.skills;
           for (var i = 0; i < skills.length; i++) {
-            if (tag === skills[i]) return true;
+            if (tag === skills[i]) score += 1;
           }
 
           // Classes
@@ -305,15 +309,46 @@ router.post('/search', function(req, res) {
             var c = student.classes[i];
             Class.findById(c, function (err, klass) {
               for (var j = 0; j < klass.skills.length; j++) {
-                if (klass.skills[j] === tag) return true;
+                if (klass.skills[j] === tag) score += 1;
               }
             });
           }
         }
-        return false;
+
+        // Only keep it if there was at least one match in the required
+        // skills
+        var keep = (score != 0);
+
+        // Desired
+        for (var idx = 0; idx < desiredSkills.length; idx++) {
+          var tag = desiredSkills[idx];
+
+          // Skills
+          var skills = student.skills;
+          for (var i = 0; i < skills.length; i++) {
+            if (tag === skills[i]) score += 1;
+          }
+
+          // Classes
+          for (var i = 0; i < student.classes.length; i++) {
+            var c = student.classes[i];
+            Class.findById(c, function (err, klass) {
+              for (var j = 0; j < klass.skills.length; j++) {
+                if (klass.skills[j] === tag) score += 1;
+              }
+            });
+          }
+        }
+
+        scores[student.name] = score;
+        return keep;
       });
 
-      res.render('employerSearchResults', {students: students});
+      students.sort(function(x, y) {
+        return scores[x] > scores[y];
+      });
+
+      res.render('employerSearchResults', { students: students });
     }
   });
 });
