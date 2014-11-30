@@ -25,6 +25,7 @@ block content
         if (loginMessage && loginMessage.length > 0)
           .alert.alert-danger= loginMessage
         form.inputContainer(method='POST', action="/login")
+          input(type="hidden", name="_csrf", value="#{_csrf}")
           input(type="hidden", name="type", value="user")
           table
             tbody
@@ -71,6 +72,7 @@ block content
         div.tab-content
           div(id="studentTab", class="tabElement" role="tabpanel", class="tab-pane active")
             form.inputContainer(method='POST', action="/signup/student")
+              input(type="hidden", name="_csrf", value="#{_csrf}")
               input(type="hidden", name="type", value="student")
               table
                 tbody
@@ -106,6 +108,7 @@ block content
               button.btn.btn-success.sessionBtn(type="submit") Register
           div(id="employerTab", class="tabElement" role="tabpanel", class="tab-pane ")
             form.inputContainer(method='POST', action="/signup/employer")
+              input(type="hidden", name="_csrf", value="#{_csrf}")
               input(type="hidden", name="type", value="employer")
               table
                 tbody
