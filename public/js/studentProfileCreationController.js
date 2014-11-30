@@ -71,7 +71,7 @@ var StudentProfileCreationController = function() {
 
       $.ajax({
         datatype: "json", 
-        type: "POST", 
+        type: "PUT", 
         url: "/students/" + studentId + "/skills", 
         data: {skills: skills}
       }).done(function(res) {
@@ -90,7 +90,7 @@ var StudentProfileCreationController = function() {
 
       $.ajax({
         datatype: "json", 
-        type: "POST", 
+        type: "PUT", 
         url: "/students/" + studentId + "/classes", 
         data: {classes: classes}
       }).done(function(res) {
