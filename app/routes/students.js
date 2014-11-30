@@ -25,7 +25,8 @@ router.get('/', function (req, res) {
 
 /* Redirect to a page with every student that has at least
  * one of the required skills in his/her skills or any classes'
- * skills.
+ * skills. Orders the students by the sum of the number of 
+ * matching requiredSkills and desiredSkills.
  *
  * POST /students
  *
@@ -44,15 +45,6 @@ router.post('/', function(req, res) {
   var requiredSkills = req.body.requiredSkills || [];
   var desiredSkills  = req.body.desiredSkills || [];
 
-  // TODO: Looking for a way to improve this. Currently, it queries for the
-  // whole database, and filters afterward. We do this because we want
-  // to get every student with at least one Skill in the required skills,
-  // or one Class Skill in the required skills. I was unable to figure out
-  // a way to write a mongo query to accomplish this.
-  //
-  //.find({ $or: [ { skills: { $in: requiredSkills }},
-  //               { at least one class has a skill in requiredSkills }
-  //     ]})
   Student.find({}).exec(function(err, students) {
     if (err) {
       console.log(err);

@@ -41,7 +41,29 @@ router.post('/', function(req, res) {
   var requiredSkills = req.body.requiredSkills || [];
 
   Employer.find({}, function(err, employers) {
-    res.render('employerSearchResults', { employers: employers });
+    if (err) {
+      console.log(err);
+      utils.sendErrResponse(res, 500, null);
+    } else {
+      console.log(" -- requiredSkills: " + requiredSkills);
+      
+      employers = employers.filter( function(employer) {
+        for (var i = 0, len = employer.listings.length; i < len; i++) {
+          var listing = employer.listings[i];
+          for (var j = 0, len = listing.skills.length; j < len; j++) {
+            var skill = listing.skill[j];
+            console.log(" __ skill: " + skill)
+            if (skill in requiredSkills) {
+              return true;
+            }
+          }
+        }
+        
+        return false;
+      });
+
+      res.render('employerSearchResults', { employers: employers });
+    }
   });
 });
 
