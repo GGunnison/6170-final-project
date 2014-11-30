@@ -6,11 +6,53 @@ block head
   script(type="text/javascript", src="//code.jquery.com/ui/1.11.2/jquery-ui.js")
 
 block content
-
-  div.cont
-
+  div.cont(data-ng-controller="employerSearchCreationController")
     input(type="hidden", value="#{_csrf}")
+    table
+      tbody
+        tr
+          td(width='400px')
+            div.leftColCont
+              div.colCont
 
+          td
+            div.rightColCont
+              div.colCont
+
+//    span Search 
+//    input(ng-model="query")
+//    table
+//      tbody
+//        tr
+//          td.mainCol(width='400px')
+//            table
+//              tbody
+//                tr
+//                  td
+//                    h3 Skills
+//                tr
+//                  td(height='100%')
+//                    div.skillsCol
+//                      div.skill(ng-repeat="skill in viewModel.skills | filter:query")
+//                        span.draggable.label.label-default(id="{{skill._id}}", ng-bind="skill.name")
+//          td.mainCol.rightCol
+//            table
+//              tbody
+//                tr(height='0')
+//                  td
+//                    h4 Required skills
+//                tr
+//                  td
+//                    div.skillsDrop.requiredSkillsDrop
+//                tr(height='0')
+//                  td
+//                    h4 Desired skills
+//                tr
+//                  td
+//                    div.skillsDrop.desiredSkillsDrop
+//                tr(height='0')
+//                  td
+//                    button#skillSubmit.btn.btn-success Submit
 
 
 block nav_right
