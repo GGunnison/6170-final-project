@@ -43,6 +43,18 @@ app.use(passport.session()); // persistent login sessions
 var initPassport = require('./config/passport/init');
 initPassport(passport);
 
+// security ===================================================================
+// remove the X-Powered-By header as this can be useful to an attacker since it will state that we are using Express
+app.disable("x-powered-by");
+// enabling CSRF protections
+// CSRF middleware ignore verifying tokens on HTTP GET, OPTIONS, and HEAD requests
+var csrf = require('csurf');
+app.use(csrf());
+app.use( function(req, res, next) {
+  res.locals._csrf = req.csrfToken();
+  next();
+});
+
 // routes ======================================================================
 var index     = require('./app/routes/index')(passport);
 var student   = require('./app/routes/students');
@@ -55,15 +67,6 @@ app.use('/students', student);
 app.use('/employers', employers);
 app.use('/skills', skills);
 app.use('/classes', classes);
-
-
-// security ===================================================================
-// remove the X-Powered-By header as this can be useful to an attacker since it will state that we are using Express
-app.disable("x-powered-by");
-// enabling CSRF protections
-// CSRF middleware ignore verifying tokens on HTTP GET, OPTIONS, and HEAD requests
-var csrf = require('csurf');
-//app.use(csrf()); TODO enable this
 
 // launch ======================================================================
 app.set('port', 3000);
