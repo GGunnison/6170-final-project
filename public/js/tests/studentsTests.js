@@ -13,6 +13,10 @@ QUnit.module("Student", {
   }
 });
 
+QUnit.done( function (details) {
+  $.get('/logout');
+});
+
 // check that when given a valid studentId, we get the correct student back
 QUnit.asyncTest( "GET /students/:studentId --valid studentId", function( assert ) {
   expect(2);
@@ -176,7 +180,6 @@ QUnit.asyncTest( "GET /students/:studentId/experience --get experience for a stu
     type: 'GET',
     url: '/students/4edd40c86762e0fb12000003/experience',
     success: function (data, status, res) {
-      console.log(data.content);
       experienceId = data.content[0]._id;
       equal(data.content.length, 1, "only 1 experience set");
       equal(data.content[0].company, "Test Company", "Experience is set correctly");
@@ -185,10 +188,8 @@ QUnit.asyncTest( "GET /students/:studentId/experience --get experience for a stu
   }).always(start);
 });
 
-// TODO these last two here
 // update a specific experience
 QUnit.asyncTest( "PUT /students/:studentId/experience/:experienceId --update specific experience for a student", function( assert ) {
-  console.log(experienceId);
   expect(3);
   $.ajax({
     type: 'PUT',
@@ -201,31 +202,25 @@ QUnit.asyncTest( "PUT /students/:studentId/experience/:experienceId --update spe
                          }
           },
     success: function (data, status, res) {
-      equal(data.content.length, 1, "only 1 experience");
-      equal(data.content[0].company, "Test Company Updated", "Experience was updated correctly");
-      equal(res.status, 200, "200 status, success");
+      $.get('/students/4edd40c86762e0fb12000003/experience', function (data) {
+        equal(data.content.length, 1, "only 1 experience");
+        equal(data.content[0].company, "Test Company Updated", "Experience was updated correctly");
+        equal(res.status, 200, "200 status, success");
+      }).always(start);
     }
-  }).always(start);
+  });
 });
 
 // delete a specific experience
 QUnit.asyncTest( "DELETE /students/:studentId/experience/:experienceId --delete specific experience for a student", function( assert ) {
-  expect(3);
+  expect(1);
   $.ajax({
     type: 'DELETE',
     url: '/students/4edd40c86762e0fb12000003/experience/' + experienceId,
-    data: { experience : { company     : "Test Company Updated",
-                           position    : "Software Developer",
-                           description : "a lot of work",
-                           startTime   : "2014-11-28T22:31:10-05:00",
-                           endTime     : "2014-11-28T22:31:10-05:00"
-                         }
-          },
     success: function (data, status, res) {
-      console.log(data.content);
-      equal(data.content.length, 1, "only 1 experience");
-      equal(data.content[0].company, "Test Company Updated", "Experience was updated correctly");
-      equal(res.status, 200, "200 status, success");
+      $.get('/students/4edd40c86762e0fb12000003/experience', function (data) {
+        equal(data.content.length, 0, "only 0 experience");
+      }).always(start);
     }
-  }).always(start);
+  });
 });

@@ -1,8 +1,8 @@
 // Authors: Sabrian Drammis, Samuel Edson
-
-var router = require('express').Router();
-var utils  = require('../utils/utils.js');
-var assert = require('assert');
+var router   = require('express').Router();
+var utils    = require('../utils/utils.js');
+var assert   = require('assert');
+var mongoose = require('mongoose');
 
 // database models
 var Student = require('../models/StudentModel');
@@ -217,7 +217,6 @@ router.get('/:studentId/experience', function (req, res) {
       console.log(err);
       utils.sendErrResponse(res, 500, null);
     } else if (student) {
-      console.log(student);
       utils.sendSuccessResponse(res, student.experience);
     } else {
       utils.sendErrResponse(res, 404, 'student was not found');
@@ -251,25 +250,41 @@ router.post('/:studentId/experience', function (req, res) {
  *
  * PUT /students/:studentId/experience/:experienceId
  *
- * TODO write this
+ * TODO write spec
  */
 router.put('/:studentId/experience/:experienceId', function (req, res) {
-  console.log(req.body.experience);
+  var set = req.body.experience;
+  set._id = mongoose.Types.ObjectId(req.params.experienceId);
   Student.update({_id: req.params.studentId, "experience._id" : req.params.experienceId},
-         { $set: { "experience.$" : req.body.experience } },
-         function (err, data) {
-           if (err) console.log(err);
-           console.log(data);
-         });
+                 { $set: { "experience.$" : req.body.experience } },
+                 function (err, success) {
+                   if (success) {
+                     utils.sendSuccessResponse(res, null);
+                   } else {
+                     if (err) console.log(err);
+                     utils.sendErrResponse(res, 500, null);
+                   }
+                 });
 });
 
 /* Remove a specific experience
  *
  * DELETE /students/:studentId/experience/:experienceId
  *
- * TODO write this
+ * TODO write spec
+ *
  */
 router.delete('/:studentId/experience/:experienceId', function (req, res) {
+  Student.update({_id : req.params.studentId},
+                 { $pull : { 'experience' : { '_id' : req.params.experienceId }}},
+                 function (err, success) {
+                   if (success) {
+                     utils.sendSuccessResponse(res, null);
+                   } else {
+                     if (err) console.log(err);
+                     utils.sendErrResponse(res, 500, null);
+                   }
+                 });
 });
 
 /* Redirect to a page with every student that has at least
