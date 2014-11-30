@@ -10,18 +10,17 @@ var Class   = require('../models/ClassModel');
 var Skill   = require('../models/SkillModel');
 
 /* Search for students
- * TODO integrate this route with the search functionality
  */
-router.get('/', function (req, res) {
-  Skill.find({}, function (err, skills) {
-    if (err) {
-      console.log(err);
-      utils.sendErrResponse(res, 500, null);
-    } else {
-      res.render('studentSearchCreation.jade', { skills: skills });
-    }
-  });
-});
+//router.get('/', function (req, res) {
+  //Skill.find({}, function (err, skills) {
+    //if (err) {
+      //console.log(err);
+      //utils.sendErrResponse(res, 500, null);
+    //} else {
+      //res.render('studentSearchCreation.jade', { skills: skills });
+    //}
+  //});
+//});
 
 /* Redirect to a page with every student that has at least
  * one of the required skills in his/her skills or any classes'
@@ -41,7 +40,7 @@ router.get('/', function (req, res) {
  * author: Sam Edson, Sabrina Drammis
  * TODO clean this code up
  */
-router.post('/', function(req, res) {
+router.get('/', function(req, res) {
   var requiredSkills = req.body.requiredSkills || [];
   var desiredSkills  = req.body.desiredSkills || [];
 
