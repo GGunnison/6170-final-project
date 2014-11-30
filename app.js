@@ -50,11 +50,11 @@ app.disable("x-powered-by");
 // enabling CSRF protections
 // CSRF middleware ignore verifying tokens on HTTP GET, OPTIONS, and HEAD requests
 var csrf = require('csurf');
-//app.use(csrf());
-//app.use( function(req, res, next) {
-//  res.locals._csrf = req.csrfToken();
-//  next();
-//});
+app.use(csrf());
+app.use( function(req, res, next) {
+ res.locals._csrf = req.csrfToken();
+ next();
+});
 
 // using helmet to create a Content Security Policy (CSP)
 var helmet = require('helmet');
@@ -76,6 +76,7 @@ var employers = require('./app/routes/employers');
 var skills    = require('./app/routes/skills');
 var classes   = require('./app/routes/classes');
 var profile   = require('./app/routes/profile');
+var search    = require('./app/routes/search');
 
 app.use('/', index);
 app.use('/students', student);
@@ -83,6 +84,7 @@ app.use('/employers', employers);
 app.use('/skills', skills);
 app.use('/classes', classes);
 app.use('/profile', profile);
+app.use('/search', search);
 
 // launch ======================================================================
 app.set('port', 3000);

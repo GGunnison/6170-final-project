@@ -10,4 +10,7 @@ var Employer = require('../models/EmployerModel');
 
 router.get('/', function (req, res) {
   // render the search view here
+  res.render('employerSearchCreation');
 });
+
+module.exports = router;
