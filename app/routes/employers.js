@@ -6,10 +6,17 @@ var mongoose = require('mongoose');
 var Employer = require('../models/EmployerModel.js');
 var Skill   = require('../models/SkillModel');
 
+<<<<<<< HEAD
 /* TODO update this spec
  * only students can hit this route
  *
  * GET /employers
+=======
+/* Redirect to a page with every employer that fits the student's
+ * requiredSkills
+ *
+ * POST /employers
+>>>>>>> 161b114ff7ac57baa264c5ea114f856637331674
  *
  * Body:
  *   - requiredSkills: a list of Tag _ids
@@ -19,32 +26,30 @@ var Skill   = require('../models/SkillModel');
  *       if the search worked and renders a results page
  *
  * author: Sam Edson
+ *
+ * TODO test
  */
 router.get('/', utils.isLoggedInStudent, function(req, res) {
   var requiredSkills = req.body.requiredSkills || [];
-
+  // Filter employers that do not have one requiredSkill in any of
+  // their listings
   Employer.find({}, function(err, employers) {
     if (err) {
-      console.log(err);
+      console.log("error at GET /employers", err);
       utils.sendErrResponse(res, 500, null);
     } else {
-      console.log(" -- requiredSkills: " + requiredSkills);
-
       employers = employers.filter( function(employer) {
         for (var i = 0, len = employer.listings.length; i < len; i++) {
           var listing = employer.listings[i];
           for (var j = 0, len = listing.skills.length; j < len; j++) {
             var skill = listing.skill[j];
-            console.log(" __ skill: " + skill)
             if (skill in requiredSkills) {
               return true;
             }
           }
         }
-
         return false;
       });
-
       res.json({ employers: employers });
     }
   });
@@ -54,7 +59,16 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
  *
  * GET /employers/:employerId
  *
- * TODO test and spec
+ * Body:
+ *   - employerId: an _id for an Employer
+ *
+ * Response:
+ *    - success: 200:
+ *        responds with the requested employer
+ *    - error 404:
+ *        if the employerId is not valid
+ *
+ * TODO test
  */
 router.get('/:employerId', utils.isLoggedInEmployer, function (req, res) {
   Employer.findById(req.params.employerId, function (err, employer) {
@@ -73,7 +87,17 @@ router.get('/:employerId', utils.isLoggedInEmployer, function (req, res) {
  *
  * GET /employers/:employerId/listings
  *
- * TODO test and spec
+ * Params:
+ *   - employerId: an _id for an Employer
+ *
+ * Response:
+ *    - success: 200:
+ *        responds with the requested employer's listings
+ *        listings contain the skills assocaited with them
+ *    - error 404:
+ *        if the employerId is not valid
+ *
+ * TODO test
  */
 router.get('/:employerId/listings', utils.isLoggedInEmployer, function (req, res) {
   Employer.findById(req.params.employerId, function (err, employer) {
@@ -90,7 +114,20 @@ router.get('/:employerId/listings', utils.isLoggedInEmployer, function (req, res
 
 /* Add a new listing
  *
- * TODO
+ * Params:
+ *   - employerId: an _id for an Employer
+ *
+ * Body:
+ *    - listing: Listing object to be added to the
+ *               Employer's listings
+ *
+ * Response:
+ *    - success: 200:
+ *        if the listing was successfully added
+ *    - error 404:
+ *        if the studentId is not valid
+ *
+ * TODO test
  */
 router.post('/:employerId/listings', utils.isLoggedInEmployer, function (req, res) {
   // TODO if listing is null then don't allow adding
@@ -113,12 +150,23 @@ router.post('/:employerId/listings', utils.isLoggedInEmployer, function (req, re
  *
  * GET /employers/:employerId/listings/:listingId
  *
+ * Params:
+ *   - employerId: an _id for an Employer
+ *   - listingId: an _id for an Listing
+ *
+ * Response:
+ *    - success: 200:
+ *        if the listing was successfully found
+ *    - error 404:
+ *        if the employerId or listingId is not valid
+ *
  * TODO test and spec
  */
 router.get('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
   Employer.findById(req.params.employerId, function (err, employer) {
     if (err) {
-      console.log("error at GET /employers/:employerId/listings/:listingId", err);
+      console.log("error at GET /employers/:employerId/listings/:listingId",
+                  err);
       utils.sendErrResponse(res, 500, null);
     } else if (employer) {
       var listing = employer.listings.id(req.params.listingId);
@@ -134,12 +182,25 @@ router.get('/:employerId/listings/:listingId', utils.isLoggedInEmployer, functio
 });
 
 /* Update a listing
- * TODO
+ *
+ * Params:
+ *   - employerId: an _id for an Employer
+ *   - listingId: an _id for an Listing
+ *
+ * Body:
+ *   - listing: a new listing object that will be updated
+ *
+ * Response:
+ *    - success: 200:
+ *        if the listing was successfully updated
+ *
+ * TODO test
  */
 router.put('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
   var set = req.body.listing;
   set._id = mongoose.Types.ObjectId(req.params.listingId);
-  Employer.update({_id: req.params.employerId, 'listings._id': req.params.listingId},
+  Employer.update({ _id: req.params.employerId,
+                    'listings._id': req.params.listingId },
                   { $set: {'listings.$': set}},
                   function (err, success) {
                     if (success) {
@@ -155,15 +216,26 @@ router.put('/:employerId/listings/:listingId', utils.isLoggedInEmployer, functio
  *
  * DELETE /employers/:employerId/listing/:listingId
  *
- * TODO test and spec
+ * Params:
+ *   - employerId: an _id for an Employer
+ *   - listingId: an _id for an Listing
+ *
+ * Response:
+ *    - success: 200:
+ *        if the listing was successfully found
+ *    - error 404:
+ *        if the employerId or listingId is not valid
+ *
+ * TODO test
  */
 router.delete('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
   Employer.findByIdAndUpdate(
     req.params.employerId,
-    {$pull: {listings: {_id: req.params.listingId}}},
+    { $pull: { listings: { _id: req.params.listingId }}},
     function (err, employer) {
       if (err) {
-        console.log("error at DELETE /employers/:employerId/listings/:listingId", err);
+        console.log("error at DELETE \
+                    /employers/:employerId/listings/:listingId", err);
         utils.sendErrResponse(res, 500, null);
       } else if (employer) {
         utils.sendSuccessResponse(res, null);
