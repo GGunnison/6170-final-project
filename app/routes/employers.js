@@ -62,7 +62,7 @@ router.post('/', function(req, res) {
         return false;
       });
 
-      res.render('employerSearchResults', { employers: employers });
+      res.json({ employers: employers });
     }
   });
 });

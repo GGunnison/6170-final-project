@@ -111,7 +111,7 @@ router.post('/', function(req, res) {
         return scores[x] > scores[y];
       });
 
-      res.render('studentSearchResults', { students: students });
+      res.json({ students: students });
     }
   });
 });
