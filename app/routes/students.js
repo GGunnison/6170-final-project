@@ -13,8 +13,114 @@ var Skill   = require('../models/SkillModel');
  * TODO integrate this route with the search functionality
  */
 router.get('/', function (req, res) {
-  Student.find({}, function (err, students) {
-    res.render('employerSearchResults', {students: students});
+  Skill.find({}, function (err, skills) {
+    if (err) {
+      console.log(err);
+      utils.sendErrResponse(res, 500, null);
+    } else {
+      res.render('studentSearchCreation.jade', { skills: skills });
+    }
+  });
+});
+
+/* Redirect to a page with every student that has at least
+ * one of the required skills in his/her skills or any classes'
+ * skills.
+ *
+ * POST /students/search
+ *
+ * Body:
+ *   - requiredSkills: a list of Tag _ids
+ *   - desiredSkills: a list of Tag _ids
+ *
+ * Response:
+ *   - success: 200:
+ *       if the search worked and renders a results page
+ *
+ * author: Sam Edson, Sabrina Drammis
+ * TODO clean this code up
+ */
+router.post('/', function(req, res) {
+  var requiredSkills = req.body.requiredSkills || [];
+  var desiredSkills  = req.body.desiredSkills || [];
+
+  // TODO: Looking for a way to improve this. Currently, it queries for the
+  // whole database, and filters afterward. We do this because we want
+  // to get every student with at least one Skill in the required skills,
+  // or one Class Skill in the required skills. I was unable to figure out
+  // a way to write a mongo query to accomplish this.
+  //
+  //.find({ $or: [ { skills: { $in: requiredSkills }},
+  //               { at least one class has a skill in requiredSkills }
+  //     ]})
+  Student.find({}).exec(function(err, students) {
+    if (err) {
+      console.log(err);
+      utils.sendErrResponse(res, 500, null);
+    } else {
+      // Keeps track of each student's score so the we can sort them later
+      scores = {};
+
+      // Remove all students that do not have at least one requiredSkill
+      // in his/her skills or any classes' skills
+      students = students.filter( function(student) {
+        var score = 0;
+        // Required
+        for (var idx = 0; idx < requiredSkills.length; idx++) {
+          var tag = requiredSkills[idx];
+
+          // Skills
+          var skills = student.skills;
+          for (var i = 0; i < skills.length; i++) {
+            if (tag === skills[i]) score += 1;
+          }
+
+          // Classes
+          for (var i = 0; i < student.classes.length; i++) {
+            var c = student.classes[i];
+            Class.findById(c, function (err, klass) {
+              for (var j = 0; j < klass.skills.length; j++) {
+                if (klass.skills[j] === tag) score += 1;
+              }
+            });
+          }
+        }
+
+        // Only keep it if there was at least one match in the required
+        // skills
+        var keep = (score != 0);
+
+        // Desired
+        for (var idx = 0; idx < desiredSkills.length; idx++) {
+          var tag = desiredSkills[idx];
+
+          // Skills
+          var skills = student.skills;
+          for (var i = 0; i < skills.length; i++) {
+            if (tag === skills[i]) score += 1;
+          }
+
+          // Classes
+          for (var i = 0; i < student.classes.length; i++) {
+            var c = student.classes[i];
+            Class.findById(c, function (err, klass) {
+              for (var j = 0; j < klass.skills.length; j++) {
+                if (klass.skills[j] === tag) score += 1;
+              }
+            });
+          }
+        }
+
+        scores[student.name] = score;
+        return keep;
+      });
+
+      students.sort(function(x, y) {
+        return scores[x] > scores[y];
+      });
+
+      res.render('studentSearchResults', { students: students });
+    }
   });
 });
 
@@ -287,106 +393,6 @@ router.delete('/:studentId/experience/:experienceId', function (req, res) {
                  });
 });
 
-/* Redirect to a page with every student that has at least
- * one of the required skills in his/her skills or any classes'
- * skills.
- *
- * POST /students/search
- *
- * Body:
- *   - requiredSkills: a list of Tag _ids
- *   - desiredSkills: a list of Tag _ids
- *
- * Response:
- *   - success: 200:
- *       if the search worked and renders a results page
- *
- * author: Sam Edson, Sabrina Drammis
- * TODO clean this code up
- */
-router.post('/search', function(req, res) {
-  var requiredSkills = req.body.requiredSkills || [];
-  var desiredSkills  = req.body.desiredSkills || [];
-
-  // TODO: Looking for a way to improve this. Currently, it queries for the
-  // whole database, and filters afterward. We do this because we want
-  // to get every student with at least one Skill in the required skills,
-  // or one Class Skill in the required skills. I was unable to figure out
-  // a way to write a mongo query to accomplish this.
-  //
-  //.find({ $or: [ { skills: { $in: requiredSkills }},
-  //               { at least one class has a skill in requiredSkills }
-  //     ]})
-  Student.find({}).exec(function(err, students) {
-    if (err) {
-      console.log(err);
-      utils.sendErrResponse(res, 500, null);
-    } else {
-      // Keeps track of each student's score so the we can sort them later
-      scores = {};
-
-      // Remove all students that do not have at least one requiredSkill
-      // in his/her skills or any classes' skills
-      students = students.filter( function(student) {
-        var score = 0;
-        // Required
-        for (var idx = 0; idx < requiredSkills.length; idx++) {
-          var tag = requiredSkills[idx];
-
-          // Skills
-          var skills = student.skills;
-          for (var i = 0; i < skills.length; i++) {
-            if (tag === skills[i]) score += 1;
-          }
-
-          // Classes
-          for (var i = 0; i < student.classes.length; i++) {
-            var c = student.classes[i];
-            Class.findById(c, function (err, klass) {
-              for (var j = 0; j < klass.skills.length; j++) {
-                if (klass.skills[j] === tag) score += 1;
-              }
-            });
-          }
-        }
-
-        // Only keep it if there was at least one match in the required
-        // skills
-        var keep = (score != 0);
-
-        // Desired
-        for (var idx = 0; idx < desiredSkills.length; idx++) {
-          var tag = desiredSkills[idx];
-
-          // Skills
-          var skills = student.skills;
-          for (var i = 0; i < skills.length; i++) {
-            if (tag === skills[i]) score += 1;
-          }
-
-          // Classes
-          for (var i = 0; i < student.classes.length; i++) {
-            var c = student.classes[i];
-            Class.findById(c, function (err, klass) {
-              for (var j = 0; j < klass.skills.length; j++) {
-                if (klass.skills[j] === tag) score += 1;
-              }
-            });
-          }
-        }
-
-        scores[student.name] = score;
-        return keep;
-      });
-
-      students.sort(function(x, y) {
-        return scores[x] > scores[y];
-      });
-
-      res.render('employerSearchResults', { students: students });
-    }
-  });
-});
 
 
 module.exports = router;

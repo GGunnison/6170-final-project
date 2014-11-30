@@ -4,6 +4,7 @@ var assert   = require('assert');
 var mongoose = require('mongoose');
 
 var Employer = require('../models/EmployerModel.js');
+var Skill   = require('../models/SkillModel');
 
 /* Search for employers
  *
@@ -12,11 +13,37 @@ var Employer = require('../models/EmployerModel.js');
  * TODO write this route and spec
  */
 router.get('/', function (req, res) {
-  Employer.find({}, function (err, students) {
-    // render employer search page
+  Skill.find({}, function (err, skills) {
+    if (err) {
+      console.log(err);
+      utils.sendErrResponse(res, 500, null);
+    } else {
+      res.render('employerSearchCreation.jade', {skills: skills});
+    }
   });
 });
 
+/* Redirect to a page with every employer that fits the student's
+ * requiredSkills
+ *
+ * POST /employers/search
+ *
+ * Body:
+ *   - requiredSkills: a list of Tag _ids
+ *
+ * Response:
+ *   - success: 200:
+ *       if the search worked and renders a results page
+ *
+ * author: Sam Edson
+ */
+router.post('/', function(req, res) {
+  var requiredSkills = req.body.requiredSkills || [];
+
+  Employer.find({}, function(err, employers) {
+    res.render('employerSearchResults', { employers: employers });
+  });
+});
 
 /* Get a specific employer.
  *
@@ -141,24 +168,5 @@ router.delete('/:employerId/listings/:listingId', function (req, res) {
   });
 });
 
-/* Redirect to a page with every employer that fits the student's
- * requiredSkills
- *
- * POST /employers/search
- *
- * Body:
- *   - requiredSkills: a list of Tag _ids
- *
- * Response:
- *   - success: 200:
- *       if the search worked and renders a results page
- *
- * author: Sam Edson
- */
-router.post('search', function(req, res) {
-  var requiredSkills = req.body.requiredSkills || [];
-
-  
-});
 
 module.exports = router;

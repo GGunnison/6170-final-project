@@ -146,18 +146,6 @@ module.exports = function (passport) {
     res.redirect('/search');
   });
 
-  // SEARCH PAGE ========================
-  router.get('/search', function(req, res) {
-    Skill.find({}, function (err, skills) {
-      if (err) {
-        console.log(err);
-        utils.sendErrResponse(res, 500, null);
-      } else {
-        res.render('employerSearchCreation.jade', {skills: skills});
-      }
-    });
-  });
-
   return router;
 }
 

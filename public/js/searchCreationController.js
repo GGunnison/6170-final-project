@@ -1,4 +1,4 @@
-var EmployerSearchCreationController = function() {
+var SearchCreationController = function(searchURL) {
 
   // Public variables, available outside controller
   var public = {};
@@ -91,7 +91,7 @@ var EmployerSearchCreationController = function() {
       $.ajax({
         datatype: "json", 
         type: "POST", 
-        url: "/students/search", 
+        url: searchURL, 
         data: data
       }).done(function(res) {
         $("body").html(res);
