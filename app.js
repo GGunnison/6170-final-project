@@ -46,14 +46,28 @@ initPassport(passport);
 // security ===================================================================
 // remove the X-Powered-By header as this can be useful to an attacker since it will state that we are using Express
 app.disable("x-powered-by");
+
 // enabling CSRF protections
 // CSRF middleware ignore verifying tokens on HTTP GET, OPTIONS, and HEAD requests
 var csrf = require('csurf');
-app.use(csrf());
-app.use( function(req, res, next) {
-  res.locals._csrf = req.csrfToken();
-  next();
-});
+//app.use(csrf());
+//app.use( function(req, res, next) {
+//  res.locals._csrf = req.csrfToken();
+//  next();
+//});
+
+// using helmet to create a Content Security Policy (CSP)
+var helmet = require('helmet');
+app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  "default-src" : ["'self'"],
+  "script-src"  : ["'self'"], // note: this does not allow any inline javascript
+  "style-src"   : ["'self'", "'unsafe-inline'"] // allow inline css
+}));
+// re-enable the XSS header if it was diabled by the user
+app.use(helmet.xssFilter());
+// don't allow the app to be used in a frame or iframe
+app.use(helmet.frameguard('deny'));
 
 // routes ======================================================================
 var index     = require('./app/routes/index')(passport);
@@ -61,12 +75,14 @@ var student   = require('./app/routes/students');
 var employers = require('./app/routes/employers');
 var skills    = require('./app/routes/skills');
 var classes   = require('./app/routes/classes');
+var profile   = require('./app/routes/profile');
 
 app.use('/', index);
 app.use('/students', student);
 app.use('/employers', employers);
 app.use('/skills', skills);
 app.use('/classes', classes);
+app.use('/profile', profile);
 
 // launch ======================================================================
 app.set('port', 3000);
