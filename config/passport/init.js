@@ -6,6 +6,7 @@ var User = { Student  : require('../../app/models/StudentModel'),
              Employer :  require('../../app/models/EmployerModel')
            }
 
+// author(s): Grant Gunnison, Sabrina Drammis
 module.exports = function (passport) {
     // =========================================================================
     // passport session setup ==================================================
@@ -19,13 +20,12 @@ module.exports = function (passport) {
     });
 
     // used to deserialize the user
-    // author: Grant Gunnison
     passport.deserializeUser(function(user, done) {
       User[user.__t].findById(user._id, function (err, user) {
         if (err) done(err);
         done(null, user);
       });
-});
+    });
 
     // Setting up Passport Strategies for Login and SignUp/Registration
     login(passport);
