@@ -27,7 +27,7 @@ router.get('/', function (req, res) {
  * one of the required skills in his/her skills or any classes'
  * skills.
  *
- * POST /students/search
+ * POST /students
  *
  * Body:
  *   - requiredSkills: a list of Tag _ids

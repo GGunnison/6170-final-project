@@ -26,7 +26,7 @@ router.get('/', function (req, res) {
 /* Redirect to a page with every employer that fits the student's
  * requiredSkills
  *
- * POST /employers/search
+ * POST /employers
  *
  * Body:
  *   - requiredSkills: a list of Tag _ids
