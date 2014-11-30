@@ -1,6 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var Student   = require('../../app/models/StudentModel');
 var Employer   = require('../../app/models/EmployerModel');
+var Async = require('../../node_modules/async/lib/async.js')
 
 var bCrypt    = require('bcrypt-nodejs');
 var validator = require('validator');
@@ -28,42 +29,93 @@ module.exports = function(passport){
             if (!validator.isEmail(email)) {
               return done(null, false, req.flash('loginMessage', 'Invalid email.'));
             }
-                   Student.findOne({ 'email' :  email }, function(err, user) {
-                    Employer.findOne({ 'email' :  email }, function(error, user1) {
-
-                    // check to see if theres already a user with that email
-                    if (!user && !user1) {
-                        return done(null, false, req.flash('loginMessage', 'No user found.'));
-
+            Async.parallel([
+                    function(callback){
+                      var query = Student.findOne({ 'email' :  email });
+                      query.exec(function(err, student){
+                        if (err){
+                          callback(err);
+                        }
+                        callback(null, student);
+                      });
+                    },
+                    function(callback){
+                      var query = Employer.findOne({ 'email' :  email });
+                      query.exec(function(err, employer){
+                        if (err){
+                          callback(err);
+                        }
+                        callback(null, employer);
+                      });
                     }
-                    // if there are any errors, return the error
-                    if (user){
-                      if (err) {
-                        console.log(err);
-                        return done(err);
-                      }
-                      if (!user.validPassword(password)) {
-                        return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
-                      }else{
-                        return done(null, user);
-                      }
-                    }
+                  ],
 
-                    // if there are any errors, return the error
-                    if (user1){
-                      if (error) {
-                        console.log(err);
-                        return done(err);
-                      }
-                      if (!user1.validPassword(password)) {
-                        return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
-                      }else{
-                        return done(null, user1);
-                      }
-                    }
+            function(err, results){
+              if (!results[0] && !results[1]){
+                return done(null, false, req.flash('loginMessage', 'No user found.')); 
+              }
+              if (results[0]){
+                if (err) {
+                  console.log(err);
+                  return done(err);
+                }
+                if (!results[0].validPassword(password)) {
+                  return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
+                }else{
+                  console.log(results[0]);
+                  return done(null, results[0]);
+                }
+              }
 
-                });
-                });
+              if (results[1]){
+                if (err) {
+                  console.log(err);
+                  return done(err);
+              }
+                if (!results[1].validPassword(password)) {
+                  return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
+                }else{
+                  console.log(results[1]);
+                  return done(null, results[1]);
+              }
+            }
+
+            });
+                   
+
+                //     // check to see if theres already a user with that email
+                //     if (!user && !user1) {
+                //         return done(null, false, req.flash('loginMessage', 'No user found.'));
+
+                //     }
+                //     // if there are any errors, return the error
+                //     if (user){
+                //       if (err) {
+                //         console.log(err);
+                //         return done(err);
+                //       }
+                //       if (!user.validPassword(password)) {
+                //         return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
+                //       }else{
+                //         return done(null, user);
+                //       }
+                //     }
+
+                //     // if there are any errors, return the error
+                //     if (user1){
+                //       if (error) {
+                //         console.log(err);
+                //         return done(err);
+                //       }
+                //       if (!user1.validPassword(password)) {
+                //         return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
+                //       }else{
+                //         return done(null, user1);
+                //       }
+                //     }
+
+                // });
+                // });
 
         });
     }));
