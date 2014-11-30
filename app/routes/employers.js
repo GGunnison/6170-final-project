@@ -6,17 +6,11 @@ var mongoose = require('mongoose');
 var Employer = require('../models/EmployerModel.js');
 var Skill   = require('../models/SkillModel');
 
-<<<<<<< HEAD
-/* TODO update this spec
- * only students can hit this route
+/* Returns json list of employers that have at least one 
+ * requiredSkill in any of their listings. Only students
+ * can hit this route.
  *
  * GET /employers
-=======
-/* Redirect to a page with every employer that fits the student's
- * requiredSkills
- *
- * POST /employers
->>>>>>> 161b114ff7ac57baa264c5ea114f856637331674
  *
  * Body:
  *   - requiredSkills: a list of Tag _ids
