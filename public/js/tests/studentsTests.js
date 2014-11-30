@@ -1,18 +1,15 @@
 var testStudentId = '4edd40c86762e0fb12000003';
 QUnit.config.reorder = false;
 
-QUnit.module("Student", {
-  setup: function () {
-    $.ajax({
-      type: 'POST',
-      url: '/login',
-      data: { email: 'test@mit.edu',
-              password: 'test'
-            }
-    });
-  }
+QUnit.begin( function () {
+  $.ajax({
+    type: 'POST',
+    url: '/login',
+    data: { email: 'test@mit.edu',
+            password: 'test'
+          }
+  });
 });
-
 QUnit.done( function (details) {
   $.get('/logout');
 });
@@ -28,7 +25,6 @@ QUnit.asyncTest( "GET /students/:studentId --valid studentId", function( assert 
       equal(data.content.name, 'Test Test', "correct student returned");
     }
   }).always(start);
-  //assert.ok( true, "this test is fine" );
 });
 
 // if the studentId isn't an appropriate mongoose ObjectId we should get an internal server error

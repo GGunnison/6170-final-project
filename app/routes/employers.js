@@ -1,6 +1,7 @@
-var router = require('express').Router();
-var utils  = require('../utils/utils.js');
-var assert = require('assert');
+var router   = require('express').Router();
+var utils    = require('../utils/utils.js');
+var assert   = require('assert');
+var mongoose = require('mongoose');
 
 var Employer = require('../models/EmployerModel.js');
 
@@ -57,9 +58,23 @@ router.get('/:employerId/listings', function (req, res) {
 
 /* Add a new listing
  *
- *
+ * TODO
  */
-router.put('/:employerId/listings', function (req, res) {
+router.post('/:employerId/listings', function (req, res) {
+  // TODO if listing is null then don't allow adding
+  Employer.findByIdAndUpdate(
+    req.params.employerId,
+    { $push : { listings: req.body.listing } },
+    function (err, employer) {
+      if (err) {
+        console.log(err);
+        utils.sendErrResponse(res, 500, null);
+      } else if (employer) {
+        utils.sendSuccessResponse(res, null);
+      } else {
+        utils.sendErrResponse(res, 404, 'employer was not found');
+      }
+    });
 });
 
 /* Get specific employer listing.
@@ -89,7 +104,19 @@ router.get('/:employerId/listings/:listingId', function (req, res) {
 /* Update a listing
  * TODO
  */
-router.put('/:employerId/listing/:listingId', function (req, res) {
+router.put('/:employerId/listings/:listingId', function (req, res) {
+  var set = req.body.listing;
+  set._id = mongoose.Types.ObjectId(req.params.listingId);
+  Employer.update({_id: req.params.employerId, 'listings._id': req.params.listingId},
+                  { $set: {'listings.$': set}},
+                  function (err, success) {
+                    if (success) {
+                      utils.sendSuccessResponse(res, null);
+                    } else {
+                      if (err) console.log(err);
+                      utils.sendErrResponse(res, 500, null);
+                    }
+                  });
 });
 
 /* Remove an employer's listing
