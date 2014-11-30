@@ -1,10 +1,10 @@
-var express  = require('express');
-var app      = express();
-var mongoose = require('mongoose');
-var path = require('path');
-var morgan       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
+var express      = require('express'),
+    app          = express(),
+    mongoose     = require('mongoose'),
+    path         = require('path'),
+    morgan       = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser   = require('body-parser');
 
 var configDB = require('./config/database.js');
 
@@ -31,7 +31,11 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // Configure Passport
 var passport = require('passport');
 var session  = require('express-session');
-app.use(session({ secret: 'employMeSecret' })); // session secret
+// use generic cookie name so not to disclose implementation (key: 'sessionId')
+app.use(session( { secret: 'employMeSecret',
+                   key: 'sessionId',
+                   cookie: { httpOnly: true } // tell browsers to not allow client side script access to the cookie, mitigating XSS
+                 } ));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
@@ -51,6 +55,15 @@ app.use('/students', student);
 app.use('/employers', employers);
 app.use('/skills', skills);
 app.use('/classes', classes);
+
+
+// security ===================================================================
+// remove the X-Powered-By header as this can be useful to an attacker since it will state that we are using Express
+app.disable("x-powered-by");
+// enabling CSRF protections
+// CSRF middleware ignore verifying tokens on HTTP GET, OPTIONS, and HEAD requests
+var csrf = require('csurf');
+//app.use(csrf()); TODO enable this
 
 // launch ======================================================================
 app.set('port', 3000);

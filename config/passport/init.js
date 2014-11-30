@@ -12,19 +12,22 @@ module.exports = function (passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-      done(null, user._id);
+      console.log(user);
+      done(null, { _id: user._id, __t: user.__t} );
     });
 
     // used to deserialize the user
     // author: Grant Gunnison
-    passport.deserializeUser(function(id, done) {
-      Student.findById(id,function(err,user){
-        if (user) {
-          done(null, user);
+    // TODO update this to use __t instead of if els
+    passport.deserializeUser(function(user, done) {
+      console.log(user);
+      Student.findById(user._id, function(err, student){
+        if (student) {
+          done(null, student);
         } else {
-          Employer.findById(id, function(err,user){
+          Employer.findById(user._id, function(err, employer){
             if (err) done(err);
-            done(null, user);
+            done(null, employer);
           });
         }
     });

@@ -35,6 +35,7 @@ module.exports = function (passport) {
 
   // PROFILE SECTION =========================
   router.get('/profile', isLoggedIn, function(req, res) {
+    console.log(req.session);
     // Student
     if (req.user.__t = 'Student') {
       Student.findById(req.user._id)
