@@ -26,13 +26,16 @@ gulp.task('develop', function () {
 // TODO fix this to have multiple entries
 gulp.task('scripts', function () {
   console.log('starting scripts');
-  browserify({
-    entries: ['./app/src/main.js'],
-    standalone: 'main',
-    extensions: ['.js'],
-    debug: true
-  }).transform('jadeify')
-    .bundle()
-    .pipe(source('main.js'))
-    .pipe(gulp.dest('public/js'))
+  var entries = ['searchResultsController.js', 'searchCreationController.js', 'studentProfileCreationController.js'];
+  entries.forEach( function (fileName) {
+    browserify({
+      entry: './app/src/' + fileName,
+      //standalone: 'main',
+      extensions: ['.js'],
+      debug: true
+    }).transform('jadeify')
+      .bundle()
+      .pipe(source(fileName))
+      .pipe(gulp.dest('public/js'))
+  });
 });

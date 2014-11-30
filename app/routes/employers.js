@@ -73,7 +73,7 @@ router.get('/', function(req, res) {
  *
  * TODO test and spec
  */
-router.get('/:employerId', function (req, res) {
+router.get('/:employerId', utils.isLoggedInEmployer, function (req, res) {
   Employer.findById(req.params.employerId, function (err, employer) {
     if (err) {
       console.log("error at GET /employers/:employerId", err);

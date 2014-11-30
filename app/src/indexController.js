@@ -7,7 +7,7 @@ var IndexController = function() {
   var local = {};
 
   var setLocal = function() {
-    local.loginTemplate = require('../../views/templates/login.jade');
+    local.loginTemplate  = require('../../views/templates/login.jade');
     local.signupTemplate = require('../../views/templates/signup.jade');
   }
 

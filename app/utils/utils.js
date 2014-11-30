@@ -33,4 +33,34 @@ utils.checkLength = function (s) {
   return s.length > 0;
 };
 
+/* TODO spec here
+ *
+ */
+utils.isLoggedInStudent = function (req, res, next) {
+  if ( req.isAuthenticated() && (req.session.passport.user.__t === 'Student') ) {
+    return next();
+  }
+  // if they aren't logged in redired to the home page
+  res.redirect('/');
+}
+
+/* TODO spec here
+ *
+ */
+utils.isLoggedInEmployer = function (req, res, next) {
+  if ( req.isAuthenticated() && (req.session.passport.user.__t === 'Employer') ) {
+    return next();
+  }
+  // if they aren't logged in redired to the home page
+  res.redirect('/');
+}
+
+/* TODO spec here
+ *
+ */
+utils.isLoggedIn = function (req, res, next) {
+  if ( req.isAuthenticated() ) return next();
+  res.redirect('/');
+}
+
 module.exports = utils;
