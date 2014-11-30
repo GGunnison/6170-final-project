@@ -50,11 +50,11 @@ app.disable("x-powered-by");
 // enabling CSRF protections
 // CSRF middleware ignore verifying tokens on HTTP GET, OPTIONS, and HEAD requests
 var csrf = require('csurf');
-//app.use(csrf());
-//app.use( function(req, res, next) {
-//  res.locals._csrf = req.csrfToken();
-//  next();
-//});
+app.use(csrf());
+app.use( function(req, res, next) {
+  res.locals._csrf = req.csrfToken();
+  next();
+});
 
 // using helmet to create a Content Security Policy (CSP)
 var helmet = require('helmet');
