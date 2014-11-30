@@ -141,4 +141,24 @@ router.delete('/:employerId/listings/:listingId', function (req, res) {
   });
 });
 
+/* Redirect to a page with every employer that fits the student's
+ * requiredSkills
+ *
+ * POST /employers/search
+ *
+ * Body:
+ *   - requiredSkills: a list of Tag _ids
+ *
+ * Response:
+ *   - success: 200:
+ *       if the search worked and renders a results page
+ *
+ * author: Sam Edson
+ */
+router.post('search', function(req, res) {
+  var requiredSkills = req.body.requiredSkills || [];
+
+  
+});
+
 module.exports = router;
