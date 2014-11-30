@@ -144,7 +144,7 @@ module.exports = function (passport) {
    * author: Daniel Sanchez
    */
   router.get('/create/employer', isLoggedIn, function(req, res) {
-    res.redirect('/search');
+    res.redirect('/students');
   });
 
   return router;

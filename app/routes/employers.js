@@ -12,16 +12,16 @@ var Skill   = require('../models/SkillModel');
  *
  * TODO write this route and spec
  */
-router.get('/', function (req, res) {
-  Skill.find({}, function (err, skills) {
-    if (err) {
-      console.log(err);
-      utils.sendErrResponse(res, 500, null);
-    } else {
-      res.render('employerSearchCreation.jade', {skills: skills});
-    }
-  });
-});
+//router.get('/', function (req, res) {
+  //Skill.find({}, function (err, skills) {
+    //if (err) {
+      //console.log(err);
+      //utils.sendErrResponse(res, 500, null);
+    //} else {
+      //res.render('employerSearchCreation.jade', {skills: skills});
+    //}
+  //});
+//});
 
 /* Redirect to a page with every employer that fits the student's
  * requiredSkills
@@ -37,11 +37,33 @@ router.get('/', function (req, res) {
  *
  * author: Sam Edson
  */
-router.post('/', function(req, res) {
+router.get('/', function(req, res) {
   var requiredSkills = req.body.requiredSkills || [];
 
   Employer.find({}, function(err, employers) {
-    res.render('employerSearchResults', { employers: employers });
+    if (err) {
+      console.log(err);
+      utils.sendErrResponse(res, 500, null);
+    } else {
+      console.log(" -- requiredSkills: " + requiredSkills);
+      
+      employers = employers.filter( function(employer) {
+        for (var i = 0, len = employer.listings.length; i < len; i++) {
+          var listing = employer.listings[i];
+          for (var j = 0, len = listing.skills.length; j < len; j++) {
+            var skill = listing.skill[j];
+            console.log(" __ skill: " + skill)
+            if (skill in requiredSkills) {
+              return true;
+            }
+          }
+        }
+        
+        return false;
+      });
+
+      res.json({ employers: employers });
+    }
   });
 });
 
