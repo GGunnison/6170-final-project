@@ -37,6 +37,7 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       utils.sendErrResponse(res, 500, null);
     } else {
       scores = {};
+      console.log(" *** EMPLOYERS:" + employers)
       employers = employers.filter( function(employer) {
         scores[employer] = 0;
         for (var i = 0, len = employer.listings.length; i < len; i++) {
@@ -50,11 +51,11 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
         }
         return scores[employer] != 0;
       });
-
+      // Sort by number of total matches
       employers.sort(function(x, y) {
         return scores[x] > scores[y];
       });
-
+      // Send the response
       utils.sendSuccessResponse(res, employers);
     }
   });

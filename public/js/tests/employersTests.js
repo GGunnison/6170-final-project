@@ -1,3 +1,5 @@
+// Authors: Samuel Edson, Sabrina Drammis
+
 var testEmployerId = '4edd40c86762e0fb12111113';
 QUnit.config.reorder = false;
 
@@ -16,7 +18,8 @@ QUnit.done( function (details) {
 });
 
 // check that when given a valid employerId, we get the correct employer back
-QUnit.asyncTest( "GET /employers/:employerId --valid employerId", function( assert ) {
+QUnit.asyncTest( "GET /employers/:employerId --valid employerId", 
+                 function( assert ) {
   expect(2);
   $.ajax({
     type: 'GET',
@@ -28,8 +31,10 @@ QUnit.asyncTest( "GET /employers/:employerId --valid employerId", function( asse
   }).always(start);
 });
 
-// if the employerId isn't an appropriate mongoose ObjectId we should get an internal server error
-QUnit.asyncTest( "GET /employers/:employerId --invalid employerId", function( assert ) {
+// if the employerId isn't an appropriate mongoose ObjectId we should 
+// get an internal server error
+QUnit.asyncTest( "GET /employers/:employerId --invalid employerId", 
+                 function( assert ) {
   expect(1);
   $.ajax({
     type: 'GET',
@@ -40,8 +45,10 @@ QUnit.asyncTest( "GET /employers/:employerId --invalid employerId", function( as
   }).always(start);
 });
 
-// if the employerId is a mongoose ObjectId but not one in the student database then we should get a 404 not found error
-QUnit.asyncTest( "GET /employers/:employerId --employerId does not exist", function( assert ) {
+// if the employerId is a mongoose ObjectId but not one in the student
+// database then we should get a 404 not found error
+QUnit.asyncTest( "GET /employers/:employerId --employerId does not exist",
+                 function( assert ) {
   expect(1);
   $.ajax({
     type: 'GET',
@@ -53,7 +60,8 @@ QUnit.asyncTest( "GET /employers/:employerId --employerId does not exist", funct
 });
 
 // add a new listing to an employer
-QUnit.asyncTest( "POST /employers/:employerId/listings --add a new listing", function () {
+QUnit.asyncTest( "POST /employers/:employerId/listings --add a new listing",
+                 function () {
   expect(1);
   $.ajax({
     type: 'POST',
@@ -62,8 +70,8 @@ QUnit.asyncTest( "POST /employers/:employerId/listings --add a new listing", fun
                         description : 'listing description',
                         position : 'web developer',
                         location : 'Boston',
-                        skills : []
-                       }
+                        skills : ["3"]
+                      }
           },
     success: function (data, status, res) {
       equal(res.status, 200, "200 status, success");
@@ -71,9 +79,26 @@ QUnit.asyncTest( "POST /employers/:employerId/listings --add a new listing", fun
   }).always(start);
 });
 
+// check searching for the employer with a given listing
+QUnit.asyncTest( "GET /employers --search", function( assert ) {
+  expect(1);
+
+  $.ajax({
+    type: 'GET',
+    url: '/employers/',
+    data: { requiredSkills : ["1", "2", "3", "4"]
+          },
+    success: function (data, status, res) {
+      equal(res.status, 200, "200 status, success");
+      console.log(data);          
+    }
+  }).always(start);
+});
+
 var testListingId = null;
 // get the employer's listings and ensure the one we added was there
-QUnit.asyncTest( "GET /employers/:employerId/listings --get all listings", function () {
+QUnit.asyncTest( "GET /employers/:employerId/listings --get all listings",
+                 function () {
   expect(2);
   $.ajax({
     type: 'GET',
@@ -87,7 +112,8 @@ QUnit.asyncTest( "GET /employers/:employerId/listings --get all listings", funct
 });
 
 // update the listing
-QUnit.asyncTest( "PUT /employers/:employerId/listings/:listingId --update a listing", function () {
+QUnit.asyncTest( "PUT /employers/:employerId/listings/:listingId \
+                 --update a listing", function () {
   expect(1);
   $.ajax({
     type: 'PUT',
@@ -106,19 +132,22 @@ QUnit.asyncTest( "PUT /employers/:employerId/listings/:listingId --update a list
 });
 
 // get just the single listing
-QUnit.asyncTest( "GET /employers/:employerId/listings/:listingId --get a specific listing", function () {
+QUnit.asyncTest( "GET /employers/:employerId/listings/:listingId \
+                 --get a specific listing", function () {
   expect(1);
   $.ajax({
     type: 'GET',
     url: '/employers/' + testEmployerId + '/listings/' + testListingId,
     success: function (data, status, res) {
-      equal(data.content.title, "Test Listing Updated", "Listing is updated as expected");
+      equal(data.content.title, "Test Listing Updated",
+            "Listing is updated as expected");
     }
   }).always(start);
 });
 
 // delete the listing
-QUnit.asyncTest( "DELETE /employers/:employerId/listings/:listingId --delete a specific listing", function () {
+QUnit.asyncTest( "DELETE /employers/:employerId/listings/:listingId \
+                 --delete a specific listing", function () {
   expect(1);
   $.ajax({
     type: 'DELETE',
@@ -129,5 +158,4 @@ QUnit.asyncTest( "DELETE /employers/:employerId/listings/:listingId --delete a s
       }).always(start);
     }
   });
-
 });

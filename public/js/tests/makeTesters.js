@@ -4,7 +4,8 @@ var bcrypt   = require('bcrypt-nodejs');
 
 var Student  = require('../../../app/models/StudentModel.js');
 var Employer = require('../../../app/models/EmployerModel.js');
-
+var Skill    = require('../../../app/models/SkillModel.js');
+var Listing  = require('../../../app/models/ListingModel.js');
 
 mongoose.connect(configDB.url);
 
@@ -33,13 +34,4 @@ testEmployer._id        = mongoose.Types.ObjectId('4edd40c86762e0fb12111113');
 testEmployer.save();
 
 
-var testEmployer2 = new Employer();
-testEmployer2.name       = 'Test Employer 2';
-testEmployer2.email      = 'employer2@test.com';
-testEmployer2.password   = testStudent.generateHash('test');
-testEmployer2.company    = 'Test Company 2';
-testEmployer2.isVerified = true;
-testEmployer2.listings   = [];
-testEmployer2._id        = mongoose.Types.ObjectId('4edd40c86762e0fb12222223');
-
-testEmployer2.save();
+console.log("Finished making testers");
