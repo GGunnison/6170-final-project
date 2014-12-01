@@ -8,10 +8,6 @@ QUnit.begin( function () {
     data: { email: 'test@mit.edu',
             password: 'test'
           }
-  }).done( function (data, a, b) {
-    console.log(a);
-   console.log(b);
-  console.log(data);
   });
 });
 QUnit.done( function (details) {

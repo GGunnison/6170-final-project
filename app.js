@@ -47,26 +47,29 @@ initPassport(passport);
 // remove the X-Powered-By header as this can be useful to an attacker since it will state that we are using Express
 app.disable("x-powered-by");
 
+// We want to use csurf, however it is making testing difficult
 // enabling CSRF protections
 // CSRF middleware ignore verifying tokens on HTTP GET, OPTIONS, and HEAD requests
 //var csrf = require('csurf');
 //app.use(csrf());
-//app.use( function(req, res, next) {
-//  res.locals._csrf = req.csrfToken();
-//  next();
-//});
+app.use( function(req, res, next) {
+  res.locals._csrf = "tokenGoesHere";
+  //res.locals._csrf = req.csrfToken();
+  next();
+});
 
 // using helmet to create a Content Security Policy (CSP)
-//var helmet = require('helmet');
-//app.use(helmet.contentSecurityPolicy({
-//  defaultSrc : ["'self'", 'code.jquery.com'],
-//  scriptSrc  : ["'self'"], // note: this does not allow any inline javascript
-//  styleSrc   : ["'unsafe-inline'"] // allow inline css
-//}));
+var helmet = require('helmet');
+app.use(helmet.contentSecurityPolicy({
+  scriptSrc  : ['code.jquery.com', "'self'"], // note: this does not allow any inline javascript
+  styleSrc   : ["'unsafe-inline'", 'code.jquery.com', "'self'"] // allow inline css
+}));
 // re-enable the XSS header if it was diabled by the user
-//app.use(helmet.xssFilter());
+app.use(helmet.xssFilter());
 // don't allow the app to be used in a frame or iframe
-//app.use(helmet.frameguard('deny'));
+app.use(helmet.frameguard('deny'));
+
+app.use(helmet.noCache());
 
 // routes ======================================================================
 var index     = require('./app/routes/index')(passport);

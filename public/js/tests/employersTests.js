@@ -16,35 +16,6 @@ QUnit.done( function (details) {
 });
 
 // check that when given a valid employerId, we get the correct employer back
-QUnit.asyncTest( "POST /employers --search", function( assert ) {
-  expect(1);
-  $.ajax({
-    type: 'POST',
-    url: '/employers/' + testEmployerId + '/listings',
-    data: { listing : { title : 'Test Listing',
-                        description : 'listing description',
-                        position : 'web developer',
-                        location : 'Boston',
-                        skills : []
-                       }
-          },
-    success: function (data, status, res) {
-      equal(res.status, 200, "200 status, success");
-
-      $.ajax({
-        type: 'POST',
-        url: '/employers',
-        data: { requiredSkills : ["1", "3", "7"]
-              },
-        success: function (data, status, res) {
-          equal(res.status, 200, "200 status, success");
-        }
-      }).always(start);
-    }
-  }).always(start);
-});
-
-// check that when given a valid employerId, we get the correct employer back
 QUnit.asyncTest( "GET /employers/:employerId --valid employerId", function( assert ) {
   expect(2);
   $.ajax({
@@ -110,7 +81,7 @@ QUnit.asyncTest( "GET /employers/:employerId/listings --get all listings", funct
     success: function (data, status, res) {
       testListingId = data.content[0]._id;
       equal(data.content.length, 1, "only 1 listing set");
-      equal(data.content[0].title, "Test Listing", "Listinis set correctly");
+      equal(data.content[0].title, "Test Listing", "Listings set correctly");
     }
   }).always(start);
 });
