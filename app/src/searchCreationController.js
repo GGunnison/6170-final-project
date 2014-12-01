@@ -1,9 +1,10 @@
 // Author: Daniel Sanchez
 
-employMeApp.controller("employerSearchCreationController", function($scope) {
+employMeApp.controller("searchCreationController", function($scope) {
   // Public variables, available outside controller
   var public = $scope.viewModel = {
-    skills: []
+    skills: [], 
+    csrf: $("#csrf")[0].value;
   };
 
   var setViewModel = function() {
@@ -56,6 +57,7 @@ employMeApp.controller("employerSearchCreationController", function($scope) {
     $(window).resize(responsiveJS);
 
     eventListeners();
+    console.log("csrf: ", public.csrf);
   }
 
   var sizingJS = function() {
@@ -114,7 +116,8 @@ employMeApp.controller("employerSearchCreationController", function($scope) {
 
       var data = {
         requiredSkills: requiredSkills,
-        desiredSkills: desiredSkills
+        desiredSkills: desiredSkills, 
+        _csrf: public.csrf
       }
 
       $.ajax({
