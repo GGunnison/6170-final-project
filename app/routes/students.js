@@ -197,19 +197,23 @@ router.get('/:studentId/classes', utils.isLoggedInStudent, function (req, res) {
  * author: Sabrina Drammis
  */
 router.put('/:studentId/classes', utils.isLoggedInStudent, function (req, res) {
-  var classes = req.body.classes || [];
-  Student.findByIdAndUpdate(req.params.studentId,
-         {classes: classes},
-         function (err, student) {
-           if (err) {
-             console.log("error at /:studentId/classes", err);
-             utils.sendErrResponse(res, 500, null);
-           } else if (student) {
-             utils.sendSuccessResponse(res, null);
-           } else {
-             utils.sendErrResponse(res, 404, 'student was not found');
-           }
-         });
+  if (req.user._id.toString() === req.params.studentId) {
+    var classes = req.body.classes || [];
+    Student.findByIdAndUpdate(req.params.studentId,
+           {classes: classes},
+           function (err, student) {
+             if (err) {
+               console.log("error at /:studentId/classes", err);
+               utils.sendErrResponse(res, 500, null);
+             } else if (student) {
+               utils.sendSuccessResponse(res, null);
+             } else {
+               utils.sendErrResponse(res, 404, 'student was not found');
+             }
+           });
+  } else {
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
+  }
 });
 
 /* Get a student's skills
@@ -263,19 +267,23 @@ router.get('/:studentId/skills', utils.isLoggedInStudent, function (req, res) {
  * author: Sabrina Drammis
  */
 router.put('/:studentId/skills', utils.isLoggedInStudent, function (req, res) {
-  var skills = req.body.skills || [];
-  Student.findByIdAndUpdate(req.params.studentId,
-         {skills: skills},
-         function (err, student) {
-           if (err) {
-             console.log(err);
-             utils.sendErrResponse(res, 500, null);
-           } else if (student) {
-             utils.sendSuccessResponse(res, null);
-           } else {
-             utils.sendErrResponse(res, 404, 'student was not found');
-           }
-         });
+  if (req.user._id.toString() === req.params.studentId) {
+    var skills = req.body.skills || [];
+    Student.findByIdAndUpdate(req.params.studentId,
+           {skills: skills},
+           function (err, student) {
+             if (err) {
+               console.log(err);
+               utils.sendErrResponse(res, 500, null);
+             } else if (student) {
+               utils.sendSuccessResponse(res, null);
+             } else {
+               utils.sendErrResponse(res, 404, 'student was not found');
+             }
+           });
+  } else {
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
+  }
 });
 
 
@@ -317,19 +325,23 @@ router.get('/:studentId/experience', utils.isLoggedInStudent, function (req, res
  * TODO write the spec
  */
 router.post('/:studentId/experience', utils.isLoggedInStudent, function (req, res) {
-  Student.findByIdAndUpdate(
-    req.params.studentId,
-    {$push: {experience: req.body.experience}},
-    function (err, student) {
-      if (err) {
-        console.log(err);
-        utils.sendErrResponse(res, 500, null);
-      } else if (student) {
-        utils.sendSuccessResponse(res, null);
-      } else {
-        utils.sendErrResponse(res, 404, 'student was not found');
-      }
-    });
+  if (req.user._id.toString() === req.params.studentId) {
+    Student.findByIdAndUpdate(
+      req.params.studentId,
+      {$push: {experience: req.body.experience}},
+      function (err, student) {
+        if (err) {
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else if (student) {
+          utils.sendSuccessResponse(res, null);
+        } else {
+          utils.sendErrResponse(res, 404, 'student was not found');
+        }
+      });
+  } else {
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
+  }
 });
 
 /* Update a specific experience
@@ -339,18 +351,22 @@ router.post('/:studentId/experience', utils.isLoggedInStudent, function (req, re
  * TODO write spec
  */
 router.put('/:studentId/experience/:experienceId', utils.isLoggedInStudent, function (req, res) {
-  var set = req.body.experience;
-  set._id = mongoose.Types.ObjectId(req.params.experienceId);
-  Student.update({_id: req.params.studentId, "experience._id" : req.params.experienceId},
-                 { $set: { "experience.$" : req.body.experience } },
-                 function (err, success) {
-                   if (success) {
-                     utils.sendSuccessResponse(res, null);
-                   } else {
-                     if (err) console.log(err);
-                     utils.sendErrResponse(res, 500, null);
-                   }
-                 });
+  if (req.user._id.toString() === req.params.studentId) {
+    var set = req.body.experience;
+    set._id = mongoose.Types.ObjectId(req.params.experienceId);
+    Student.update({_id: req.params.studentId, "experience._id" : req.params.experienceId},
+                   { $set: { "experience.$" : req.body.experience } },
+                   function (err, success) {
+                     if (success) {
+                       utils.sendSuccessResponse(res, null);
+                     } else {
+                       if (err) console.log(err);
+                       utils.sendErrResponse(res, 500, null);
+                     }
+                   });
+  } else {
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
+  }
 });
 
 /* Remove a specific experience
@@ -361,16 +377,20 @@ router.put('/:studentId/experience/:experienceId', utils.isLoggedInStudent, func
  *
  */
 router.delete('/:studentId/experience/:experienceId', utils.isLoggedInStudent, function (req, res) {
-  Student.update({_id : req.params.studentId},
-                 { $pull : { 'experience' : { '_id' : req.params.experienceId }}},
-                 function (err, success) {
-                   if (success) {
-                     utils.sendSuccessResponse(res, null);
-                   } else {
-                     if (err) console.log(err);
-                     utils.sendErrResponse(res, 500, null);
-                   }
-                 });
+  if (req.user._id.toString() === req.params.studentId) {
+    Student.update({_id : req.params.studentId},
+                   { $pull : { 'experience' : { '_id' : req.params.experienceId }}},
+                   function (err, success) {
+                     if (success) {
+                       utils.sendSuccessResponse(res, null);
+                     } else {
+                       if (err) console.log(err);
+                       utils.sendErrResponse(res, 500, null);
+                     }
+                   });
+  } else {
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
+  }
 });
 
 module.exports = router;

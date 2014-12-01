@@ -133,20 +133,24 @@ router.get('/:employerId/listings', utils.isLoggedInEmployer, function (req, res
  * TODO test
  */
 router.post('/:employerId/listings', utils.isLoggedInEmployer, function (req, res) {
-  // TODO if listing is null then don't allow adding
-  Employer.findByIdAndUpdate(
-    req.params.employerId,
-    { $push : { listings: req.body.listing } },
-    function (err, employer) {
-      if (err) {
-        console.log(err);
-        utils.sendErrResponse(res, 500, null);
-      } else if (employer) {
-        utils.sendSuccessResponse(res, null);
-      } else {
-        utils.sendErrResponse(res, 404, 'employer was not found');
-      }
-    });
+  if (req.user._id.toString() === req.params.employerId) {
+    // TODO if listing is null then don't allow adding
+    Employer.findByIdAndUpdate(
+      req.params.employerId,
+      { $push : { listings: req.body.listing } },
+      function (err, employer) {
+        if (err) {
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else if (employer) {
+          utils.sendSuccessResponse(res, null);
+        } else {
+          utils.sendErrResponse(res, 404, 'employer was not found');
+        }
+      });
+  } else {
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
+  }
 });
 
 /* Get specific employer listing.
@@ -200,19 +204,23 @@ router.get('/:employerId/listings/:listingId', utils.isLoggedInEmployer, functio
  * TODO test
  */
 router.put('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
-  var set = req.body.listing;
-  set._id = mongoose.Types.ObjectId(req.params.listingId);
-  Employer.update({ _id: req.params.employerId,
-                    'listings._id': req.params.listingId },
-                  { $set: {'listings.$': set}},
-                  function (err, success) {
-                    if (success) {
-                      utils.sendSuccessResponse(res, null);
-                    } else {
-                      if (err) console.log(err);
-                      utils.sendErrResponse(res, 500, null);
-                    }
-                  });
+  if (req.user._id.toString() === req.params.employerId) {
+    var set = req.body.listing;
+    set._id = mongoose.Types.ObjectId(req.params.listingId);
+    Employer.update({ _id: req.params.employerId,
+                      'listings._id': req.params.listingId },
+                    { $set: {'listings.$': set}},
+                    function (err, success) {
+                      if (success) {
+                        utils.sendSuccessResponse(res, null);
+                      } else {
+                        if (err) console.log(err);
+                        utils.sendErrResponse(res, 500, null);
+                      }
+                    });
+  } else {
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
+  }
 });
 
 /* Remove an employer's listing
@@ -232,20 +240,24 @@ router.put('/:employerId/listings/:listingId', utils.isLoggedInEmployer, functio
  * TODO test
  */
 router.delete('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
-  Employer.findByIdAndUpdate(
-    req.params.employerId,
-    { $pull: { listings: { _id: req.params.listingId }}},
-    function (err, employer) {
-      if (err) {
-        console.log("error at DELETE \
-                    /employers/:employerId/listings/:listingId", err);
-        utils.sendErrResponse(res, 500, null);
-      } else if (employer) {
-        utils.sendSuccessResponse(res, null);
-      } else {
-        utils.sendErrResponse(res, 404, 'employer was not found');
-      }
-  });
+  if (req.user._id.toString() === req.params.employerId) {
+    Employer.findByIdAndUpdate(
+      req.params.employerId,
+      { $pull: { listings: { _id: req.params.listingId }}},
+      function (err, employer) {
+        if (err) {
+          console.log("error at DELETE \
+                      /employers/:employerId/listings/:listingId", err);
+          utils.sendErrResponse(res, 500, null);
+        } else if (employer) {
+          utils.sendSuccessResponse(res, null);
+        } else {
+          utils.sendErrResponse(res, 404, 'employer was not found');
+        }
+    });
+  } else {
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
+  }
 });
 
 

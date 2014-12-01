@@ -73,7 +73,6 @@ app.use(helmet.xssFilter());
 // don't allow the app to be used in a frame or iframe
 app.use(helmet.frameguard('deny'));
 
-
 // routes ======================================================================
 var index     = require('./app/routes/index')(passport);
 var student   = require('./app/routes/students');

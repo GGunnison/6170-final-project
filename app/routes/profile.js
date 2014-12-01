@@ -19,7 +19,6 @@ router.get('/', utils.isLoggedIn, function (req, res) {
  *
  */
 router.get('/create', utils.isLoggedIn, function (req, res) {
-  console.log('fooooo', req.user.__t);
   switch ( req.user.__t ) {
     case 'Student':
       async.parallel({
