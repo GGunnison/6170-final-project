@@ -1,4 +1,4 @@
-//- Authors: Samuel Edson, Sabrina Drammis
+//- Authors: Daniel Sanchez, Samuel Edson, Sabrina Drammis
 extends layout
 
 block head
@@ -12,13 +12,58 @@ block content
     table
       tbody
         tr
-          td(width='400px')
+          td(width='350px')
             div.leftColCont
               div.colCont
+                table
+                  tbody
+                    tr(height="0")
+                      td
+                        h3 Search by Skills
+                        input.form-control.skillsSearchInput(ng-model="query", placeholder="Search for skills")
+                    tr
+                      td
+                        div.leftColSectionCont
+                          div#skillsCont.leftColSection
+                            div.skill(ng-repeat="skill in viewModel.skills | filter:query")
+                              span.draggable.label.label-default(id="{{skill._id}}", ng-bind="skill.name")
+                    tr
+                      td
+                        div.leftColSectionCont
+                          div.leftColSection.skillsDrop.requiredSkillsDrop
+                            div.dragInstructionTextDiv
+                              h3 Drag required skills here
+                    tr
+                      td
+                        div.leftColSectionCont
+                          div.leftColSection.skillsDrop.desiredSkillsDrop
+                            div.dragInstructionTextDiv
+                              h3 Drag desired skills here
+                    tr(height="0")
+                      td
+                        button#skillSubmit.btn.btn-success Submit
+                            
 
           td
             div.rightColCont
               div.colCont
+                h3 Results
+                div.searchResult.g-shadow(ng-repeat="result in viewModel.searchResults")
+                  table
+                    tbody
+                      tr
+                        td(width="50%")
+                          div.infoContainer
+                            h4.resultHeader(ng-bind="result.name")
+                            div.resultBasicInfo
+                              div(ng-bind="result.email")
+                        td(width="50%")
+                          div.infoContainer
+                            h4.resultHeader Skills:
+                            div.resultSkills
+                              div.skill.draggedSkill(ng-repeat="skill in result.skills")
+                                span.label.label-default(ng-bind="viewModel.skillsMap[skill]")
+
 
 //    span Search 
 //    input(ng-model="query")

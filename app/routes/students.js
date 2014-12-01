@@ -30,8 +30,10 @@ var Skill   = require('../models/SkillModel');
  * TODO clean this code up
  */
 router.get('/', utils.isLoggedInEmployer, function(req, res) {
-  var requiredSkills = req.body.requiredSkills || [];
-  var desiredSkills  = req.body.desiredSkills || [];
+  var requiredSkills = req.query.requiredSkills || [];
+  var desiredSkills  = req.query.desiredSkills || [];
+
+  console.log("requiredSkills: ", requiredSkills);
 
   Student.find({}).exec(function(err, students) {
     if (err) {
@@ -98,6 +100,8 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
       students.sort(function(x, y) {
         return scores[x] > scores[y];
       });
+
+      console.log("students: ", students);
 
       res.json({ students: students });
     }

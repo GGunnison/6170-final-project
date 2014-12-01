@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var Student  = require('../models/StudentModel');
 var Employer = require('../models/EmployerModel');
 
-router.get('/', function (req, res) {
+router.get('/', utils.isLoggedIn, function (req, res) {
   // render the search view here
   res.render('employerSearchCreation');
 });

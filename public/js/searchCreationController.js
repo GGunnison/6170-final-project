@@ -1,1 +1,156 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({},{},[]);
+// Author: Daniel Sanchez
+
+employMeApp.controller("searchCreationController", function($scope) {
+  // Public variables, available outside controller
+  var public = $scope.viewModel = {
+    skills: [], 
+    csrf: $("#csrf")[0].value
+  };
+
+  var setViewModel = function() {
+
+    var counter = 0;
+    var setSkills = function() {
+      ajax.getSkills().done(function(res) {
+        public.skills = res.content;
+        $scope.$apply();
+        setSkillMap();
+      }).fail(function() {
+        if (counter <= 10) {
+          console.log("trying to get skills again...");
+          setSkills();
+          counter++;
+        }
+      });
+    }
+    setSkills();
+
+    var setSkillMap = function() {
+      public.skillsMap = {};
+      for (var i = 0; i < public.skills.length; i++) {
+        var skillObj = public.skills[i];
+        public.skillsMap[skillObj._id] = skillObj.name;
+      }
+    }
+  }
+
+  // Private variables,
+  var local = {};
+
+  // Helper functions
+  var helpers = (function() {
+    var exports = {};
+
+    return exports
+  })();
+
+  var ajax = (function() {
+    var exports = {};
+
+    exports.getSkills = function() {
+      return $.ajax({
+        datatype: "json", 
+        type: "GET", 
+        url: "/skills"
+      });
+    }
+
+    return exports;
+  })();
+
+  // Starts all processes
+  var init = function() {
+    setViewModel();
+
+    sizingJS();
+    $(window).resize(responsiveJS);
+
+    eventListeners.init();
+  }
+
+  var sizingJS = function() {
+
+  }
+
+  var responsiveJS = function() {
+    sizingJS();
+  }
+
+  var eventListeners = (function() {
+    var exports = {};
+
+    exports.init = function () {
+      exports.dragAndDropInit();
+
+      $("#skillSubmit").on("click", function() {
+        var requiredSkills = [];
+        var desiredSkills = [];
+
+        $(".requiredSkillsDrop .skill span").each(function(i) {
+          var skill_id = $(this).attr("id");
+          requiredSkills.push(skill_id);
+        });
+
+        $(".desiredSkillsDrop .skill span").each(function(i) {
+          var skill_id = $(this).attr("id");
+          desiredSkills.push(skill_id);
+        });
+
+        var data = {
+          requiredSkills: requiredSkills,
+          desiredSkills: desiredSkills, 
+          _csrf: public.csrf
+        }
+
+        $.ajax({
+          datatype: "json",
+          type: "GET",
+          url: '/students',
+          data: data
+        }).done(function(res) {
+          public.searchResults = res.students || res.employers;
+          $scope.$apply();
+        });
+      });
+    }
+
+    exports.dragAndDropInit = function () {
+      $("#skillsCont").delegate(".draggable", "mouseenter", function(e) {
+        $(this).draggable({
+          appendTo: "body",
+          helper: "clone",
+          revert: 'invalid'
+        });
+      });
+
+      $(".skillsDrop").droppable({
+        drop: function(e, ui) {
+          var skillName = ui.draggable.text();
+          var skillId = ui.draggable.attr("id");
+          $("#" + skillId).remove();
+
+          $("<div class='skill draggedSkill'><span id=" + skillId + " class='label label-default'>" + ui.draggable.text() + "</span></span>")
+            .appendTo(this);
+        }
+      });
+
+      $(".skillsDrop").on("click", ".skill", function(e) {
+        var skillId = $(this).attr("id");
+        var skillHtml = $("<div class='skill'><span id=" + skillId + " class='draggable label label-default'>" + $(this).text() + "</span></div>")
+
+        $(this).remove();
+        $("#skillsCont").prepend(skillHtml);
+
+        $("#" + skillId).draggable({
+          appendTo: "body",
+          helper: "clone",
+          revert: "invalid"
+        });
+      });
+    }
+
+    return exports;
+  })();
+
+  init();
+});

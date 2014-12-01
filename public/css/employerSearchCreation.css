@@ -16,14 +16,77 @@ table {
 .colCont {
   padding: 10px;
   height: 100%;
+  text-align: center;
 }
 
 .leftColCont {
   height: 100%;
   overflow: auto;
-  background-color: #333;
 }
 
+.leftColSectionCont {
+  overflow: auto;
+  height: 100%;
+  padding: 5px;
+}
+
+.leftColSection {
+  overflow: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 100%;
+  text-align: left;
+}
+
+.skillsSearchInput {
+  border-radius: 40px;
+}
+
+.rightColCont {
+  height: 100%;
+  border-left: 1px solid #aaa;
+  overflow: auto;
+}
+
+.skill {
+  font-size: 18px;
+  margin: 0 0 5px 5px;
+  cursor: pointer;
+}
+
+.draggedSkill {
+  display: inline-block;
+}
+
+.skill .draggable {
+  cursor: move;
+}
+
+.dragInstructionTextDiv {
+  text-align: center;
+  color: #bbb;
+}
+
+.searchResult {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 100px;
+  overflow: hidden;
+  padding: 10px;
+  margin: 10px;
+}
+
+.resultHeader {
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.infoContainer {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-align: left;
+}
 /*.mainCol {
   padding: 0 10px;
 }
@@ -37,11 +100,6 @@ table {
   overflow: auto;
   border: 1px solid #aaa;
   border-radius: 5px;
-}
-
-.skill {
-  font-size: 18px;
-  margin: 5px;
 }
 
 .draggable {
