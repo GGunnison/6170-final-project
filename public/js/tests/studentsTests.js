@@ -10,18 +10,18 @@ QUnit.begin( function () {
           }
   });
 });
+
 QUnit.done( function (details) {
   $.get('/logout');
 });
 
 // check that when given a valid studentId, we get the correct student back
 QUnit.asyncTest( "GET /students/:studentId --valid studentId", function( assert ) {
-  expect(2);
+  expect(1);
   $.ajax({
     type: 'GET',
     url: '/students/4edd40c86762e0fb12000003',
-    success: function (data, status, res) {
-      equal(res.status, 200, "200 status, success");
+    success: function (data) {
       equal(data.content.name, 'Test Test', "correct student returned");
     }
   }).always(start);
@@ -66,15 +66,14 @@ QUnit.asyncTest( "PUT /students/:studentId/classes --set 6.170 as the classes fo
 
 // get the student's classes and test that the one we just added is there
 QUnit.asyncTest( "GET /students/:studentId/classes --get classes for a student, should have 6.170", function( assert ) {
-  expect(4);
+  expect(3);
   $.ajax({
     type: 'GET',
     url: '/students/4edd40c86762e0fb12000003/classes',
-    success: function (data, status, res) {
+    success: function (data) {
       equal(data.content.length, 1, "only set 1 class for the student");
       equal(data.content[0]._id, "6.170", "6.170 is the student's only class");
       equal(data.content[0].skills[0].name, "Javascript", "class skills are populated");
-      equal(res.status, 200, "200 status, success");
     }
   }).always(start);
 });

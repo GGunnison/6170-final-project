@@ -2,6 +2,8 @@ var mongoose      = require('mongoose');
 var ListingSchema = require('../schemas/ListingSchema.js');
 var utils         = require('../utils/utils.js');
 
+// author: Sabrina Drammis
+
 var Listing = mongoose.model('Listing', ListingSchema);
 
 // validators

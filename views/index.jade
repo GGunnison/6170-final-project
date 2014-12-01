@@ -71,9 +71,9 @@ block content
 
         div.tab-content
           div(id="studentTab", class="tabElement" role="tabpanel", class="tab-pane active")
-            form.inputContainer(method='POST', action="/signup/student")
+            form.inputContainer(method='POST', action="/signup")
               input(type="hidden", name="_csrf", value="#{_csrf}")
-              input(type="hidden", name="type", value="student")
+              input(type="hidden", name="type", value="Student")
               table
                 tbody
                   tr
@@ -107,9 +107,9 @@ block content
               br
               button.btn.btn-success.sessionBtn(type="submit") Register
           div(id="employerTab", class="tabElement" role="tabpanel", class="tab-pane ")
-            form.inputContainer(method='POST', action="/signup/employer")
+            form.inputContainer(method='POST', action="/signup")
               input(type="hidden", name="_csrf", value="#{_csrf}")
-              input(type="hidden", name="type", value="employer")
+              input(type="hidden", name="type", value="Employer")
               table
                 tbody
 

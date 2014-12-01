@@ -2,7 +2,7 @@ var mongoose    = require('mongoose');
 var MessageSchema = require('../schemas/MessageSchema');
 var utils       = require('../utils/utils.js');
 
-// Author Grant Gunnison
+// author: Grant Gunnison
 
 var Message = mongoose.model('Message', MessageSchema);
 

@@ -10,7 +10,11 @@ var Listing = require('../models/ListingModel.js')
  *
  * GET /listings
  *
- * TODO do the spec
+ * Response:
+ *    - success 200
+ *        responds with all listings in the database
+ *
+ * author: Sabrina Drammis
  */
 router.get('/', function (req, res) {
   Listing.find({}, function (err, lisings) {

@@ -7,19 +7,32 @@ var async    = require('async');
 var Class = require('../models/ClassModel');
 var Skill = require('../models/SkillModel');
 var User  = { Student  : require('../../app/models/StudentModel'),
-             Employer :  require('../../app/models/EmployerModel')}
+              Employer :  require('../../app/models/EmployerModel')}
 
-/* TODO spec
+/* Go to profile page
+ * Must be a logged in user
+ *
+ * GET /profile
+ *
+ * renders the profile page
  */
 router.get('/', utils.isLoggedIn, function (req, res) {
   res.render('profile.jade');
 });
 
-/* TODO spec
+/* Go to the create profile page
+ * Must be a logged in user
  *
+ * GET /profile/create
+ *
+ * renders the appropriate profile creation view
+ * dependent on user type
+ *
+ * author: Sabrina Drammis
+ *
+ * TODO once profile has been created, a use should not be able to hit this route
  */
 router.get('/create', utils.isLoggedIn, function (req, res) {
-  console.log('fooooo', req.user.__t);
   switch ( req.user.__t ) {
     case 'Student':
       async.parallel({
@@ -47,11 +60,5 @@ router.get('/create', utils.isLoggedIn, function (req, res) {
       break;
   }
 });
-
-/* TODO
- */
-//router.get('/profile/edit', utils.isLogedIn, function (req, res) {
-//  utils.sendErrResponse(res, 404, "editing profile currently not available");
-//});
 
 module.exports = router;

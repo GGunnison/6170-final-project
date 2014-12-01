@@ -9,9 +9,12 @@ var Class = require('../models/ClassModel');
 /* Get all classes
  *
  * GET /classes
+ *
  * Response:
- *    - success 200:
+ *    - success 200
  *        responds with all classes in the database
+ *
+ * author: Sabrina Drammis
  */
 router.get('/', function(req, res) {
   Class.find({}, function(err, classes) {
