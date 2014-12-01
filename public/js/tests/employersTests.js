@@ -1,6 +1,4 @@
-// SABRINA: 4edd40c86762e0fb12111113
-// SAM: 547b64a2b9c728fcadb0c933
-var testEmployerId = '547b64a2b9c728fcadb0c933';
+var testEmployerId = '4edd40c86762e0fb12111113';
 QUnit.config.reorder = false;
 
 QUnit.begin( function () {

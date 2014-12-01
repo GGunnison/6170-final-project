@@ -6,8 +6,11 @@ var mongoose = require('mongoose');
 var Employer = require('../models/EmployerModel.js');
 var Skill   = require('../models/SkillModel');
 
-/* TODO update this spec
- * only students can hit this route
+/* Returns json list of employers that have at least one
+ * requiredSkill in any of their listings. Orders by number
+ * of total matches.
+ *
+ * Only students can hit this route.
  *
  * GET /employers
  *
@@ -31,18 +34,25 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       console.log("error at GET /employers", err);
       utils.sendErrResponse(res, 500, null);
     } else {
+      scores = {};
       employers = employers.filter( function(employer) {
+        scores[employer] = 0;
         for (var i = 0, len = employer.listings.length; i < len; i++) {
           var listing = employer.listings[i];
           for (var j = 0, len = listing.skills.length; j < len; j++) {
             var skill = listing.skill[j];
             if (skill in requiredSkills) {
-              return true;
+              scores[employer] += 1;
             }
           }
         }
-        return false;
+        return scores[employer] != 0;
       });
+
+      employers.sort(function(x, y) {
+        return scores[x] > scores[y];
+      });
+
       res.json({ employers: employers });
     }
   });
