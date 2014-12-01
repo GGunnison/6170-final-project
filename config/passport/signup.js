@@ -38,26 +38,22 @@ module.exports = function(passport) {
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
 
                     } else {
-                        if (!validator.isEmail(email)) {
-                          return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
-                        } else {
-                          var newUser = new Student();
+                        var newUser = new Student();
 
-                          newUser.email    = email;
-                          newUser.password = newUser.generateHash(password);
-                          newUser.name     = req.body.name
+                        newUser.email    = email;
+                        newUser.password = newUser.generateHash(password);
+                        newUser.name     = req.body.name
 
-                          newUser.save(function(err) {
-                              if (err)
-                                  return done(err);
-                              return done(null, newUser);
+                        newUser.save(function(err) {
+                            if (err)
+                                return done(err);
+                            return done(null, newUser);
 
-                          });
-                        }
+                        });
                     }
 
                 });
-                });
+              });
             } else {
                 // user is logged in and already has a local account. Ignore signup. (You should log out before trying to create a new account, user!)
                 return done(null, req.user);
@@ -91,24 +87,20 @@ module.exports = function(passport) {
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
 
                     } else {
-                        if (!validator.isEmail(email)) {
-                          return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
-                        } else {
-                          var newUser = new Employer();
+                        var newUser = new Employer();
 
-                          newUser.email    = email;
-                          newUser.password = newUser.generateHash(password);
-                          newUser.name     = req.body.name
+                        newUser.email    = email;
+                        newUser.password = newUser.generateHash(password);
+                        newUser.name     = req.body.name
 
-                          newUser.save(function(err) {
-                              if (err)
-                                  return done(err);
+                        newUser.save(function(err) {
+                            if (err)
+                                return done(err);
 
-                              return done(null, newUser);
+                            return done(null, newUser);
 
-                          });
-                        }
-                    }
+                        });
+                      }
 
                 });
                 });

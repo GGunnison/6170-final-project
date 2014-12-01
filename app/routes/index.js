@@ -10,10 +10,6 @@ var Employer = require('../models/EmployerModel');
 
 
 module.exports = function (passport) {
-  router.get('/tests', function(req, res) {
-    res.render('tests.jade');
-  });
-
   // show the home page (will also have our login links)
   // author(s): Grant Gunnison
   // TODO this needs to be updated!!

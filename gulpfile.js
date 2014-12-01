@@ -1,13 +1,12 @@
 // author: Sabrina Drammis
-
-var gulp = require('gulp'),
-    watch = require('gulp-watch'),
+var gulp       = require('gulp'),
+    watch      = require('gulp-watch'),
     livereload = require('gulp-livereload'),
     browserify = require('browserify'),
-    nodemon = require('gulp-nodemon'),
-    concat = require('gulp-concat'),
-    jade = require('gulp-jade'),
-    source = require('vinyl-source-stream');
+    nodemon    = require('gulp-nodemon'),
+    concat     = require('gulp-concat'),
+    jade       = require('gulp-jade'),
+    source     = require('vinyl-source-stream');
 
 gulp.task('watch', function () {
   gulp.watch('./view/**/*.jade', ['scripts'])

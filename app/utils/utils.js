@@ -33,30 +33,33 @@ utils.checkLength = function (s) {
   return s.length > 0;
 };
 
-/* TODO spec here
- *
+/* Check if the current user is a logged in student
+ * Middleware for API
  */
 utils.isLoggedInStudent = function (req, res, next) {
-  if ( req.isAuthenticated() && (req.session.passport.user.__t === 'Student') ) {
+  console.log(req.isAuthenticated());
+  console.log(req.user);
+  console.log(req.user.__t);
+  if ( req.isAuthenticated() && (req.user.__t === 'Student') ) {
     return next();
   }
   // if they aren't logged in redired to the home page
   res.redirect('/');
 }
 
-/* TODO spec here
- *
+/* Check if the current user is a logged in employer
+ * Middleware for API
  */
 utils.isLoggedInEmployer = function (req, res, next) {
-  if ( req.isAuthenticated() && (req.session.passport.user.__t === 'Employer') ) {
+  if ( req.isAuthenticated() && (req.user.__t === 'Employer') ) {
     return next();
   }
   // if they aren't logged in redired to the home page
   res.redirect('/');
 }
 
-/* TODO spec here
- *
+/* Check if the current user is a logged
+ * Middleware for API
  */
 utils.isLoggedIn = function (req, res, next) {
   if ( req.isAuthenticated() ) return next();

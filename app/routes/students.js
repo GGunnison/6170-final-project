@@ -1,4 +1,4 @@
-// Authors: Sabrian Drammis, Samuel Edson
+// author(s): Sabrian Drammis, Samuel Edson
 var router   = require('express').Router();
 var utils    = require('../utils/utils.js');
 var assert   = require('assert');
@@ -9,25 +9,21 @@ var Student = require('../models/StudentModel');
 var Class   = require('../models/ClassModel');
 var Skill   = require('../models/SkillModel');
 
-/* Redirect to a page with every student that has at least
- * one of the required skills in his/her skills or any classes'
- * skills. Orders the students by the sum of the number of
- * matching requiredSkills and desiredSkills.
+/* Filter and order students based off of desired and require skills
  *
- * TODO update this spec
- *
- * POST /students
+ * GET /students
  *
  * Body:
  *   - requiredSkills: a list of Tag _ids
- *   - desiredSkills: a list of Tag _ids
+ *                     skills that a student must contain
+ *   - desiredSkills:  a list of Tag _ids
+ *                     skills that a company would like a student to have
  *
  * Response:
- *   - success: 200:
- *       if the search worked and renders a results page
+ *   - success 200
+ *        responds with a list of ordered studends
  *
- * author: Sam Edson, Sabrina Drammis
- * TODO clean this code up
+ * author: Sam Edson
  */
 router.get('/', utils.isLoggedInEmployer, function(req, res) {
   var requiredSkills = req.body.requiredSkills || [];
@@ -99,12 +95,13 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
         return scores[x] > scores[y];
       });
 
-      res.json({ students: students });
+      utils.sendSuccessResponse(res, students);
     }
   });
 });
 
 /* Get a specified student.
+ * Must be logged in.
  *
  * GET /students/:studentId
  *
@@ -113,14 +110,14 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
  *        _id of the desired student
  *
  * Response:
- *    - success: 200:
+ *    - success 200
  *        responds with the requested student
- *    - error 404:
+ *    - error 404
  *        if the studentId is not valid
  *
  * author: Sabrina Drammis
  */
-router.get('/:studentId', utils.isLoggedInStudent, function (req, res) {
+router.get('/:studentId', utils.isLoggedIn, function (req, res) {
     Student.findById(req.params.studentId)
            .populate('skills')
            .exec( function (err, student) {
@@ -142,6 +139,7 @@ router.get('/:studentId', utils.isLoggedInStudent, function (req, res) {
 });
 
 /* Get a student's classes
+ * Must be logged in.
  *
  * GET /students/:studentId/classes
  *
@@ -158,7 +156,7 @@ router.get('/:studentId', utils.isLoggedInStudent, function (req, res) {
  *
  * author: Sabrina Drammis
  */
-router.get('/:studentId/classes', utils.isLoggedInStudent, function (req, res) {
+router.get('/:studentId/classes', utils.isLoggedIn, function (req, res) {
   Student.findById(req.params.studentId, function (err, student) {
     if (err) {
       console.log(err);
@@ -177,21 +175,25 @@ router.get('/:studentId/classes', utils.isLoggedInStudent, function (req, res) {
   });
 });
 
-/* Set the classes for a student
+/* Set the classes for a student.
+ * Only allowed to set your own classes.
  *
  * PUT /students/:studentId/classes
  *
  * Params:
  *    - studentId:
  *        _id of student to set classes for
+ *        must be the logged in student's _id
  *
  * Body:
  *    - classes: list of class mongo _ids
  *               set as the student's classes
  * Response:
- *    - success: 200:
+ *    - success 200
  *        if the classes were sucessfully set
- *    - error 404:
+ *    - error 403
+ *        if the user making the request is not the logged in student
+ *    - error 404
  *        if the studentId is not valid
  *
  * author: Sabrina Drammis
@@ -217,6 +219,7 @@ router.put('/:studentId/classes', utils.isLoggedInStudent, function (req, res) {
 });
 
 /* Get a student's skills
+ * Must be logged in.
  *
  * GET /students/:studentId/skills
  *
@@ -225,14 +228,14 @@ router.put('/:studentId/classes', utils.isLoggedInStudent, function (req, res) {
  *        _id of student whose skills to get
  *
  * Response:
- *    - success: 200:
+ *    - success 200
  *        responds with the requested student's skills
- *    - error 404:
+ *    - error 404
  *        if the studentId is not valid
  *
  * author: Sabrina Drammis
  */
-router.get('/:studentId/skills', utils.isLoggedInStudent, function (req, res) {
+router.get('/:studentId/skills', utils.isLoggedIn, function (req, res) {
   Student.findById(req.params.studentId)
          .populate('skills')
          .exec( function (err, student) {
@@ -247,21 +250,26 @@ router.get('/:studentId/skills', utils.isLoggedInStudent, function (req, res) {
          });
 });
 
-/* Set the student input skills for a student
+/* Set the student input skills for a student.
+ * A student can only edit their own information.
  *
  * PUT /students/:studentId/skills
  *
  * Params:
  *    - studentId:
  *        _id of student to set skills for
+ *        must be the logged in student's _id
  *
  * Body:
  *    - skills: list of skill mongo _ids
  *              to be set as the student's skills
+ *
  * Response:
- *    - success: 200:
+ *    - success 200
  *        if the skills were sucessfully set
- *    - error 404:
+ *    - error 403
+ *        if the user making the request is not the logged in student
+ *    - error 404
  *        if the studentId is not valid
  *
  * author: Sabrina Drammis
@@ -291,6 +299,10 @@ router.put('/:studentId/skills', utils.isLoggedInStudent, function (req, res) {
  *
  * GET /students/:studentId/experience
  *
+ * Params:
+ *    - studentId:
+ *        _id of student to set experiences for
+ *        must be the logged in student's _id
  * Body:
  *    - experience: ExperinceSchema object
  *        { company: String,
@@ -299,13 +311,16 @@ router.put('/:studentId/skills', utils.isLoggedInStudent, function (req, res) {
  *          startTime: String,  -- moment().format()
  *          endTime: String,    -- moment().format()
  *        }
+ *
  * Response:
  *    - success 200
  *        responds with specified student's experience
  *    - error 404
  *        if the id given does not match a student
+ *
+ * author: Sabrina Drammis
  */
-router.get('/:studentId/experience', utils.isLoggedInStudent, function (req, res) {
+router.get('/:studentId/experience', utils.isLoggedIn, function (req, res) {
   Student.findById(req.params.studentId, function (err, student) {
     if (err) {
       console.log(err);
@@ -318,11 +333,34 @@ router.get('/:studentId/experience', utils.isLoggedInStudent, function (req, res
   });
 });
 
-/* Add a new experience
+/* Add a new experience.
+ * A student can only edit their own information.
  *
  * POST /students/:studentId/experience
  *
- * TODO write the spec
+ * Params:
+ *    - studentId:
+ *        _id of student to add experience to
+ *        must be the logged in student's _id
+ *
+ * Body:
+ *    - experience: ExperinceSchema object
+ *        { company: String,
+ *          position: String,
+ *          description: String,
+ *          startTime: String,  -- moment().format()
+ *          endTime: String,    -- moment().format()
+ *        }
+ *
+ * Response:
+ *    - success 200
+ *        if the experience was successfully added
+ *    - error 403
+ *        if the user making the request is not the logged in student
+ *    - error 404
+ *        if the studentId is not valid
+ *
+ * author: Sabrina Drammis
  */
 router.post('/:studentId/experience', utils.isLoggedInStudent, function (req, res) {
   if (req.user._id.toString() === req.params.studentId) {
@@ -344,11 +382,36 @@ router.post('/:studentId/experience', utils.isLoggedInStudent, function (req, re
   }
 });
 
-/* Update a specific experience
+/* Replace/update a specific experience
+ * A student can only edit their own information.
  *
  * PUT /students/:studentId/experience/:experienceId
  *
- * TODO write spec
+ * Params:
+ *    - studentId:
+ *        _id of student to update experience for
+ *        must be the logged in student's _id
+ *    - experienceId:
+ *        _id of the experience to be updated/replaced
+ *
+ * Body:
+ *    - experience: ExperinceSchema object
+ *        { company: String,
+ *          position: String,
+ *          description: String,
+ *          startTime: String,  -- moment().format()
+ *          endTime: String,    -- moment().format()
+ *        }
+ *
+ * Response:
+ *    - success 200
+ *        if the skills were sucessfully set
+ *    - error 403
+ *        if the user making the request is not the logged in student
+ *    - error 404
+ *        if the studentId is not valid
+ *
+ * author: Sabrina Drammis
  */
 router.put('/:studentId/experience/:experienceId', utils.isLoggedInStudent, function (req, res) {
   if (req.user._id.toString() === req.params.studentId) {
@@ -373,8 +436,20 @@ router.put('/:studentId/experience/:experienceId', utils.isLoggedInStudent, func
  *
  * DELETE /students/:studentId/experience/:experienceId
  *
- * TODO write spec
+ * Params:
+ *    - studentId:
+ *        _id of student to delete experience for
+ *        must be the logged in student's _id
+ *    - experienceId:
+ *        _id of the experience to be deleted
  *
+ * Response:
+ *    - success 200
+ *        if the experience was successfully deleted
+ *    - error 403
+ *        if the user making the request is not the logged in student
+ *
+ * author: Sabrina Drammis
  */
 router.delete('/:studentId/experience/:experienceId', utils.isLoggedInStudent, function (req, res) {
   if (req.user._id.toString() === req.params.studentId) {

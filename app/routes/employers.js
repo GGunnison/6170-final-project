@@ -1,10 +1,12 @@
-var router   = require('express').Router();
-var utils    = require('../utils/utils.js');
-var assert   = require('assert');
-var mongoose = require('mongoose');
+var router    = require('express').Router();
+var utils     = require('../utils/utils.js');
+var assert    = require('assert');
+var mongoose  = require('mongoose');
+var validator = require('validator');
 
+// database models
 var Employer = require('../models/EmployerModel.js');
-var Skill   = require('../models/SkillModel');
+var Skill    = require('../models/SkillModel');
 
 /* Returns json list of employers that have at least one
  * requiredSkill in any of their listings. Orders by number
@@ -18,8 +20,8 @@ var Skill   = require('../models/SkillModel');
  *   - requiredSkills: a list of Tag _ids
  *
  * Response:
- *   - success: 200:
- *       if the search worked and renders a results page
+ *   - success 200
+ *        responds with the a list of employers
  *
  * author: Sam Edson
  *
@@ -53,12 +55,13 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
         return scores[x] > scores[y];
       });
 
-      res.json({ employers: employers });
+      utils.sendSuccessResponse(res, employers);
     }
   });
 });
 
-/* Get a specific employer.
+/* Get a specific employer's information.
+ * Must be logged in
  *
  * GET /employers/:employerId
  *
@@ -66,14 +69,14 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
  *   - employerId: an _id for an Employer
  *
  * Response:
- *    - success: 200:
+ *    - success 200
  *        responds with the requested employer
- *    - error 404:
+ *    - error 404
  *        if the employerId is not valid
  *
- * TODO test
+ * author: Sabrina Drammis
  */
-router.get('/:employerId', utils.isLoggedInEmployer, function (req, res) {
+router.get('/:employerId', utils.isLoggedIn, function (req, res) {
   Employer.findById(req.params.employerId, function (err, employer) {
     if (err) {
       console.log("error at GET /employers/:employerId", err);
@@ -87,6 +90,7 @@ router.get('/:employerId', utils.isLoggedInEmployer, function (req, res) {
 });
 
 /* Get a specific employer's listings.
+ * Must be logged in.
  *
  * GET /employers/:employerId/listings
  *
@@ -94,15 +98,15 @@ router.get('/:employerId', utils.isLoggedInEmployer, function (req, res) {
  *   - employerId: an _id for an Employer
  *
  * Response:
- *    - success: 200:
+ *    - success 200
  *        responds with the requested employer's listings
  *        listings contain the skills assocaited with them
- *    - error 404:
+ *    - error 404
  *        if the employerId is not valid
  *
- * TODO test
+ * author: Sabrina Drammis
  */
-router.get('/:employerId/listings', utils.isLoggedInEmployer, function (req, res) {
+router.get('/:employerId/listings', utils.isLoggedIn, function (req, res) {
   Employer.findById(req.params.employerId, function (err, employer) {
     if (err) {
       console.log("error at GET /employers/:employerId/listings", err);
@@ -115,22 +119,26 @@ router.get('/:employerId/listings', utils.isLoggedInEmployer, function (req, res
   })
 });
 
-/* Add a new listing
+/* Add a new listing.
+ * Only a logged in employer can add a listing to their listings.
  *
  * Params:
  *   - employerId: an _id for an Employer
+ *                 must be the logged in employer's _id
  *
  * Body:
  *    - listing: Listing object to be added to the
  *               Employer's listings
  *
  * Response:
- *    - success: 200:
+ *    - success 200
  *        if the listing was successfully added
- *    - error 404:
+ *    - error 403
+ *        if the user making the request is not the logged in employer
+ *    - error 404
  *        if the studentId is not valid
  *
- * TODO test
+ * author: Sabrina Drammis
  */
 router.post('/:employerId/listings', utils.isLoggedInEmployer, function (req, res) {
   if (req.user._id.toString() === req.params.employerId) {
@@ -162,12 +170,12 @@ router.post('/:employerId/listings', utils.isLoggedInEmployer, function (req, re
  *   - listingId: an _id for an Listing
  *
  * Response:
- *    - success: 200:
+ *    - success 200
  *        if the listing was successfully found
- *    - error 404:
+ *    - error 404
  *        if the employerId or listingId is not valid
  *
- * TODO test and spec
+ * author: Sabrina Drammis
  */
 router.get('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
   Employer.findById(req.params.employerId, function (err, employer) {
@@ -189,9 +197,11 @@ router.get('/:employerId/listings/:listingId', utils.isLoggedInEmployer, functio
 });
 
 /* Update a listing
+ * Only a logged in employer can update their listing
  *
  * Params:
  *   - employerId: an _id for an Employer
+ *                 must be the logged in employer's _id
  *   - listingId: an _id for an Listing
  *
  * Body:
@@ -200,8 +210,10 @@ router.get('/:employerId/listings/:listingId', utils.isLoggedInEmployer, functio
  * Response:
  *    - success: 200:
  *        if the listing was successfully updated
+ *    - error 403
+ *        if the user making the request is not the logged in employer
  *
- * TODO test
+ * author: Sabrina Drammis
  */
 router.put('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
   if (req.user._id.toString() === req.params.employerId) {
@@ -224,11 +236,13 @@ router.put('/:employerId/listings/:listingId', utils.isLoggedInEmployer, functio
 });
 
 /* Remove an employer's listing
+ * Only a logged in employer can remove their listings
  *
  * DELETE /employers/:employerId/listing/:listingId
  *
  * Params:
  *   - employerId: an _id for an Employer
+ *                 must be the logged in employer's _id
  *   - listingId: an _id for an Listing
  *
  * Response:
@@ -236,8 +250,10 @@ router.put('/:employerId/listings/:listingId', utils.isLoggedInEmployer, functio
  *        if the listing was successfully found
  *    - error 404:
  *        if the employerId or listingId is not valid
+ *    - error 403
+ *        if the user making the request is not the logged in employer
  *
- * TODO test
+ * author: Sabrina Drammis
  */
 router.delete('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
   if (req.user._id.toString() === req.params.employerId) {
@@ -259,6 +275,5 @@ router.delete('/:employerId/listings/:listingId', utils.isLoggedInEmployer, func
     utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
   }
 });
-
 
 module.exports = router;

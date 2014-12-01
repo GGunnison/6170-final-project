@@ -9,8 +9,9 @@ var Skill = require('../models/SkillModel');
 /* Get all of the skills
  *
  * GET /skills
+ *
  * Response:
- *    - success 200:
+ *    - success 200
  *        responds with all skills in the database
  */
 router.get('/', function(req, res) {

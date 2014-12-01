@@ -8,6 +8,12 @@ var mongoose = require('mongoose');
 var Student  = require('../models/StudentModel');
 var Employer = require('../models/EmployerModel');
 
+/* Render the search view
+ *
+ * GET /search
+ *
+ * TODO hook this up with the correct search view
+ */
 router.get('/', function (req, res) {
   // render the search view here
   res.render('employerSearchCreation');

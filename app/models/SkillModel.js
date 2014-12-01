@@ -2,6 +2,8 @@ var mongoose    = require('mongoose');
 var SkillSchema = require('../schemas/SkillSchema');
 var utils       = require('../utils/utils.js');
 
+// author: Sabrina Drammis
+
 var Skill = mongoose.model('Skill', SkillSchema);
 
 // validators
