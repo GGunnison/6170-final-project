@@ -61,15 +61,14 @@ app.use( function(req, res, next) {
 // using helmet to create a Content Security Policy (CSP)
 var helmet = require('helmet');
 app.use(helmet.contentSecurityPolicy({
-  scriptSrc  : ['code.jquery.com', "'self'"], // note: this does not allow any inline javascript
-  styleSrc   : ["'unsafe-inline'", 'code.jquery.com', "'self'"] // allow inline css
+  scriptSrc  : ['code.jquery.com', "'self'", 'ajax.googleapis.com'], // note: this does not allow any inline javascript
+  styleSrc   : ["'unsafe-inline'", 'code.jquery.com', "'self'", 'netdna.bootstrapcdn.com'] // allow inline css
 }));
 // re-enable the XSS header if it was diabled by the user
 app.use(helmet.xssFilter());
 // don't allow the app to be used in a frame or iframe
 app.use(helmet.frameguard('deny'));
 
-app.use(helmet.noCache());
 
 // routes ======================================================================
 var index     = require('./app/routes/index')(passport);
