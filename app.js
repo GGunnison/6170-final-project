@@ -49,25 +49,24 @@ app.disable("x-powered-by");
 
 // enabling CSRF protections
 // CSRF middleware ignore verifying tokens on HTTP GET, OPTIONS, and HEAD requests
-var csrf = require('csurf');
-app.use(csrf());
-app.use( function(req, res, next) {
-  res.locals._csrf = req.csrfToken();
-  next();
-});
+//var csrf = require('csurf');
+//app.use(csrf());
+//app.use( function(req, res, next) {
+//  res.locals._csrf = req.csrfToken();
+//  next();
+//});
 
 // using helmet to create a Content Security Policy (CSP)
-var helmet = require('helmet');
-app.use(helmet());
-app.use(helmet.contentSecurityPolicy({
-  "default-src" : ["'self'"],
-  "script-src"  : ["'self'"], // note: this does not allow any inline javascript
-  "style-src"   : ["'self'", "'unsafe-inline'"] // allow inline css
-}));
+//var helmet = require('helmet');
+//app.use(helmet.contentSecurityPolicy({
+//  defaultSrc : ["'self'", 'code.jquery.com'],
+//  scriptSrc  : ["'self'"], // note: this does not allow any inline javascript
+//  styleSrc   : ["'unsafe-inline'"] // allow inline css
+//}));
 // re-enable the XSS header if it was diabled by the user
-app.use(helmet.xssFilter());
+//app.use(helmet.xssFilter());
 // don't allow the app to be used in a frame or iframe
-app.use(helmet.frameguard('deny'));
+//app.use(helmet.frameguard('deny'));
 
 // routes ======================================================================
 var index     = require('./app/routes/index')(passport);

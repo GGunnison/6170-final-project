@@ -1,6 +1,6 @@
 // SAM: 546fb461ae41e50a12de2338
 // SABRIN: 4edd40c86762e0fb12000003
-var testStudentId = '546fb461ae41e50a12de2338'; 
+var testStudentId = '546fb461ae41e50a12de2338';
 QUnit.config.reorder = false;
 
 QUnit.begin( function () {
@@ -10,6 +10,10 @@ QUnit.begin( function () {
     data: { email: 'test@mit.edu',
             password: 'test'
           }
+  }).done( function (data, a, b) {
+    console.log(a);
+   console.log(b);
+  console.log(data);
   });
 });
 QUnit.done( function (details) {
