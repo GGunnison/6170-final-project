@@ -20,7 +20,7 @@ module.exports = function (passport) {
                    loginMessage: req.flash('loginMessage')
                  });
     } else {
-      res.redirect('/profile');
+      res.redirect('/search');
     }
   });
 
@@ -44,7 +44,7 @@ module.exports = function (passport) {
 
   // process the login form for student
   router.post('/login', passport.authenticate('login', {
-    successRedirect : '/profile', // redirect to the secure profile section
+    successRedirect : '/search', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));

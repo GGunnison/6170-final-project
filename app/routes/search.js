@@ -16,7 +16,7 @@ var Employer = require('../models/EmployerModel');
  */
 router.get('/', utils.isLoggedIn, function (req, res) {
   // render the search view here
-  res.render('employerSearchCreation');
+  res.render('employerSearchCreation', {user: req.user});
 });
 
 module.exports = router;

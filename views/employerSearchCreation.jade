@@ -41,7 +41,11 @@ block content
                               h3 Drag desired skills here
                     tr(height="0")
                       td
-                        button#skillSubmit.btn.btn-success Submit
+                        - if (user.__t == "Student") {
+                          button#skillSubmit.btn.btn-success(data-type="Student") Submit
+                        - } else if (user.__t == "Employer") {
+                          button#skillSubmit.btn.btn-success(data-type="Employer") Submit
+                        - }
                             
 
           td

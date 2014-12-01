@@ -102,13 +102,19 @@ employMeApp.controller("searchCreationController", function($scope) {
           _csrf: public.csrf
         }
 
-        $.ajax({
-          datatype: "json",
-          type: "GET",
-          url: '/students',
+        var ajaxObj = {
+          datatype: "json", 
+          type: "GET", 
           data: data
-        }).done(function(res) {
-          console.log("res: ", res);
+        }
+
+        if ($(this).attr("data-type") == "Student") {
+          ajaxObj["url"] = "/employers";
+        } else if ($(this).attr("data-type") == "Employer") {
+          ajaxObj["url"] = "/students";
+        }
+
+        $.ajax(ajaxObj).done(function(res) {
           public.searchResults = res.content;
           $scope.$apply();
         });
