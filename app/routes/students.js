@@ -11,8 +11,10 @@ var Skill   = require('../models/SkillModel');
 
 /* Redirect to a page with every student that has at least
  * one of the required skills in his/her skills or any classes'
- * skills. Orders the students by the sum of the number of 
+ * skills. Orders the students by the sum of the number of
  * matching requiredSkills and desiredSkills.
+ *
+ * TODO update this spec
  *
  * POST /students
  *
@@ -27,7 +29,7 @@ var Skill   = require('../models/SkillModel');
  * author: Sam Edson, Sabrina Drammis
  * TODO clean this code up
  */
-router.get('/', function(req, res) {
+router.get('/', utils.isLoggedInEmployer, function(req, res) {
   var requiredSkills = req.body.requiredSkills || [];
   var desiredSkills  = req.body.desiredSkills || [];
 
@@ -118,7 +120,7 @@ router.get('/', function(req, res) {
  *
  * author: Sabrina Drammis
  */
-router.get('/:studentId', function (req, res) {
+router.get('/:studentId', utils.isLoggedInStudent, function (req, res) {
     Student.findById(req.params.studentId)
            .populate('skills')
            .exec( function (err, student) {
@@ -156,7 +158,7 @@ router.get('/:studentId', function (req, res) {
  *
  * author: Sabrina Drammis
  */
-router.get('/:studentId/classes', function (req, res) {
+router.get('/:studentId/classes', utils.isLoggedInStudent, function (req, res) {
   Student.findById(req.params.studentId, function (err, student) {
     if (err) {
       console.log(err);
@@ -194,7 +196,7 @@ router.get('/:studentId/classes', function (req, res) {
  *
  * author: Sabrina Drammis
  */
-router.put('/:studentId/classes', function (req, res) {
+router.put('/:studentId/classes', utils.isLoggedInStudent, function (req, res) {
   var classes = req.body.classes || [];
   Student.findByIdAndUpdate(req.params.studentId,
          {classes: classes},
@@ -226,7 +228,7 @@ router.put('/:studentId/classes', function (req, res) {
  *
  * author: Sabrina Drammis
  */
-router.get('/:studentId/skills', function (req, res) {
+router.get('/:studentId/skills', utils.isLoggedInStudent, function (req, res) {
   Student.findById(req.params.studentId)
          .populate('skills')
          .exec( function (err, student) {
@@ -260,7 +262,7 @@ router.get('/:studentId/skills', function (req, res) {
  *
  * author: Sabrina Drammis
  */
-router.put('/:studentId/skills', function (req, res) {
+router.put('/:studentId/skills', utils.isLoggedInStudent, function (req, res) {
   var skills = req.body.skills || [];
   Student.findByIdAndUpdate(req.params.studentId,
          {skills: skills},
@@ -295,7 +297,7 @@ router.put('/:studentId/skills', function (req, res) {
  *    - error 404
  *        if the id given does not match a student
  */
-router.get('/:studentId/experience', function (req, res) {
+router.get('/:studentId/experience', utils.isLoggedInStudent, function (req, res) {
   Student.findById(req.params.studentId, function (err, student) {
     if (err) {
       console.log(err);
@@ -314,7 +316,7 @@ router.get('/:studentId/experience', function (req, res) {
  *
  * TODO write the spec
  */
-router.post('/:studentId/experience', function (req, res) {
+router.post('/:studentId/experience', utils.isLoggedInStudent, function (req, res) {
   Student.findByIdAndUpdate(
     req.params.studentId,
     {$push: {experience: req.body.experience}},
@@ -336,7 +338,7 @@ router.post('/:studentId/experience', function (req, res) {
  *
  * TODO write spec
  */
-router.put('/:studentId/experience/:experienceId', function (req, res) {
+router.put('/:studentId/experience/:experienceId', utils.isLoggedInStudent, function (req, res) {
   var set = req.body.experience;
   set._id = mongoose.Types.ObjectId(req.params.experienceId);
   Student.update({_id: req.params.studentId, "experience._id" : req.params.experienceId},
@@ -358,7 +360,7 @@ router.put('/:studentId/experience/:experienceId', function (req, res) {
  * TODO write spec
  *
  */
-router.delete('/:studentId/experience/:experienceId', function (req, res) {
+router.delete('/:studentId/experience/:experienceId', utils.isLoggedInStudent, function (req, res) {
   Student.update({_id : req.params.studentId},
                  { $pull : { 'experience' : { '_id' : req.params.experienceId }}},
                  function (err, success) {

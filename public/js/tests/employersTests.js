@@ -1,6 +1,4 @@
-// SABRINA: 4edd40c86762e0fb12111113
-// SAM: 547b64a2b9c728fcadb0c933
-var testEmployerId = '547b64a2b9c728fcadb0c933';
+var testEmployerId = '4edd40c86762e0fb12111113';
 QUnit.config.reorder = false;
 
 QUnit.begin( function () {
@@ -15,35 +13,6 @@ QUnit.begin( function () {
 
 QUnit.done( function (details) {
   $.get('/logout');
-});
-
-// check that when given a valid employerId, we get the correct employer back
-QUnit.asyncTest( "POST /employers --search", function( assert ) {
-  expect(1);
-  $.ajax({
-    type: 'POST',
-    url: '/employers/' + testEmployerId + '/listings',
-    data: { listing : { title : 'Test Listing',
-                        description : 'listing description',
-                        position : 'web developer',
-                        location : 'Boston',
-                        skills : []
-                       }
-          },
-    success: function (data, status, res) {
-      equal(res.status, 200, "200 status, success");
-
-      $.ajax({
-        type: 'POST',
-        url: '/employers',
-        data: { requiredSkills : ["1", "3", "7"]
-              },
-        success: function (data, status, res) {
-          equal(res.status, 200, "200 status, success");
-        }
-      }).always(start);
-    }
-  }).always(start);
 });
 
 // check that when given a valid employerId, we get the correct employer back
@@ -112,7 +81,7 @@ QUnit.asyncTest( "GET /employers/:employerId/listings --get all listings", funct
     success: function (data, status, res) {
       testListingId = data.content[0]._id;
       equal(data.content.length, 1, "only 1 listing set");
-      equal(data.content[0].title, "Test Listing", "Listinis set correctly");
+      equal(data.content[0].title, "Test Listing", "Listings set correctly");
     }
   }).always(start);
 });

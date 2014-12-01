@@ -6,10 +6,13 @@ var mongoose = require('mongoose');
 var Employer = require('../models/EmployerModel.js');
 var Skill   = require('../models/SkillModel');
 
-/* Redirect to a page with every employer that fits the student's
- * requiredSkills
+/* Returns json list of employers that have at least one
+ * requiredSkill in any of their listings. Orders by number
+ * of total matches.
  *
- * POST /employers
+ * Only students can hit this route.
+ *
+ * GET /employers
  *
  * Body:
  *   - requiredSkills: a list of Tag _ids
@@ -22,7 +25,7 @@ var Skill   = require('../models/SkillModel');
  *
  * TODO test
  */
-router.get('/', function(req, res) {
+router.get('/', utils.isLoggedInStudent, function(req, res) {
   var requiredSkills = req.body.requiredSkills || [];
   // Filter employers that do not have one requiredSkill in any of
   // their listings
@@ -31,18 +34,25 @@ router.get('/', function(req, res) {
       console.log("error at GET /employers", err);
       utils.sendErrResponse(res, 500, null);
     } else {
+      scores = {};
       employers = employers.filter( function(employer) {
+        scores[employer] = 0;
         for (var i = 0, len = employer.listings.length; i < len; i++) {
           var listing = employer.listings[i];
           for (var j = 0, len = listing.skills.length; j < len; j++) {
             var skill = listing.skill[j];
             if (skill in requiredSkills) {
-              return true;
+              scores[employer] += 1;
             }
           }
         }
-        return false;
+        return scores[employer] != 0;
       });
+
+      employers.sort(function(x, y) {
+        return scores[x] > scores[y];
+      });
+
       res.json({ employers: employers });
     }
   });
@@ -92,7 +102,7 @@ router.get('/:employerId', utils.isLoggedInEmployer, function (req, res) {
  *
  * TODO test
  */
-router.get('/:employerId/listings', function (req, res) {
+router.get('/:employerId/listings', utils.isLoggedInEmployer, function (req, res) {
   Employer.findById(req.params.employerId, function (err, employer) {
     if (err) {
       console.log("error at GET /employers/:employerId/listings", err);
@@ -111,7 +121,7 @@ router.get('/:employerId/listings', function (req, res) {
  *   - employerId: an _id for an Employer
  *
  * Body:
- *    - listing: Listing object to be added to the 
+ *    - listing: Listing object to be added to the
  *               Employer's listings
  *
  * Response:
@@ -122,7 +132,7 @@ router.get('/:employerId/listings', function (req, res) {
  *
  * TODO test
  */
-router.post('/:employerId/listings', function (req, res) {
+router.post('/:employerId/listings', utils.isLoggedInEmployer, function (req, res) {
   // TODO if listing is null then don't allow adding
   Employer.findByIdAndUpdate(
     req.params.employerId,
@@ -155,10 +165,10 @@ router.post('/:employerId/listings', function (req, res) {
  *
  * TODO test and spec
  */
-router.get('/:employerId/listings/:listingId', function (req, res) {
+router.get('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
   Employer.findById(req.params.employerId, function (err, employer) {
     if (err) {
-      console.log("error at GET /employers/:employerId/listings/:listingId", 
+      console.log("error at GET /employers/:employerId/listings/:listingId",
                   err);
       utils.sendErrResponse(res, 500, null);
     } else if (employer) {
@@ -181,7 +191,7 @@ router.get('/:employerId/listings/:listingId', function (req, res) {
  *   - listingId: an _id for an Listing
  *
  * Body:
- *   - listing: a new listing object that will be updated 
+ *   - listing: a new listing object that will be updated
  *
  * Response:
  *    - success: 200:
@@ -189,10 +199,10 @@ router.get('/:employerId/listings/:listingId', function (req, res) {
  *
  * TODO test
  */
-router.put('/:employerId/listings/:listingId', function (req, res) {
+router.put('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
   var set = req.body.listing;
   set._id = mongoose.Types.ObjectId(req.params.listingId);
-  Employer.update({ _id: req.params.employerId, 
+  Employer.update({ _id: req.params.employerId,
                     'listings._id': req.params.listingId },
                   { $set: {'listings.$': set}},
                   function (err, success) {
@@ -221,7 +231,7 @@ router.put('/:employerId/listings/:listingId', function (req, res) {
  *
  * TODO test
  */
-router.delete('/:employerId/listings/:listingId', function (req, res) {
+router.delete('/:employerId/listings/:listingId', utils.isLoggedInEmployer, function (req, res) {
   Employer.findByIdAndUpdate(
     req.params.employerId,
     { $pull: { listings: { _id: req.params.listingId }}},
