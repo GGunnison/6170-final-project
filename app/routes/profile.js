@@ -7,7 +7,7 @@ var async    = require('async');
 var Class = require('../models/ClassModel');
 var Skill = require('../models/SkillModel');
 var User  = { Student  : require('../../app/models/StudentModel'),
-             Employer :  require('../../app/models/EmployerModel')}
+              Employer :  require('../../app/models/EmployerModel')}
 
 /* Go to profile page
  * Must be a logged in user
@@ -17,7 +17,6 @@ var User  = { Student  : require('../../app/models/StudentModel'),
  * renders the profile page
  */
 router.get('/', utils.isLoggedIn, function (req, res) {
-  console.log(req.user);
   res.render('profile.jade');
 });
 
@@ -31,7 +30,7 @@ router.get('/', utils.isLoggedIn, function (req, res) {
  *
  * author: Sabrina Drammis
  *
- * TODO one profile has been created, a use should not be able to hit this route
+ * TODO once profile has been created, a use should not be able to hit this route
  */
 router.get('/create', utils.isLoggedIn, function (req, res) {
   switch ( req.user.__t ) {

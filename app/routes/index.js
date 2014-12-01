@@ -56,14 +56,7 @@ module.exports = function (passport) {
   });
 
   // process the signup form
-  router.post('/signup/student', passport.authenticate('signup/student', {
-    successRedirect : '/profile/create', // redirect to the secure profile section
-    failureRedirect : '/', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
-  }));
-
-  // Separated two post requests because we cannot get req.params from successRedirect
-  router.post('/signup/employer', passport.authenticate('signup/employer', {
+  router.post('/signup', passport.authenticate('signup', {
     successRedirect : '/profile/create', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
