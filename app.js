@@ -4,7 +4,8 @@ var express      = require('express'),
     path         = require('path'),
     morgan       = require('morgan'),
     cookieParser = require('cookie-parser'),
-    bodyParser   = require('body-parser');
+    bodyParser   = require('body-parser'),
+    favicon      = require('serve-favicon');
 
 var configDB = require('./config/database.js');
 
@@ -27,6 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // in session and displaying in templates
 var flash = require('connect-flash');
 app.use(flash()); // use connect-flash for flash messages stored in session
+
+// Use cute favicon in /public
+app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // Configure Passport
 var passport = require('passport');
@@ -77,6 +81,7 @@ var employers = require('./app/routes/employers');
 var skills    = require('./app/routes/skills');
 var classes   = require('./app/routes/classes');
 var profile   = require('./app/routes/profile');
+var search    = require('./app/routes/search');
 
 app.use('/', index);
 app.use('/students', student);
@@ -84,6 +89,7 @@ app.use('/employers', employers);
 app.use('/skills', skills);
 app.use('/classes', classes);
 app.use('/profile', profile);
+app.use('/search', search);
 
 // launch ======================================================================
 app.set('port', 3000);

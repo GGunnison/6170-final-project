@@ -8,7 +8,23 @@ table {
   height: 100%;
 }
 
-.mainCol {
+.cont {
+  height: 100%;
+  padding-top: 50px;
+}
+
+.colCont {
+  padding: 10px;
+  height: 100%;
+}
+
+.leftColCont {
+  height: 100%;
+  overflow: auto;
+  background-color: #333;
+}
+
+/*.mainCol {
   padding: 0 10px;
 }
 
@@ -21,11 +37,6 @@ table {
   overflow: auto;
   border: 1px solid #aaa;
   border-radius: 5px;
-}
-
-.cont {
-  height: 100%;
-  padding: 70px 15px 15px 15px;
 }
 
 .skill {
@@ -47,4 +58,4 @@ table {
 
 #skillSubmit {
   float: right;
-}
+}*/

@@ -1,14 +1,32 @@
-var SearchCreationController = function() {
+// Author: Daniel Sanchez
 
+employMeApp.controller("searchCreationController", function($scope) {
   // Public variables, available outside controller
-  var public = {};
+  var public = $scope.viewModel = {
+    skills: [], 
+    csrf: $("#csrf")[0].value;
+  };
+
+  var setViewModel = function() {
+
+    var counter = 0;
+    var setSkills = function() {
+      ajax.getSkills().done(function(res) {
+        public.skills = res.content;
+        $scope.$apply();
+      }).fail(function() {
+        if (counter <= 10) {
+          console.log("trying to get skills again...");
+          setSkills();
+          counter++;
+        }
+      });
+    }
+    setSkills();
+  }
 
   // Private variables,
   var local = {};
-
-  var setLocal = function() {
-
-  }
 
   // Helper functions
   var helpers = (function() {
@@ -17,14 +35,29 @@ var SearchCreationController = function() {
     return exports
   })();
 
+  var ajax = (function() {
+    var exports = {};
+
+    exports.getSkills = function() {
+      return $.ajax({
+        datatype: "json", 
+        type: "GET", 
+        url: "/skills"
+      });
+    }
+
+    return exports;
+  })();
+
   // Starts all processes
   var init = function() {
-    setLocal();
+    setViewModel();
 
     sizingJS();
     $(window).resize(responsiveJS);
 
     eventListeners();
+    console.log("csrf: ", public.csrf);
   }
 
   var sizingJS = function() {
@@ -83,7 +116,8 @@ var SearchCreationController = function() {
 
       var data = {
         requiredSkills: requiredSkills,
-        desiredSkills: desiredSkills
+        desiredSkills: desiredSkills, 
+        _csrf: public.csrf
       }
 
       $.ajax({
@@ -97,11 +131,5 @@ var SearchCreationController = function() {
     });
   }
 
-  return {
-    public: public,
-    init: init
-  }
-}
-
-var searchCreationController = new SearchCreationController;
-searchCreationController.init();
+  init();
+});
