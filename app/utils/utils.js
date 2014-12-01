@@ -37,9 +37,6 @@ utils.checkLength = function (s) {
  * Middleware for API
  */
 utils.isLoggedInStudent = function (req, res, next) {
-  console.log(req.isAuthenticated());
-  console.log(req.user);
-  console.log(req.user.__t);
   if ( req.isAuthenticated() && (req.user.__t === 'Student') ) {
     return next();
   }

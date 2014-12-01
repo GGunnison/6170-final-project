@@ -22,13 +22,13 @@ module.exports = function (passport) {
     if ( !req.user ) {
       async.parallel({
         isStudent: function (cb) {
-            Student.findOne({'email' : email}, function (err, student) {
+            User.Student.findOne({'email' : email}, function (err, student) {
               if (err) { console.log(err); return done(err); }
               if (student) { cb(null, true) } else { cb(null, false) }
             });
           },
         isEmployer: function (cb) {
-            Employer.findOne({'email' : email}, function (err, employer) {
+            User.Employer.findOne({'email' : email}, function (err, employer) {
               if (err) { console.log(err); return done(err); }
               if (employer) { cb(null, true) } else { cb(null, false) }
             });
