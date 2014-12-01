@@ -108,7 +108,8 @@ employMeApp.controller("searchCreationController", function($scope) {
           url: '/students',
           data: data
         }).done(function(res) {
-          public.searchResults = res.students || res.employers;
+          console.log("res: ", res);
+          public.searchResults = res.content;
           $scope.$apply();
         });
       });
