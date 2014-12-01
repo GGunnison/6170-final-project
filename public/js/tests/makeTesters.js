@@ -22,7 +22,6 @@ testStudent.save();
 
 
 var testEmployer = new Employer();
-testEmployer._id        = mongoose.Types.ObjectId('4edd40c86762e0fb12111113');
 testEmployer.name       = 'Test Employer';
 testEmployer.email      = 'employer@test.com';
 testEmployer.password   = testStudent.generateHash('test');
@@ -35,13 +34,12 @@ testEmployer.save();
 
 
 var testEmployer2 = new Employer();
-testEmployer2._id        = mongoose.Types.ObjectId('4edd40c86762e0fb12111113');
 testEmployer2.name       = 'Test Employer 2';
 testEmployer2.email      = 'employer2@test.com';
 testEmployer2.password   = testStudent.generateHash('test');
 testEmployer2.company    = 'Test Company 2';
 testEmployer2.isVerified = true;
 testEmployer2.listings   = [];
-testEmployer2._id        = mongoose.Types.ObjectId('4edd40c86762e0fb12111123');
+testEmployer2._id        = mongoose.Types.ObjectId('4edd40c86762e0fb12222223');
 
 testEmployer2.save();
