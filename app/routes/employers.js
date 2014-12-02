@@ -1,3 +1,5 @@
+// Authors: Samuel Edson, Sabrina Drammis
+
 var router    = require('express').Router();
 var utils     = require('../utils/utils.js');
 var assert    = require('assert');
@@ -37,13 +39,13 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       utils.sendErrResponse(res, 500, null);
     } else {
       scores = {};
-      console.log(" *** EMPLOYERS:" + employers)
       employers = employers.filter( function(employer) {
         scores[employer] = 0;
         for (var i = 0, len = employer.listings.length; i < len; i++) {
-          var listing = employer.listings[i];
+          var listing = employer.listings[i] || { skills:{} };
+          console.log(" *** LISTING: " + listing);
           for (var j = 0, len = listing.skills.length; j < len; j++) {
-            var skill = listing.skill[j];
+            var skill = listing.skills[j];
             if (skill in requiredSkills) {
               scores[employer] += 1;
             }
