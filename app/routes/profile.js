@@ -56,7 +56,7 @@ router.get('/create', utils.isLoggedIn, function (req, res) {
       break;
     case 'Employer':
       // TODO create profile creation view for the employer
-      res.render('index.jade');
+      res.redirect('/search');
       break;
   }
 });

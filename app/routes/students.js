@@ -64,7 +64,7 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
 
         // Only keep it if there was at least one match in the required
         // skills
-        var keep = (score != 0);
+        var keep = (score !== 0);
 
         // Desired
         for (var idx = 0; idx < desiredSkills.length; idx++) {
@@ -87,13 +87,14 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
           }
         }
 
-        scores[student.name] = score;
+        //if (keep) scores[student.name] = score;
         return keep;
       });
       // Sort by the most matches
       students.sort(function(x, y) {
         return scores[x.name] < scores[y.name];
       });
+
       // Respond
       utils.sendSuccessResponse(res, students);
     }

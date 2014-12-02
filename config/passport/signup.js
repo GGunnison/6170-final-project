@@ -48,10 +48,14 @@ module.exports = function (passport) {
             case "Employer":
               newUser.company  = req.body.company;
               newUser.verified = false;
+              break;
           }
 
           newUser.save( function (err) {
-            if (err) return done(err);
+            if (err) {
+              console.log(err.errors);
+              return done(err);
+            }
             return done(null, newUser);
           });
         })
