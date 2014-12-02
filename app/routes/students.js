@@ -291,7 +291,8 @@ router.put('/:studentId/skills', utils.isLoggedInStudent, function (req, res) {
              }
            });
   } else {
-    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other \
+                                     users' information");
   }
 });
 
