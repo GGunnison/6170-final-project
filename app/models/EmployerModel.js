@@ -20,5 +20,13 @@ Employer.schema.path('company').validate(utils.checkLength, "company cannot be e
 Employer.schema.path('email').validate(checkEmployerEmail, "Must be a valid email");
 Employer.schema.path('name').validate(utils.checkLength, "name cannot be empty");
 Employer.schema.path('password').validate(utils.checkLength, "password cannot be empty");
+Employer.schema.path('website').validate(utils.checkURL, "website must be a valid URL");
+
+// presave
+Employer.schema.pre('save', function (next) {
+  utils.escape(this.name);
+  utils.escape(this.company);
+  next();
+});
 
 module.exports = Employer;

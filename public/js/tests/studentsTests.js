@@ -1,3 +1,4 @@
+// author(s): Sabrina Drammis
 var testStudentId = '546fb461ae41e50a12de2338';
 QUnit.config.reorder = false;
 
@@ -44,7 +45,7 @@ QUnit.asyncTest( "GET /students/:studentId --invalid studentId",
 
 // if the studentId is a mongoose ObjectId but not one in the student database
 // then we should get a 404 not found error
-QUnit.asyncTest( "GET /students/:studentId --studentId does not exist", 
+QUnit.asyncTest( "GET /students/:studentId --studentId does not exist",
                  function( assert ) {
   expect(1);
   $.ajax({
@@ -193,8 +194,8 @@ QUnit.asyncTest( "GET /students/:studentId/experience \
     success: function (data, status, res) {
       experienceId = data.content[0]._id;
       equal(data.content.length, 1, "only 1 experience set");
-      equal(data.content[0].company, 
-            "Test Company", 
+      equal(data.content[0].company,
+            "Test Company",
             "Experience is set correctly");
       equal(res.status, 200, "200 status, success");
     }
@@ -230,7 +231,7 @@ QUnit.asyncTest( "PUT /students/:studentId/experience/:experienceId \
 
 // delete a specific experience
 QUnit.asyncTest( "DELETE /students/:studentId/experience/:experienceId \
-                --delete specific experience for a student", 
+                --delete specific experience for a student",
                 function( assert ) {
   expect(1);
   $.ajax({

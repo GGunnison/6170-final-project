@@ -1,5 +1,4 @@
-// Authors: Samuel Edson, Sabrina Drammis
-
+// author(s): Sabrina Drammis
 var testEmployerId = '4edd40c86762e0fb12111113';
 QUnit.config.reorder = false;
 
@@ -18,7 +17,7 @@ QUnit.done( function (details) {
 });
 
 // check that when given a valid employerId, we get the correct employer back
-QUnit.asyncTest( "GET /employers/:employerId --valid employerId", 
+QUnit.asyncTest( "GET /employers/:employerId --valid employerId",
                  function( assert ) {
   expect(2);
   $.ajax({
@@ -31,9 +30,9 @@ QUnit.asyncTest( "GET /employers/:employerId --valid employerId",
   }).always(start);
 });
 
-// if the employerId isn't an appropriate mongoose ObjectId we should 
+// if the employerId isn't an appropriate mongoose ObjectId we should
 // get an internal server error
-QUnit.asyncTest( "GET /employers/:employerId --invalid employerId", 
+QUnit.asyncTest( "GET /employers/:employerId --invalid employerId",
                  function( assert ) {
   expect(1);
   $.ajax({
@@ -90,7 +89,7 @@ QUnit.asyncTest( "GET /employers --search", function( assert ) {
           },
     success: function (data, status, res) {
       equal(res.status, 200, "200 status, success");
-      console.log(data);          
+      console.log(data);
     }
   }).always(start);
 });

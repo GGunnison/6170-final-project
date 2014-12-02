@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+// Author: Grant Gunnison
 
-//Author Grant Gunnison
+var mongoose = require('mongoose');
 
 var MessageSchema = mongoose.Schema({
 

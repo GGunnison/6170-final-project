@@ -1,3 +1,5 @@
+// TODO this is for the new index page that is under construction
+// author: Sabrina Drammis
 var IndexController = function() {
 
   // Public variables, available outside controller

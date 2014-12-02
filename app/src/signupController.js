@@ -1,3 +1,5 @@
+// TODO this is for the new index homepage that is under construction
+// author: Sabrina Drammis
 var SignupController = function() {
 
   // Public variables, available outside controller

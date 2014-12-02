@@ -16,7 +16,7 @@ gulp.task('watch', function () {
 gulp.task('develop', function () {
   livereload.listen();
   nodemon( {script: './bin/www', ext: 'html js'} )
-    .on('start', ['scripts', 'watch'])
+    .on('start', ['watch'])
     .on('restart', function () {
       console.log('restarting server');
     });

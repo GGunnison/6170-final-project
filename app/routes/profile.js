@@ -17,7 +17,6 @@ var User  = { Student  : require('../../app/models/StudentModel'),
  * renders the profile page
  */
 router.get('/', utils.isLoggedIn, function (req, res) {
-  console.log("user: ", req.user);
   res.render('profile.jade', {user: req.user});
 });
 
@@ -72,6 +71,9 @@ router.get('/create', utils.isLoggedIn, function (req, res, next) {
         res.render('employerProfileCreation.jade', data);
       });
 
+      break;
+    default:
+      res.redirect('/');
       break;
   }
 });

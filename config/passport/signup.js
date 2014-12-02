@@ -7,7 +7,7 @@ var async         = require('async');
 var User = { Student  : require('../../app/models/StudentModel'),
              Employer :  require('../../app/models/EmployerModel')}
 
-// author: Grant Gunnison, Sabrina Drammis
+// author: Sabrina Drammis, Grant Gunnison
 module.exports = function (passport) {
   passport.use('signup', new LocalStrategy({
     // by default, local strategy uses username and password, we will override with email
@@ -48,10 +48,14 @@ module.exports = function (passport) {
             case "Employer":
               newUser.company  = req.body.company;
               newUser.verified = false;
+              break;
           }
 
           newUser.save( function (err) {
-            if (err) return done(err);
+            if (err) {
+              console.log(err.errors);
+              return done(err);
+            }
             return done(null, newUser);
           });
         })

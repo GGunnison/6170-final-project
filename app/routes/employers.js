@@ -28,7 +28,8 @@ var Skill    = require('../models/SkillModel');
  * author: Sam Edson
  */
 router.get('/', utils.isLoggedInStudent, function(req, res) {
-  var requiredSkills = req.body.requiredSkills || [];
+  var requiredSkills = req.query.requiredSkills || [];
+  var desiredSkills  = req.query.desiredSkills || [];  
   // Filter employers that do not have one requiredSkill in any of
   // their listings
   Employer.find({}, function(err, employers) {
@@ -36,26 +37,33 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       console.log("error at GET /employers", err);
       utils.sendErrResponse(res, 500, null);
     } else {
-      scores = {};
+      var scores = {};
+      var keep = false;
       employers = employers.filter( function(employer) {
         scores[employer.name] = 0;
-        for (var i = 0, len = employer.listings.length; i < len; i++) {
+        for (var i = 0; i < employer.listings.length; i++) {
           var listing = employer.listings[i] || { skills:{} };
-          console.log(" *** LISTING: " + listing);
-          for (var j = 0, len = listing.skills.length; j < len; j++) {
+          for (var j = 0;  j < listing.skills.length; j++) {
             var skill = listing.skills[j];
-            if (skill in requiredSkills) {
+            // Increment the score and keep it if in required
+            if (requiredSkills.indexOf(skill) > -1) {
+              scores[employer.name] += 1;
+              keep = true;
+            }
+            // Increment the score if just desired
+            if (desiredSkills.indexOf(skill) > -1) {
               scores[employer.name] += 1;
             }
           }
         }
-        return scores[employer.name] != 0;
+        return keep;
       });
       // Sort by number of total matches
       employers.sort(function(x, y) {
         return scores[x.name] > scores[y.name];
       });
       // Send the response
+      console.log(employers);
       utils.sendSuccessResponse(res, employers);
     }
   });

@@ -11,6 +11,8 @@ var Skill   = require('../models/SkillModel');
 
 /* Filter and order students based off of desired and require skills
  *
+ * Only Employers can hit this route.
+ *
  * GET /students
  *
  * Body:
@@ -64,7 +66,7 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
 
         // Only keep it if there was at least one match in the required
         // skills
-        var keep = (score != 0);
+        var keep = (score !== 0);
 
         // Desired
         for (var idx = 0; idx < desiredSkills.length; idx++) {
@@ -87,13 +89,14 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
           }
         }
 
-        scores[student.name] = score;
+        //if (keep) scores[student.name] = score;
         return keep;
       });
       // Sort by the most matches
       students.sort(function(x, y) {
         return scores[x.name] < scores[y.name];
       });
+
       // Respond
       utils.sendSuccessResponse(res, students);
     }
@@ -290,7 +293,8 @@ router.put('/:studentId/skills', utils.isLoggedInStudent, function (req, res) {
              }
            });
   } else {
-    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information");
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other \
+                                     users' information");
   }
 });
 

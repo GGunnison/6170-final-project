@@ -1,10 +1,10 @@
+// Author: Sabrina Drammis
+
 var router = require('express').Router();
 var utils  = require('../utils/utils.js');
 
 // database models
 var Class = require('../models/ClassModel');
-
-// author: Sabrina Drammis
 
 /* Get all classes
  *

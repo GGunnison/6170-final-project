@@ -1,4 +1,5 @@
-var assert = require('assert');
+var assert    = require('assert');
+var validator = require('validator');
 
 /* This utils is taken from the 6.170 examples */
 var utils = {};
@@ -30,8 +31,35 @@ utils.sendErrResponse = function(res, errcode, err) {
  * @s string to check
  */
 utils.checkLength = function (s) {
+  assert(typeof s === "string", "can only call the checkLength function on a string");
   return s.length > 0;
 };
+
+/* Check that there are no duplicates in the array.
+ *
+ * @array to check for duplicates/type
+ */
+utils.checkArray = function (array) {
+  // TODO
+}
+
+/* Determine if a given string is a url
+ *
+ * @s string to check
+ */
+utils.checkURL = function (s) {
+  assert(typeof s === "string", "can only call the checkURL function on a string");
+  return validator.isURL(s);
+}
+
+/* Replace <, >, &, ' and " with HTML entitie
+ *
+ * @s string to sanitize
+ */
+utils.escape = function (s) {
+  assert(typeof s === "string", "can only call the escape function on a string");
+  return validator.escape(s);
+}
 
 /* Check if the current user is a logged in student
  * Middleware for API
