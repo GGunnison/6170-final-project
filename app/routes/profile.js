@@ -51,7 +51,7 @@ router.get('/create', utils.isLoggedIn, function (req, res) {
         }
       },
       function (err, data) {
-        data._id = req.user._id;
+        data.id = req.user._id;
         res.render('studentProfileCreation.jade', data);
       });
       break;

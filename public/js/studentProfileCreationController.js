@@ -36,7 +36,6 @@ var StudentProfileCreationController = function() {
   }
 
   var eventListeners = function() {
-
     $("#allSkillsForm").on("submit", function(e) {
       var skillsDone = false;
       var classesDone = false;
@@ -96,7 +95,7 @@ var StudentProfileCreationController = function() {
         classesDone = true;
         submitDeferred.resolve();
       });
-    })
+    });
 
   }
 
@@ -107,4 +106,6 @@ var StudentProfileCreationController = function() {
 }
 
 var studentProfileCreationController = new StudentProfileCreationController();
-studentProfileCreationController.init();
+$(document).ready(function() {
+  studentProfileCreationController.init();
+});
