@@ -365,10 +365,19 @@ router.get('/:studentId/experience', utils.isLoggedIn, function (req, res) {
  * author: Sabrina Drammis
  */
 router.post('/:studentId/experience', utils.isLoggedInStudent, function (req, res) {
+  
+  var experience = {
+    company: req.body.company, 
+    position: req.body.position, 
+    description: req.body.description, 
+    startTime: req.body.startTime, 
+    endTime: req.body.endTime
+  }
+
   if (req.user._id.toString() === req.params.studentId) {
     Student.findByIdAndUpdate(
       req.params.studentId,
-      {$push: {experience: req.body.experience}},
+      {$push: {experience: experience}},
       function (err, student) {
         if (err) {
           console.log(err);

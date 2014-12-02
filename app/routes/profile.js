@@ -17,7 +17,8 @@ var User  = { Student  : require('../../app/models/StudentModel'),
  * renders the profile page
  */
 router.get('/', utils.isLoggedIn, function (req, res) {
-  res.render('profile.jade');
+  console.log("user: ", req.user);
+  res.render('profile.jade', {user: req.user});
 });
 
 /* Go to the create profile page
