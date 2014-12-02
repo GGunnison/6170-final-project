@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var configDB = require('../../config/database.js');
 var Class    = require('../models/ClassModel.js')
 
-console.log("configDB url: ", configDB.url);
 mongoose.connect(configDB.url);
 
 // authors: Sabrina Drammis, Grant Gunnison
