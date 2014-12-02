@@ -19,5 +19,14 @@ var checkStudentEmail = function (email) {
 Student.schema.path('email').validate(checkStudentEmail, "Must be a valid MIT email");
 Student.schema.path('name').validate(utils.checkLength, "name cannot be empty");
 Student.schema.path('password').validate(utils.checkLength, "password cannot be empty");
+Student.schema.path('website').validate(utils.checkURL, "website must be a valid URL");
+
+
+// presave
+Student.schema.pre('save', function (next) {
+  utils.escape(this.name);
+  next();
+});
+
 
 module.exports =  Student;

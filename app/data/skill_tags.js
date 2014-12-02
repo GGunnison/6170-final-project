@@ -40,7 +40,7 @@ tags = [
       name : 'Software Design'},
 
     { _id  : "13",
-      name : 'Software Development'},
+      name : 'Web Development'},
 
     { _id  : "14",
       name : 'Web Design'},
@@ -136,7 +136,7 @@ tags = [
 
     { _id  : "43",
       name : 'Computational Geometry'},
- 
+
     { _id  : "44",
       name : 'Parallel Computing'},
 
@@ -189,24 +189,7 @@ tags = [
       name : 'Network Resource Management'},
 
     { _id  : "61",
-      name : 'Router Design'},
-
-    
-
-
-
-
-
-
-    
-     
-
-
-
-
-
-
-    // Fill out list!
+      name : 'Router Design'}
 
 ]
 
