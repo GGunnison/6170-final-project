@@ -25,7 +25,7 @@ gulp.task('develop', function () {
 // TODO fix this to have multiple entries
 gulp.task('scripts', function () {
   console.log('starting scripts');
-  var entries = ['searchResultsController.js', 'studentProfileCreationController.js'];
+  var entries = ['searchResultsController.js'];
   entries.forEach( function (fileName) {
     browserify({
       entry: './app/src/' + fileName,

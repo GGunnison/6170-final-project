@@ -1,20 +1,70 @@
 // TODO finish this view
-// author: Samuel Edson
+// author: Daniel Sanchez
 
 extends layout
 
+block head
+  link(rel="stylesheet", href="/css/profile.css")
+  script(type="text/javascript", src="/js/profileController.js")
+
 block content
-  h3 profile here
-//  .container
-//    h4 #{user.name}'s Profile
-//    .row
-//      h4 Skills
-//      .col-md-8
-//        each skill in user.skills
-//          label()= skill.name
-//          br
-//      h4 Classes
-//      .col-md-8
-//        each klass in user.classes
-//          label()= klass.name
-//          br
+  div.container(data-ng-controller="profileController")
+    - if (user.__t == "Student") {
+      legend
+        h2 Summary
+      textarea.form-control#summaryInput(placeholder="Write your summary here")
+      legend
+        h2 Skills
+      div.skillsContainer
+        - each skill in user.skills
+          div.skill
+            span.label.label-default(id="#{skill}", ng-bind="viewModel.skillsMap[#{skill}]")
+        
+      legend
+        h2 Experience
+      div.experienceContainer
+        div.createExperience
+          form(action="/students/#{user._id}/experience", method="POST")
+            table
+              tbody
+                tr
+                  td
+                    div.colContent
+                      input.form-control(name="company", placeholder="Company")
+                  td
+                    div.colContent
+                      input.form-control(name="position", placeholder="Job position")
+                  td
+                    div.colContent
+                      input.form-control.dateInput(name="startTime", placeholder="Start date")
+                      span &nbsp;-&nbsp;
+                      input.form-control.dateInput(name="endTime", placeholder="End date")
+            table
+              tbody
+                tr
+                  td
+                    div.colContent
+                      textarea.form-control(name="description", placeholder="Describe your experience")
+                  td(width="0")
+                    div.colContent
+                      input.btn.btn-success(type="submit")
+        each experience in user.experience
+          div.experience
+            table
+              tbody
+                tr
+                  td
+                    span= experience.company
+                  td
+                    span= experience.position
+                  td
+                    span= experience.startTime
+                    span &nbsp; - &nbsp; 
+                    span= experience.endTime
+            
+
+      legend
+        h2 Classes
+    - } else if (user.__t == "Employer") {
+
+    - }

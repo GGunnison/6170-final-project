@@ -142,7 +142,7 @@ employMeApp.controller("searchCreationController", function($scope) {
       });
 
       $(".skillsDrop").on("click", ".skill", function(e) {
-        var skillId = $(this).attr("id");
+        var skillId = $(this).children().attr("id");
         var skillHtml = $("<div class='skill'><span id=" + skillId + " class='draggable label label-default'>" + $(this).text() + "</span></div>")
 
         $(this).remove();
