@@ -94,7 +94,7 @@ app.use('/search', search);
 app.use('/tests', tests);
 
 // launch ======================================================================
-app.set('port', 3000);
+app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 3000);
 
 var server = app.listen(app.get('port'), process.env.OPENSHIFT_NODEJS_IP, function() {
   debug('Express server listening on port ' + server.address().port);
