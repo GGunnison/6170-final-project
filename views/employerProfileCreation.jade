@@ -1,0 +1,55 @@
+// author: Daniel Sanchez
+
+extends layout
+
+block head
+  link(rel="stylesheet", href="/css/employerProfileCreation.css")
+  link(rel="stylesheet", href="/css/select2/select2.css")
+  script(type="text/javascript", src="/js/employerProfileCreationController.js")
+  script(type="text/javascript", src="/js/select2/select2.js")
+
+block content
+  div.container(data-ng-controller="employerProfileCreationController")
+      input#employerId(type="hidden", value="#{user._id}")
+      // legend
+      //   h2 Summary
+      // textarea.form-control#summaryInput(placeholder="Write your summary here")
+      legend
+        h2 Create new listing
+      form#listingForm
+        div.jobsContainer
+          table
+            tbody
+              tr
+                td
+                  div.colContent
+                    input.form-control(name="title", placeholder="Title")
+                td
+                  div.colContent
+                    input.form-control(name="position", placeholder="Position Name")
+                td
+                  div.colContent
+                    input.form-control(name="location", placeholder="Location")
+          table
+            tbody
+              tr
+                td(width="100%")
+                  div.colContent
+                    textarea.jobDescriptionInput.form-control(name="description", placeholder="Description")
+                td(width="0")
+                  div.colContent
+                    table
+                      tr
+                        td
+                          div.colContent
+                            select#skillSelect
+                              - each skill in skills
+                                option(value="#{skill._id}")= skill.name
+                      tr
+                        td
+                          div.colContent
+                            button#addSkillBtn.btn.btn-primary(type="button") Add Skill
+          div.skillsContainer
+            div.skill(ng-repeat="(id, name) in viewModel.jobSkills")
+              span.label.label-default(id="{{id}}", ng-bind="name")
+        input.btn.btn-success(type="submit", value="Create Listing")

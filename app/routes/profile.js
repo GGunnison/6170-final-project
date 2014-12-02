@@ -33,7 +33,7 @@ router.get('/', utils.isLoggedIn, function (req, res) {
  *
  * TODO once profile has been created, a use should not be able to hit this route
  */
-router.get('/create', utils.isLoggedIn, function (req, res) {
+router.get('/create', utils.isLoggedIn, function (req, res, next) {
   switch ( req.user.__t ) {
     case 'Student':
       async.parallel({
@@ -57,7 +57,21 @@ router.get('/create', utils.isLoggedIn, function (req, res) {
       break;
     case 'Employer':
       // TODO create profile creation view for the employer
-      res.render('index.jade');
+
+      Skill.find({}, function(err, allSkills) {
+        if (err)  {
+          console.log(err);
+          return next(err);
+        }
+
+        var data = {
+          skills: allSkills, 
+          user: req.user
+        }
+
+        res.render('employerProfileCreation.jade', data);
+      });
+
       break;
   }
 });
