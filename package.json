@@ -2,9 +2,6 @@
   "name": "Employ.me",
   "main": "app.js",
   "private": true,
-  "scripts": {
-    "start": "node ./bin/www"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/openshift/origin-server"

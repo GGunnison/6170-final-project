@@ -5,7 +5,8 @@ var express      = require('express'),
     morgan       = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser   = require('body-parser'),
-    favicon      = require('serve-favicon');
+    favicon      = require('serve-favicon'),
+    debug = require('debug')('employ_me');
 
 var configDB = require('./config/database.js');
 
@@ -94,6 +95,10 @@ app.use('/tests', tests);
 
 // launch ======================================================================
 app.set('port', 3000);
+
+var server = app.listen(app.get('port'), process.env.OPENSHIFT_NODEJS_IP, function() {
+  debug('Express server listening on port ' + server.address().port);
+});
 
 
 module.exports = app;
