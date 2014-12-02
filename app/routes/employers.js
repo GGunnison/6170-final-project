@@ -37,22 +37,26 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       console.log("error at GET /employers", err);
       utils.sendErrResponse(res, 500, null);
     } else {
-      scores = {};
+      var scores = {};
+      var keep = false;
       employers = employers.filter( function(employer) {
         scores[employer.name] = 0;
         for (var i = 0; i < employer.listings.length; i++) {
           var listing = employer.listings[i] || { skills:{} };
           for (var j = 0;  j < listing.skills.length; j++) {
             var skill = listing.skills[j];
+            // Increment the score and keep it if in required
             if (requiredSkills.indexOf(skill) > -1) {
               scores[employer.name] += 1;
+              keep = true;
             }
+            // Increment the score if just desired
             if (desiredSkills.indexOf(skill) > -1) {
               scores[employer.name] += 1;
             }
           }
         }
-        return scores[employer.name] !== 0;
+        return keep;
       });
       // Sort by number of total matches
       employers.sort(function(x, y) {
