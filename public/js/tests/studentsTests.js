@@ -16,7 +16,8 @@ QUnit.done( function (details) {
 });
 
 // check that when given a valid studentId, we get the correct student back
-QUnit.asyncTest( "GET /students/:studentId --valid studentId", function( assert ) {
+QUnit.asyncTest( "GET /students/:studentId --valid studentId",
+                 function( assert ) {
   expect(1);
   $.ajax({
     type: 'GET',
@@ -27,8 +28,10 @@ QUnit.asyncTest( "GET /students/:studentId --valid studentId", function( assert 
   }).always(start);
 });
 
-// if the studentId isn't an appropriate mongoose ObjectId we should get an internal server error
-QUnit.asyncTest( "GET /students/:studentId --invalid studentId", function( assert ) {
+// if the studentId isn't an appropriate mongoose ObjectId we should get
+// an internal server error
+QUnit.asyncTest( "GET /students/:studentId --invalid studentId",
+                 function( assert ) {
   expect(1);
   $.ajax({
     type: 'GET',
@@ -39,8 +42,10 @@ QUnit.asyncTest( "GET /students/:studentId --invalid studentId", function( asser
   }).always(start);
 });
 
-// if the studentId is a mongoose ObjectId but not one in the student database then we should get a 404 not found error
-QUnit.asyncTest( "GET /students/:studentId --studentId does not exist", function( assert ) {
+// if the studentId is a mongoose ObjectId but not one in the student database
+// then we should get a 404 not found error
+QUnit.asyncTest( "GET /students/:studentId --studentId does not exist", 
+                 function( assert ) {
   expect(1);
   $.ajax({
     type: 'GET',
@@ -52,7 +57,8 @@ QUnit.asyncTest( "GET /students/:studentId --studentId does not exist", function
 });
 
 // add a class to the test student
-QUnit.asyncTest( "PUT /students/:studentId/classes --set 6.170 as the classes for a student", function( assert ) {
+QUnit.asyncTest( "PUT /students/:studentId/classes \
+                 --set 6.170 as the classes for a student", function( assert ) {
   expect(1);
   $.ajax({
     type: 'PUT',
@@ -65,7 +71,9 @@ QUnit.asyncTest( "PUT /students/:studentId/classes --set 6.170 as the classes fo
 });
 
 // get the student's classes and test that the one we just added is there
-QUnit.asyncTest( "GET /students/:studentId/classes --get classes for a student, should have 6.170", function( assert ) {
+QUnit.asyncTest( "GET /students/:studentId/classes \
+                 --get classes for a student, should have 6.170",
+                 function( assert ) {
   expect(3);
   $.ajax({
     type: 'GET',
@@ -73,13 +81,16 @@ QUnit.asyncTest( "GET /students/:studentId/classes --get classes for a student, 
     success: function (data) {
       equal(data.content.length, 1, "only set 1 class for the student");
       equal(data.content[0]._id, "6.170", "6.170 is the student's only class");
-      equal(data.content[0].skills[0].name, "Javascript", "class skills are populated");
+      equal(data.content[0].skills[0].name,
+            "Javascript",
+            "class skills are populated");
     }
   }).always(start);
 });
 
 // clear the classes for a student
-QUnit.asyncTest( "PUT /students/:studentId/classes --set classes as empty", function( assert ) {
+QUnit.asyncTest( "PUT /students/:studentId/classes --set classes as empty",
+                 function( assert ) {
   expect(3);
   $.ajax({
     type: 'PUT',
@@ -100,7 +111,8 @@ QUnit.asyncTest( "PUT /students/:studentId/classes --set classes as empty", func
 });
 
 // add a skill to the test student
-QUnit.asyncTest( "PUT /students/:studentId/skills --set Java as the skills for a student", function( assert ) {
+QUnit.asyncTest( "PUT /students/:studentId/skills \
+                 --set Java as the skills for a student", function( assert ) {
   expect(1);
   $.ajax({
     type: 'PUT',
@@ -113,7 +125,8 @@ QUnit.asyncTest( "PUT /students/:studentId/skills --set Java as the skills for a
 });
 
 // get the student's skill and test that the one we just added (Java) is there
-QUnit.asyncTest( "GET /students/:studentId/classes --get skills for a student, should have Java", function( assert ) {
+QUnit.asyncTest( "GET /students/:studentId/classes --get skills for a student, \
+                 should have Java", function( assert ) {
   expect(3);
   $.ajax({
     type: 'GET',
@@ -127,7 +140,8 @@ QUnit.asyncTest( "GET /students/:studentId/classes --get skills for a student, s
 });
 
 // clear the skills for a student
-QUnit.asyncTest( "PUT /students/:studentId/skills --set skills as empty", function( assert ) {
+QUnit.asyncTest( "PUT /students/:studentId/skills --set skills as empty",
+                 function( assert ) {
   expect(3);
   $.ajax({
     type: 'PUT',
@@ -148,7 +162,8 @@ QUnit.asyncTest( "PUT /students/:studentId/skills --set skills as empty", functi
 });
 
 // add an experience to the test student
-QUnit.asyncTest( "POST /students/:studentId/experience --add an experience for a student", function( assert ) {
+QUnit.asyncTest( "POST /students/:studentId/experience \
+                 --add an experience for a student", function( assert ) {
   expect(1);
   $.ajax({
     type: 'POST',
@@ -169,7 +184,8 @@ QUnit.asyncTest( "POST /students/:studentId/experience --add an experience for a
 var experienceId = null;
 
 // get the student's experience and ensure the one we added is there
-QUnit.asyncTest( "GET /students/:studentId/experience --get experience for a student", function( assert ) {
+QUnit.asyncTest( "GET /students/:studentId/experience \
+                 --get experience for a student", function( assert ) {
   expect(3);
   $.ajax({
     type: 'GET',
@@ -177,14 +193,18 @@ QUnit.asyncTest( "GET /students/:studentId/experience --get experience for a stu
     success: function (data, status, res) {
       experienceId = data.content[0]._id;
       equal(data.content.length, 1, "only 1 experience set");
-      equal(data.content[0].company, "Test Company", "Experience is set correctly");
+      equal(data.content[0].company, 
+            "Test Company", 
+            "Experience is set correctly");
       equal(res.status, 200, "200 status, success");
     }
   }).always(start);
 });
 
 // update a specific experience
-QUnit.asyncTest( "PUT /students/:studentId/experience/:experienceId --update specific experience for a student", function( assert ) {
+QUnit.asyncTest( "PUT /students/:studentId/experience/:experienceId \
+                 --update specific experience for a student",
+                 function( assert ) {
   expect(3);
   $.ajax({
     type: 'PUT',
@@ -199,7 +219,9 @@ QUnit.asyncTest( "PUT /students/:studentId/experience/:experienceId --update spe
     success: function (data, status, res) {
       $.get('/students/4edd40c86762e0fb12000003/experience', function (data) {
         equal(data.content.length, 1, "only 1 experience");
-        equal(data.content[0].company, "Test Company Updated", "Experience was updated correctly");
+        equal(data.content[0].company,
+              "Test Company Updated",
+              "Experience was updated correctly");
         equal(res.status, 200, "200 status, success");
       }).always(start);
     }
@@ -207,7 +229,9 @@ QUnit.asyncTest( "PUT /students/:studentId/experience/:experienceId --update spe
 });
 
 // delete a specific experience
-QUnit.asyncTest( "DELETE /students/:studentId/experience/:experienceId --delete specific experience for a student", function( assert ) {
+QUnit.asyncTest( "DELETE /students/:studentId/experience/:experienceId \
+                --delete specific experience for a student", 
+                function( assert ) {
   expect(1);
   $.ajax({
     type: 'DELETE',

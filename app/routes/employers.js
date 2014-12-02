@@ -1,3 +1,5 @@
+// Authors: Samuel Edson, Sabrina Drammis
+
 var router    = require('express').Router();
 var utils     = require('../utils/utils.js');
 var assert    = require('assert');
@@ -24,8 +26,6 @@ var Skill    = require('../models/SkillModel');
  *        responds with the a list of employers
  *
  * author: Sam Edson
- *
- * TODO test
  */
 router.get('/', utils.isLoggedInStudent, function(req, res) {
   var requiredSkills = req.body.requiredSkills || [];
@@ -38,23 +38,24 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
     } else {
       scores = {};
       employers = employers.filter( function(employer) {
-        scores[employer] = 0;
+        scores[employer.name] = 0;
         for (var i = 0, len = employer.listings.length; i < len; i++) {
-          var listing = employer.listings[i];
+          var listing = employer.listings[i] || { skills:{} };
+          console.log(" *** LISTING: " + listing);
           for (var j = 0, len = listing.skills.length; j < len; j++) {
-            var skill = listing.skill[j];
+            var skill = listing.skills[j];
             if (skill in requiredSkills) {
-              scores[employer] += 1;
+              scores[employer.name] += 1;
             }
           }
         }
-        return scores[employer] != 0;
+        return scores[employer.name] != 0;
       });
-
+      // Sort by number of total matches
       employers.sort(function(x, y) {
-        return scores[x] > scores[y];
+        return scores[x.name] > scores[y.name];
       });
-
+      // Send the response
       utils.sendSuccessResponse(res, employers);
     }
   });
