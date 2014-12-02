@@ -23,13 +23,11 @@ var Skill   = require('../models/SkillModel');
  *   - success 200
  *        responds with a list of ordered studends
  *
- * author: Sam Edson
+ * author: Samuel Edson
  */
 router.get('/', utils.isLoggedInEmployer, function(req, res) {
   var requiredSkills = req.query.requiredSkills || [];
   var desiredSkills  = req.query.desiredSkills || [];
-
-  console.log("requiredSkills: ", requiredSkills);
 
   Student.find({}).exec(function(err, students) {
     if (err) {
@@ -92,11 +90,11 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
         scores[student.name] = score;
         return keep;
       });
-
+      // Sort by the most matches
       students.sort(function(x, y) {
-        return scores[x] > scores[y];
+        return scores[x.name] < scores[y.name];
       });
-
+      // Respond
       utils.sendSuccessResponse(res, students);
     }
   });
