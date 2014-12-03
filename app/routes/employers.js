@@ -29,7 +29,7 @@ var Skill    = require('../models/SkillModel');
  */
 router.get('/', utils.isLoggedInStudent, function(req, res) {
   var requiredSkills = req.query.requiredSkills || [];
-  var desiredSkills  = req.query.desiredSkills || [];  
+  var desiredSkills  = req.query.desiredSkills || [];
   // Filter employers that do not have one requiredSkill in any of
   // their listings
   Employer.find({}, function(err, employers) {
@@ -60,9 +60,10 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       });
       // Sort by number of total matches
       employers.sort(function(x, y) {
-        return scores[x.name] > scores[y.name];
+        return scores[x.name] < scores[y.name];
       });
       // Send the response
+      console.log(scores);
       console.log(employers);
       utils.sendSuccessResponse(res, employers);
     }
