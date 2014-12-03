@@ -2,7 +2,7 @@ Employ.Me
 =========
 
 ##Links
-  [Code for Grading Document](./documents/CodeforGrading.pdf)
+  [Code for Grading Document](./documents/CodeforGrading.pdf)<br>
   [Deployed Employ.me](http://employme-dsan.rhcloud.com/)
 
 ##Current Release
