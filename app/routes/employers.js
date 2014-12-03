@@ -60,7 +60,7 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       });
       // Sort by number of total matches
       employers.sort(function(x, y) {
-        return scores[x.name] < scores[y.name];
+        return scores[x.name] > scores[y.name];
       });
       // Send the response
       console.log(scores);

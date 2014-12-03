@@ -94,7 +94,7 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
       });
       // Sort by the most matches
       students.sort(function(x, y) {
-        return scores[x.name] < scores[y.name];
+        return scores[x.name] > scores[y.name];
       });
 
       // Respond
