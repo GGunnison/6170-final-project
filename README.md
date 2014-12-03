@@ -2,14 +2,15 @@ Employ.Me
 =========
 
 ##Links
+  [Code for Grading Document](./documents/CodeforGrading.pdf)
   [Deployed Employ.me](http://employme-dsan.rhcloud.com/)
 
-##Where the app is at now
+##Current Release
  - Backend is fully working for students and employer.
  - Ability to search from both an employer and a student.
  - Currently in the process of redesigning the homepage, so the feedback to the user is not entirely in place. (eg: when an email is already in use, user may not get visual feedback)
 
-###For the next sprint  
+##Future
 - Handle improper formated requests better
 - Finish the front end
   - Update student profile creation
@@ -18,7 +19,7 @@ Employ.Me
   - Redesign the home page
 - Add messaging support, time permitting
 
-### Tests
+##Tests
 for the students: /tests/students  
 for the employers: /tests/employers
  
