@@ -122,6 +122,7 @@ employMeApp.controller("searchCreationController", function($scope) {
     }
 
     exports.dragAndDropInit = function () {
+      var xHtml = "  &#10006;";
       $("#skillsCont").delegate(".draggable", "mouseenter", function(e) {
         $(this).draggable({
           appendTo: "body",
@@ -135,15 +136,17 @@ employMeApp.controller("searchCreationController", function($scope) {
           var skillName = ui.draggable.text();
           var skillId = ui.draggable.attr("id");
           $("#" + skillId).remove();
-
-          $("<div class='skill draggedSkill'><span id=" + skillId + " class='label label-default'>" + ui.draggable.text() + "</span></span>")
+ 
+          $("<div class='skill draggedSkill'><span id=" + skillId + " class='label label-default'>" + ui.draggable.text() + xHtml + "</span></div>")
             .appendTo(this);
         }
       });
 
       $(".skillsDrop").on("click", ".skill", function(e) {
         var skillId = $(this).children().attr("id");
-        var skillHtml = $("<div class='skill'><span id=" + skillId + " class='draggable label label-default'>" + $(this).text() + "</span></div>")
+        var skillText = $(this).text().substring(0, $(this).text().length - (xHtml.length - 7));
+        console.log("skillText", skillText);
+        var skillHtml = $("<div class='skill'><span id=" + skillId + " class='draggable label label-default'>" + skillText + "</span></div>")
 
         $(this).remove();
         $("#skillsCont").prepend(skillHtml);
