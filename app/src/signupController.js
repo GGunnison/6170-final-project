@@ -1,4 +1,3 @@
-// TODO this is for the new index homepage that is under construction
 // author: Sabrina Drammis
 var SignupController = function() {
 
@@ -19,12 +18,12 @@ var SignupController = function() {
 
     exports.renderStudentSignup = function() {
       var studentSignupHTML = local.studentSignupTemplate();
-      $('#signup-form-contents').html(studentSignupHTML);
+      document.getElementById('signup-form-contents').innerHTML = studentSignupHTML;
     }
 
     exports.renderEmployerSignup = function() {
       var employerSignupHTML = local.employerSignupTemplate();
-      $('#signup-form-contents').html(employerSignupHTML);
+      document.getElementById('signup-form-contents').innerHTML = employerSignupHTML;
     }
 
     return exports
@@ -38,6 +37,8 @@ var SignupController = function() {
     $(window).resize(responsiveJS);
 
     eventListeners();
+
+    helpers.renderStudentSignup();
   }
 
   var sizingJS = function() {
@@ -49,6 +50,7 @@ var SignupController = function() {
   }
 
   var eventListeners = function() {
+    console.log('events');
     $('#student-tab').click( function() {
       helpers.renderStudentSignup();
     });

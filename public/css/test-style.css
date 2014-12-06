@@ -23,6 +23,10 @@ hr {
   transition: height ease-out 0.5s;
 }
 
+.selected {
+  height: 10px !important;
+}
+
 .nopadding {
   padding: 0 !important;
 }

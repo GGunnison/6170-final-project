@@ -15,7 +15,7 @@ module.exports = function (passport) {
   // show the home page
   router.get('/', function(req, res) {
     if ( !req.user ) {
-      res.render('index.jade',
+      res.render('home.jade',
                  { signupMessage: req.flash('signupMessage'),
                    loginMessage: req.flash('loginMessage')
                  });

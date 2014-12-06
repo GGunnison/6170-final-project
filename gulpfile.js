@@ -16,25 +16,22 @@ gulp.task('watch', function () {
 gulp.task('develop', function () {
   livereload.listen();
   nodemon( {script: './bin/www', ext: 'html js'} )
-    .on('start', ['watch'])
+    .on('start', ['scripts', 'watch'])
     .on('restart', function () {
       console.log('restarting server');
     });
 });
 
-// TODO fix this to have multiple entries
 gulp.task('scripts', function () {
-  console.log('starting scripts');
-  var entries = ['searchResultsController.js'];
+  var entries = ['indexController.js'];
   entries.forEach( function (fileName) {
     browserify({
-      entry: './app/src/' + fileName,
-      //standalone: 'main',
-      extensions: ['.js'],
-      debug: true
-    }).transform('jadeify')
-      .bundle()
-      .pipe(source(fileName))
-      .pipe(gulp.dest('public/js'))
+        entries: ['./app/src/' + fileName],
+        extensions: ['.js'],
+        debug: true
+      }).transform('jadeify')
+        .bundle()
+        .pipe(source(fileName))
+        .pipe(gulp.dest('public/js'))
   });
 });

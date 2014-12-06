@@ -2,15 +2,9 @@ extends layout
 
 block head
   link(rel='stylesheet', href='/css/test-style.css')
+  script(type="text/javascript", src="/js/indexController.js")
 
 block content
-
-  script.
-    var indexController = new IndexController();
-    $(document).ready(function() {
-      indexController.init();
-    });
-
   .container
     // title
     .row
@@ -50,7 +44,6 @@ block content
 
         // forms for login and signup
         .row
-          .panel.panel-default
-            .panel-body
-              .col-md-12#login-signup-form
+          div
+            .col-md-12#login-signup-form
 
