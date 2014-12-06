@@ -63,8 +63,6 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
         return scores[x.name] < scores[y.name];
       });
       // Send the response
-      console.log(scores);
-      console.log(employers);
       utils.sendSuccessResponse(res, employers);
     }
   });
