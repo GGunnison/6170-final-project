@@ -17,12 +17,15 @@ var SearchResultsController = function() {
     var exports = {};
 
     exports.renderListings = function (listings) {
-      var listingsHTML = local.listingsTemplate(listings);
+      var listings     = listings || [];
+      var listingsHTML = local.listingsTemplate({listings: listings});
       $('#results').html(listingsHTML);
     }
 
     exports.renderStudents = function (students) {
-      var studentsHTML = local.studentsTemplate(students);
+      var students     = students || [];
+      console.log(students);
+      var studentsHTML = local.studentsTemplate({students: students});
       $('#results').html(studentsHTML);
     }
 

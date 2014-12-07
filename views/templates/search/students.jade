@@ -1,1 +1,6 @@
-p students listing goes here
+include ../../mixins/search/student
+
+p students
+p foo bar
+for student in students
+  +student()
