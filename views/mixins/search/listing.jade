@@ -1,0 +1,10 @@
+mixin listing(listing)
+  .panel.panel-default
+    .panel-body
+      #id(style="display:none;")= listing._id
+      .col-md-4
+        p #{listing.title}
+        p #{listing.description}
+        p #{listing.position}
+        p #{listing.location}
+        p #{listing.skills}

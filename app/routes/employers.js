@@ -42,26 +42,26 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       employers.forEach( function(employer) {
         for (var i = 0; i < employer.listings.length; i++) {
           var listing = employer.listings[i] || { skills:{} };
+          var keep = false;
+          scores[listing.title] = 0;     
           for (var j = 0;  j < listing.skills.length; j++) {
             var skill = listing.skills[j];
-            var keep = false;            
-            scores[listing.name] = 0;     
             // Increment the score and keep it if in required
             if (requiredSkills.indexOf(skill) > -1) {
-              scores[listing.name] += 1;
+              scores[listing.title] += 1;
               keep = true;
             }
             // Increment the score if just desired
             if (desiredSkills.indexOf(skill) > -1) {
-              scores[listing.name] += 1;
+              scores[listing.title] += 1;
             }
-            if (keep) listings.push(listing);
           }
+          if (keep) listings.push(listing);          
         }
       });
       // Sort by number of total matches
       listings.sort(function(x, y) {
-        return scores[x.name] < scores[y.name];
+        return scores[x.title] < scores[y.title];
       });
       // Send the response
       utils.sendSuccessResponse(res, listings);
