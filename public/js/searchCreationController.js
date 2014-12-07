@@ -161,8 +161,6 @@ employMeApp.controller("searchCreationController", function($scope) {
           revert: "invalid"
         });
       });
-
-
     }
 
     return exports;
