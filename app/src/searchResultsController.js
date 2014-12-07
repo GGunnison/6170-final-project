@@ -8,11 +8,23 @@ var SearchResultsController = function() {
   var local = {};
 
   var setLocal = function() {
+    local.studentsTemplate = require('../../views/templates/search/students.jade');
+    local.listingsTemplate = require('../../views/templates/search/employerListings.jade');
   }
 
   // Helper functions
   var helpers = (function() {
     var exports = {};
+
+    exports.renderListings = function (listings) {
+      var listingsHTML = local.listingsTemplate(listings);
+      $('#results').html(listingsHTML);
+    }
+
+    exports.renderStudents = function (students) {
+      var studentsHTML = local.studentsTemplate(students);
+      $('#results').html(studentsHTML);
+    }
 
     return exports
   })();
@@ -24,7 +36,6 @@ var SearchResultsController = function() {
     eventListeners();
 
   }
-
 
   var eventListeners = function() {
       $("#skillSubmit").on("click", function() {
@@ -53,14 +64,24 @@ var SearchResultsController = function() {
           data: data
         }
 
+        var searchType = null;
         if ($(this).attr("data-type") === "Student") {
           ajaxObj["url"] = "/employers";
+          searchType = 'employers';
         } else if ($(this).attr("data-type") === "Employer") {
           ajaxObj["url"] = "/students";
+          searchType = 'students';
         }
 
         $.ajax(ajaxObj).done(function(res) {
-          public.searchResults = res.content;
+          switch (searchType) {
+            case 'employers':
+              helpers.renderListings(res.content);
+              break;
+            case 'students':
+              helpers.renderStudents(res.content);
+              break
+          }
           console.log(res.content);
         });
       });
