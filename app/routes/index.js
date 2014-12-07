@@ -15,10 +15,7 @@ module.exports = function (passport) {
   // show the home page
   router.get('/', function(req, res) {
     if ( !req.user ) {
-      res.render('index.jade',
-                 { signupMessage: req.flash('signupMessage'),
-                   loginMessage: req.flash('loginMessage')
-                 });
+      res.render('home.jade');
     } else {
       res.redirect('/search');
     }
@@ -36,24 +33,40 @@ module.exports = function (passport) {
   });
 
   // process the login form
-  router.post('/login', passport.authenticate('login', {
-    successRedirect : '/search', // redirect to secure profile section
-    failureRedirect : '/', // redirect back to signup page if there is an error
-    failureFlash : true // allow flash messages
-  }));
+  router.post('/login', function (req, res, next) {
+    passport.authenticate('login', function (err, user, info) {
+      if (user) {
+        req.login(user, function (err) {
+          if (err) { console.log(err); return next(err); }
+          return res.status(200).end();
+        });
+      } else {
+        var alertMessage = req.flash('alert')[0] || "Something isn't right.";
+        res.send({ alertMessage: alertMessage });
+      }
+    })(req, res, next);
+  });
 
   // SIGNUP
   // show the signup form
   router.get('/signup', function(req, res) {
-    res.render('index.jade', { message: req.flash('signupMessage')});
+    res.render('index.jade', { message: req.flash('message')});
   });
 
   // process the signup form
-  router.post('/signup', passport.authenticate('signup', {
-    successRedirect : '/profile/create', // redirect to secure profile section
-    failureRedirect : '/', // redirect back to signup page if there is an error
-    failureFlash : true // allow flash messages
-  }));
+  router.post('/signup', function (req, res, next) {
+    passport.authenticate('signup', function (err, user, info) {
+      if (user) {
+        req.login(user, function (err) {
+          if (err) { console.log(err); return next(err); }
+          return res.status(404).end();
+        });
+      } else {
+        var alertMessage = req.flash('alert')[0] || "Something isn't right.";
+        res.send({ alertMessage: alertMessage});
+      }
+    })(req, res, next);
+  });
 
   return router;
 }

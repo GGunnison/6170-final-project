@@ -67,7 +67,7 @@ app.use( function(req, res, next) {
 var helmet = require('helmet');
 app.use(helmet.contentSecurityPolicy({
   scriptSrc  : ['code.jquery.com', "'self'", 'ajax.googleapis.com'], // note: this does not allow any inline javascript
-  styleSrc   : ["'unsafe-inline'", 'code.jquery.com', "'self'", 'netdna.bootstrapcdn.com'] // allow inline css
+  styleSrc   : ["'unsafe-inline'", 'code.jquery.com', "'self'", 'netdna.bootstrapcdn.com', 'fonts.googleapis.com'] // allow inline css
 }));
 // re-enable the XSS header if it was diabled by the user
 app.use(helmet.xssFilter());

@@ -1,56 +1,56 @@
 extends layout
 
 block head
-  link(rel='stylesheet', href='/css/test-style.css')
+  link(rel='stylesheet', href='/css/landing.css')
+  script(type="text/javascript", src="/js/indexController.js")
 
 block content
-
-  script.
-    var indexController = new IndexController();
-    $(document).ready(function() {
-      indexController.init();
-    });
-
   .container
-    // title
     .row
-      .col-md-12.text-center
-        h3 Employ.ME
+      .col-md-12
+        h1#title
+          strong Employ.ME
     .row
       // information about the site column
-      .col-md-6
+      .col-md-5
         .row
-          .col-md-12
-            h3 Let the perfect company find you
-        .row
-          .col-md-2
+          .col-md-2.text-center
+            i.fa.fa-user.fa-3x.vert-center
           .col-md-10
-            h4 A complete Profile
-            h6 The perfect profile for employers to find you
+            h3 Simple profile
+            h5
+               | Create a quick and simple profile that
+               | highlights your skils, classes, and experience.
         .row
-          .col-md-2
+          .col-md-2.text-center
+            i.fa.fa-th-list.fa-3x
           .col-md-10
-            h4 A complete Profile
-            h6 The perfect profile for employers to find you
+            h3 Find jobs
+            h5
+              | Find jobs available for areas and skills that interest you.
         .row
-          .col-md-2
+          .col-md-2.text-center
+            i.fa.fa-sort-amount-desc.fa-3x
           .col-md-10
-            h4 A complete Profile
-            h6 The perfect profile for employers to find you
+            h3 Get found
+            h5
+              | Let employers come to you, when you have the skills they need.
+
+      // for extra space inbetween
+      .col-md-1
+
       // login and signup column
       .col-md-6
         // login and sign up buttons
         .row
           .col-md-6.text-center.nopadding
-            h3#login Login
+            h3.selector#login Login
               .slide-bar
           .col-md-6.text-center.nopadding
-            h3#signup Sign Up
+            h3.selector#signup Sign Up
               .slide-bar
-
         // forms for login and signup
         .row
-          .panel.panel-default
-            .panel-body
-              .col-md-12#login-signup-form
+          div
+            .col-md-12#login-signup-form
 
