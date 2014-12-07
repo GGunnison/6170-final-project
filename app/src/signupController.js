@@ -1,4 +1,3 @@
-// TODO this is for the new index homepage that is under construction
 // author: Sabrina Drammis
 var SignupController = function() {
 
@@ -9,8 +8,10 @@ var SignupController = function() {
   var local = {};
 
   var setLocal = function() {
-    local.studentSignupTemplate  = require('../../views/templates/student-signup.jade');
-    local.employerSignupTemplate = require('../../views/templates/employer-signup.jade');
+    local.studentSignupController  = require('./studentSignupController');
+    local.employerSignupController = require('./employerSignupController');
+    local.studentSignupTemplate    = require('../../views/templates/student-signup.jade');
+    local.employerSignupTemplate   = require('../../views/templates/employer-signup.jade');
   }
 
   // Helper functions
@@ -19,12 +20,16 @@ var SignupController = function() {
 
     exports.renderStudentSignup = function() {
       var studentSignupHTML = local.studentSignupTemplate();
-      $('#signup-form-contents').html(studentSignupHTML);
+      document.getElementById('signup-form-contents').innerHTML = studentSignupHTML;
+      var studentSignupController = new local.studentSignupController();
+      studentSignupController.init();
     }
 
     exports.renderEmployerSignup = function() {
       var employerSignupHTML = local.employerSignupTemplate();
-      $('#signup-form-contents').html(employerSignupHTML);
+      document.getElementById('signup-form-contents').innerHTML = employerSignupHTML;
+      var employerSignupController = new local.employerSignupController();
+      employerSignupController.init();
     }
 
     return exports
@@ -33,28 +38,31 @@ var SignupController = function() {
   // Starts all processes
   var init = function() {
     setLocal();
-
-    sizingJS();
-    $(window).resize(responsiveJS);
-
     eventListeners();
-  }
 
-  var sizingJS = function() {
-
-  }
-
-  var responsiveJS = function() {
-    sizingJS();
+    // student signup is default
+    helpers.renderStudentSignup();
   }
 
   var eventListeners = function() {
     $('#student-tab').click( function() {
       helpers.renderStudentSignup();
+
+      $(this).children().removeClass('unselected-text');
+      $(this).children().addClass('selected-text');
+
+      $('#employer-tab').children().removeClass('selected-text');
+      $('#employer-tab').children().addClass('unselected-text');
     });
 
     $('#employer-tab').click( function() {
       helpers.renderEmployerSignup();
+
+      $(this).children().removeClass('unselected-text');
+      $(this).children().addClass('selected-text');
+
+      $('#student-tab').children().removeClass('selected-text');
+      $('#student-tab').children().addClass('unselected-text');
     });
   }
 

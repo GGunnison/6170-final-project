@@ -4,7 +4,7 @@ extends layout
 block head
   link(rel='stylesheet', href='/css/employerSearchCreation.css')
   script(type="text/javascript", src="//code.jquery.com/ui/1.11.2/jquery-ui.js")
-  script(type="text/javascript", src="/js/searchCreationController.js")
+  script(type="text/javascript", src="/js/searchController.js")
 
 block content
   div.cont(data-ng-controller="searchCreationController")
@@ -46,13 +46,15 @@ block content
                         - } else if (user.__t == "Employer") {
                           button#skillSubmit.btn.btn-success(data-type="Employer") Submit
                         - }
-                            
+
 
           td
             div.rightColCont
               div.colCont
                 h3 Results
                 div.searchResult.g-shadow(ng-repeat="result in viewModel.searchResults")
+                  input#id(type="hidden", ng-bind="result._id")
+                  input#type(type="hidden", ng-bind="result.__t")
                   table
                     tbody
                       tr
@@ -67,43 +69,6 @@ block content
                             div.resultSkills
                               div.skill.draggedSkill(ng-repeat="skill in result.skills")
                                 span.label.label-default(ng-bind="viewModel.skillsMap[skill]")
-
-
-//    span Search 
-//    input(ng-model="query")
-//    table
-//      tbody
-//        tr
-//          td.mainCol(width='400px')
-//            table
-//              tbody
-//                tr
-//                  td
-//                    h3 Skills
-//                tr
-//                  td(height='100%')
-//                    div.skillsCol
-//                      div.skill(ng-repeat="skill in viewModel.skills | filter:query")
-//                        span.draggable.label.label-default(id="{{skill._id}}", ng-bind="skill.name")
-//          td.mainCol.rightCol
-//            table
-//              tbody
-//                tr(height='0')
-//                  td
-//                    h4 Required skills
-//                tr
-//                  td
-//                    div.skillsDrop.requiredSkillsDrop
-//                tr(height='0')
-//                  td
-//                    h4 Desired skills
-//                tr
-//                  td
-//                    div.skillsDrop.desiredSkillsDrop
-//                tr(height='0')
-//                  td
-//                    button#skillSubmit.btn.btn-success Submit
-
 
 block nav_right
   a.navbar-brand(href="/logout") Logout

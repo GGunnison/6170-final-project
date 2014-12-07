@@ -38,34 +38,33 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       utils.sendErrResponse(res, 500, null);
     } else {
       var scores = {};
-      var keep = false;
-      employers = employers.filter( function(employer) {
-        scores[employer.name] = 0;
+      var listings = [];
+      employers.forEach( function(employer) {
         for (var i = 0; i < employer.listings.length; i++) {
           var listing = employer.listings[i] || { skills:{} };
           for (var j = 0;  j < listing.skills.length; j++) {
             var skill = listing.skills[j];
+            var keep = false;            
+            scores[listing.name] = 0;     
             // Increment the score and keep it if in required
             if (requiredSkills.indexOf(skill) > -1) {
-              scores[employer.name] += 1;
+              scores[listing.name] += 1;
               keep = true;
             }
             // Increment the score if just desired
             if (desiredSkills.indexOf(skill) > -1) {
-              scores[employer.name] += 1;
+              scores[listing.name] += 1;
             }
+            if (keep) listings.push(listing);
           }
         }
-        return keep;
       });
       // Sort by number of total matches
-      employers.sort(function(x, y) {
-        return scores[x.name] > scores[y.name];
+      listings.sort(function(x, y) {
+        return scores[x.name] < scores[y.name];
       });
       // Send the response
-      console.log(scores);
-      console.log(employers);
-      utils.sendSuccessResponse(res, employers);
+      utils.sendSuccessResponse(res, listings);
     }
   });
 });

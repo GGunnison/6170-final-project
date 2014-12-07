@@ -1,4 +1,3 @@
-// TODO this is for the new index page that is under construction
 // author: Sabrina Drammis
 var IndexController = function() {
 
@@ -9,8 +8,10 @@ var IndexController = function() {
   var local = {};
 
   var setLocal = function() {
-    local.loginTemplate  = require('../../views/templates/login.jade');
-    local.signupTemplate = require('../../views/templates/signup.jade');
+    local.SignupController = require('./signupController');
+    local.LoginController  = require('./loginController');
+    local.loginTemplate    = require('../../views/templates/login.jade');
+    local.signupTemplate   = require('../../views/templates/signup.jade');
   }
 
   // Helper functions
@@ -20,11 +21,15 @@ var IndexController = function() {
     exports.renderLogin = function() {
       var loginHTML = local.loginTemplate();
       $('#login-signup-form').html(loginHTML);
+      $('#login .slide-bar').addClass('selected');
+      $('#signup .slide-bar').removeClass('selected');
     }
 
     exports.renderSignup = function() {
       var signupHTML = local.signupTemplate();
       $('#login-signup-form').html(signupHTML);
+      $('#login .slide-bar').removeClass('selected');
+      $('#signup .slide-bar').addClass('selected');
     }
 
     return exports
@@ -38,6 +43,11 @@ var IndexController = function() {
     $(window).resize(responsiveJS);
 
     eventListeners();
+
+    // initialize to having the login up
+    var loginController = new local.LoginController();
+    helpers.renderLogin();
+    loginController.init();
   }
 
   var sizingJS = function() {
@@ -50,11 +60,17 @@ var IndexController = function() {
 
   var eventListeners = function() {
     $('#login').click( function() {
+      var loginController = new local.LoginController();
+      // this order is important
       helpers.renderLogin();
+      loginController.init();
     });
 
     $('#signup').click( function() {
+      var signupController = new local.SignupController();
+      // this order is important
       helpers.renderSignup();
+      signupController.init();
     });
   }
 
@@ -64,4 +80,7 @@ var IndexController = function() {
   }
 }
 
-module.exports = IndexController;
+var indexController = new IndexController();
+$(document).ready(function() {
+  indexController.init();
+});

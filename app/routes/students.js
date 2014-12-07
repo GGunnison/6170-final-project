@@ -89,14 +89,14 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
           }
         }
 
-        //if (keep) scores[student.name] = score;
+        if (keep) scores[student.name] = score;
         return keep;
       });
       // Sort by the most matches
       students.sort(function(x, y) {
         return scores[x.name] > scores[y.name];
       });
-
+      console.log("scores", scores);
       // Respond
       utils.sendSuccessResponse(res, students);
     }

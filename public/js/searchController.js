@@ -3,7 +3,7 @@
 employMeApp.controller("searchCreationController", function($scope) {
   // Public variables, available outside controller
   var public = $scope.viewModel = {
-    skills: [], 
+    skills: [],
     csrf: $("#csrf")[0].value
   };
 
@@ -49,8 +49,8 @@ employMeApp.controller("searchCreationController", function($scope) {
 
     exports.getSkills = function() {
       return $.ajax({
-        datatype: "json", 
-        type: "GET", 
+        datatype: "json",
+        type: "GET",
         url: "/skills"
       });
     }
@@ -82,6 +82,10 @@ employMeApp.controller("searchCreationController", function($scope) {
     exports.init = function () {
       exports.dragAndDropInit();
 
+      $('.rightColCont').delegate('.searchResult', 'click', function() {
+        $(this).html('p changed html');
+      });
+
       $("#skillSubmit").on("click", function() {
         var requiredSkills = [];
         var desiredSkills = [];
@@ -98,13 +102,13 @@ employMeApp.controller("searchCreationController", function($scope) {
 
         var data = {
           requiredSkills: requiredSkills,
-          desiredSkills: desiredSkills, 
+          desiredSkills: desiredSkills,
           _csrf: public.csrf
         }
 
         var ajaxObj = {
-          datatype: "json", 
-          type: "GET", 
+          datatype: "json",
+          type: "GET",
           data: data
         }
 
@@ -118,10 +122,6 @@ employMeApp.controller("searchCreationController", function($scope) {
           public.searchResults = res.content;
           $scope.$apply();
         });
-      });
-
-      $('.searchResult').delegate(result, 'click', function() {
-        console.log('CLICK'); 
       });
     }
 
@@ -140,7 +140,7 @@ employMeApp.controller("searchCreationController", function($scope) {
           var skillName = ui.draggable.text();
           var skillId = ui.draggable.attr("id");
           $("#" + skillId).remove();
- 
+
           $("<div class='skill draggedSkill'><span id=" + skillId + " class='label label-default'>" + ui.draggable.text() + xHtml + "</span></div>")
             .appendTo(this);
         }
@@ -161,6 +161,8 @@ employMeApp.controller("searchCreationController", function($scope) {
           revert: "invalid"
         });
       });
+
+
     }
 
     return exports;

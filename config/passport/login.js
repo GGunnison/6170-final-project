@@ -1,12 +1,13 @@
 var LocalStrategy = require('passport-local').Strategy;
-var Student   = require('../../app/models/StudentModel');
-var Employer   = require('../../app/models/EmployerModel');
-var Async = require('../../node_modules/async/lib/async.js')
+var async         = require('../../node_modules/async/lib/async.js')
+var bCrypt        = require('bcrypt-nodejs');
+var validator     = require('validator');
 
-var bCrypt    = require('bcrypt-nodejs');
-var validator = require('validator');
+// database models
+var Student       = require('../../app/models/StudentModel');
+var Employer      = require('../../app/models/EmployerModel');
 
-// author: Grant Gunnison
+// author(s): Sabrina Drammis, Grant Gunnison
 module.exports = function(passport){
     // =========================================================================
     // LOCAL LOGIN =============================================================
@@ -18,65 +19,31 @@ module.exports = function(passport){
         passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, email, password, done) {
-        if (email)
-            email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
+      if (email) email = validator.trim(email.toLowerCase());
 
-        process.nextTick(function() {
-            if (!validator.isEmail(email)) {
-              return done(null, false, req.flash('loginMessage', 'Invalid email.'));
-            }
-            Async.parallel([
-                    function(callback){
-                      var query = Student.findOne({ 'email' :  email });
-                      query.exec(function(err, student){
-                        if (err){
-                          callback(err);
-                        }
-                        callback(null, student);
-                      });
-                    },
-                    function(callback){
-                      var query = Employer.findOne({ 'email' :  email });
-                      query.exec(function(err, employer){
-                        if (err){
-                          callback(err);
-                        }
-                        callback(null, employer);
-                      });
-                    }
-                  ],
+      if (!validator.isEmail(email)) return done(null, false, req.flash('alert', 'Invalid email.'));
 
-            function(err, results){
-              if (!results[0] && !results[1]){
-                return done(null, false, req.flash('loginMessage', 'No user found.'));
-              }
-              if (results[0]){
-                if (err) {
-                  console.log(err);
-                  return done(err);
-                }
-                if (!results[0].validPassword(password)) {
-                  return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
-                }else{
-                  console.log(results[0]);
-                  return done(null, results[0]);
-                }
-              }
-
-              if (results[1]){
-                if (err) {
-                  console.log(err);
-                  return done(err);
-              }
-                if (!results[1].validPassword(password)) {
-                  return done(null, false, req.flash('signupMessage', 'That email is invalid.'));
-                }else{
-                  console.log(results[1]);
-                  return done(null, results[1]);
-              }
-            }
-
-            });
-        });
+      async.parallel({
+        student: function (cb) {
+          Student.findOne({email: email}, function (err, student) {
+            if (err) { console.log(err); return done(err) }
+            if (student) {cb(null, student)} else {cb(null, false)}
+          });
+        },
+        employer: function (cb) {
+          Employer.findOne({email: email}, function (err, employer) {
+          if (err) { console.log(err); return done(err) }
+          if (employer) {cb(null, employer)} else {cb(null, false)}
+          });
+        }
+      },
+      function(err, results) {
+        if (err) { console.log(err); return done(err); }
+        if (results.student && results.student.validPassword(password))
+          return done(null, results.student);
+        if (results.employer && results.employer.validPassword(password))
+          return done(null, results.employer);
+        return done(null, false, req.flash('alert', 'Invalid information.'))
+      });
     }));
 }
