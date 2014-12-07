@@ -3,8 +3,12 @@ mixin listing(listing)
     .panel-body
       #id(style="display:none;")= listing._id
       .col-md-4
-        p #{listing.title}
-        p #{listing.description}
-        p #{listing.position}
-        p #{listing.location}
-        p #{listing.skills}
+        h4= listing.title
+        h4= listing.position
+        p= listing.description
+        p= listing.location        
+      .col-md-6
+        h4 Skills
+        .resultSkills
+          for skill in listing.namedSkills
+            span.label.label-default= skill
