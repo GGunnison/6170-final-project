@@ -42,9 +42,9 @@ var StudentSignupController = function() {
         if (data.alertMessage) {
           $('#alertMessage').text(data.alertMessage);
           $('.alert').show();
+        } else {
+          window.location = '/profile/create';
         }
-      }).success( function () {
-        window.location = '/profile/create';
       });
     });
   }

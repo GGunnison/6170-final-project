@@ -47,10 +47,22 @@ var SignupController = function() {
   var eventListeners = function() {
     $('#student-tab').click( function() {
       helpers.renderStudentSignup();
+
+      $(this).children().removeClass('unselected-text');
+      $(this).children().addClass('selected-text');
+
+      $('#employer-tab').children().removeClass('selected-text');
+      $('#employer-tab').children().addClass('unselected-text');
     });
 
     $('#employer-tab').click( function() {
       helpers.renderEmployerSignup();
+
+      $(this).children().removeClass('unselected-text');
+      $(this).children().addClass('selected-text');
+
+      $('#student-tab').children().removeClass('selected-text');
+      $('#student-tab').children().addClass('unselected-text');
     });
   }
 

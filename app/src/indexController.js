@@ -43,6 +43,11 @@ var IndexController = function() {
     $(window).resize(responsiveJS);
 
     eventListeners();
+
+    // initialize to having the login up
+    var loginController = new local.LoginController();
+    helpers.renderLogin();
+    loginController.init();
   }
 
   var sizingJS = function() {
@@ -55,7 +60,6 @@ var IndexController = function() {
 
   var eventListeners = function() {
     $('#login').click( function() {
-      console.log('login');
       var loginController = new local.LoginController();
       // this order is important
       helpers.renderLogin();
@@ -63,7 +67,6 @@ var IndexController = function() {
     });
 
     $('#signup').click( function() {
-      console.log('signup');
       var signupController = new local.SignupController();
       // this order is important
       helpers.renderSignup();

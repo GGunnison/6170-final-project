@@ -39,9 +39,9 @@ var LoginController = function() {
         if (data.alertMessage) {
           $('#alertMessage').text(data.alertMessage);
           $('.alert').show();
+        } else {
+          window.location = '/search';
         }
-      }).success( function () {
-        window.location = '/search';
       });
     });
   }
