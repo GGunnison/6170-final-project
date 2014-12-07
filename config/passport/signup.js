@@ -16,6 +16,9 @@ module.exports = function (passport) {
     passReqToCallback : true // allows us to pass in the req from our route
   },
   function (req, email, password, done) {
+    if (req.body.passwordConfirm !== password) return done( null, false, req.flash('error', 'Password fields do not match'));
+
+    // normalize the email
     if (email) email = validator.trim(email.toLowerCase());
 
     // student isn't logged in
@@ -35,7 +38,7 @@ module.exports = function (passport) {
           }
         },
         function (err, results) {
-          if (results.isStudent || results.isEmployer) return done(null, false, req.flash('signupMessage'), 'Email is already taken.');
+          if (results.isStudent || results.isEmployer) return done(null, false, req.flash('error', 'Email is already taken.') );
           var newUser = new User[req.body.type]();
 
           newUser.email    = email;
@@ -53,8 +56,9 @@ module.exports = function (passport) {
 
           newUser.save( function (err) {
             if (err) {
-              console.log(err.errors);
-              return done(err);
+              console.log(err);
+              var message = err.errors[Object.keys(err.errors)].message
+              return done( null, false, req.flash('error', message) );
             }
             return done(null, newUser);
           });

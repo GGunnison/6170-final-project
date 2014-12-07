@@ -40,14 +40,14 @@ module.exports = function (passport) {
   // SIGNUP
   // show the signup form
   router.get('/signup', function(req, res) {
-    res.render('index.jade', { message: req.flash('signupMessage')});
+    res.render('index.jade', { message: req.flash('message')});
   });
 
   // process the signup form
   router.post('/signup', function (req, res, next) {
     passport.authenticate('signup', function (err, user, info) {
-      console.log('foooo');
-      res.send('hihihi');
+      var message = req.flash('error')[0];
+      res.send({ message: message});
     })(req, res, next);
   });
 
