@@ -8,8 +8,8 @@ var IndexController = function() {
   var local = {};
 
   var setLocal = function() {
-    local.SignupController = require('./signupController');
-    local.LoginController  = require('./loginController');
+    local.SignupController = require('./index/signupController');
+    local.LoginController  = require('./index/loginController');
     local.loginTemplate    = require('../../views/templates/login.jade');
     local.signupTemplate   = require('../../views/templates/signup.jade');
   }

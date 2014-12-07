@@ -120,6 +120,7 @@ employMeApp.controller("searchCreationController", function($scope) {
 
         $.ajax(ajaxObj).done(function(res) {
           public.searchResults = res.content;
+          $('#results').text('testing');
           $scope.$apply();
         });
       });
