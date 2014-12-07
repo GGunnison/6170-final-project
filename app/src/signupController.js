@@ -8,8 +8,9 @@ var SignupController = function() {
   var local = {};
 
   var setLocal = function() {
-    local.studentSignupTemplate  = require('../../views/templates/student-signup.jade');
-    local.employerSignupTemplate = require('../../views/templates/employer-signup.jade');
+    local.studentSignupController = require('./studentSignupController');
+    local.studentSignupTemplate   = require('../../views/templates/student-signup.jade');
+    local.employerSignupTemplate  = require('../../views/templates/employer-signup.jade');
   }
 
   // Helper functions
@@ -19,6 +20,8 @@ var SignupController = function() {
     exports.renderStudentSignup = function() {
       var studentSignupHTML = local.studentSignupTemplate();
       document.getElementById('signup-form-contents').innerHTML = studentSignupHTML;
+      var studentSignupController = new local.studentSignupController();
+      studentSignupController.init();
     }
 
     exports.renderEmployerSignup = function() {
@@ -32,21 +35,10 @@ var SignupController = function() {
   // Starts all processes
   var init = function() {
     setLocal();
-
-    sizingJS();
-    $(window).resize(responsiveJS);
-
     eventListeners();
 
+    // student signup is default
     helpers.renderStudentSignup();
-  }
-
-  var sizingJS = function() {
-
-  }
-
-  var responsiveJS = function() {
-    sizingJS();
   }
 
   var eventListeners = function() {

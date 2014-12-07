@@ -15,10 +15,7 @@ module.exports = function (passport) {
   // show the home page
   router.get('/', function(req, res) {
     if ( !req.user ) {
-      res.render('home.jade',
-                 { signupMessage: req.flash('signupMessage'),
-                   loginMessage: req.flash('loginMessage')
-                 });
+      res.render('home.jade');
     } else {
       res.redirect('/search');
     }
@@ -36,11 +33,9 @@ module.exports = function (passport) {
   });
 
   // process the login form
-  router.post('/login', passport.authenticate('login', {
-    successRedirect : '/search', // redirect to secure profile section
-    failureRedirect : '/', // redirect back to signup page if there is an error
-    failureFlash : true // allow flash messages
-  }));
+  router.post('/login', passport.authenticate('login'), function (req, res) {
+    console.log(req);
+  });
 
   // SIGNUP
   // show the signup form
@@ -49,11 +44,12 @@ module.exports = function (passport) {
   });
 
   // process the signup form
-  router.post('/signup', passport.authenticate('signup', {
-    successRedirect : '/profile/create', // redirect to secure profile section
-    failureRedirect : '/', // redirect back to signup page if there is an error
-    failureFlash : true // allow flash messages
-  }));
+  router.post('/signup', function (req, res, next) {
+    passport.authenticate('signup', function (err, user, info) {
+      console.log('foooo');
+      res.send('hihihi');
+    })(req, res, next);
+  });
 
   return router;
 }
