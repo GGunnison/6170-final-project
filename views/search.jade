@@ -4,7 +4,7 @@ extends layout
 block head
   link(rel='stylesheet', href='/css/employerSearchCreation.css')
   script(type="text/javascript", src="//code.jquery.com/ui/1.11.2/jquery-ui.js")
-  script(type="text/javascript", src="/js/searchCreationController.js")
+  script(type="text/javascript", src="/js/searchController.js")
 
 block content
   div.cont(data-ng-controller="searchCreationController")
@@ -46,13 +46,15 @@ block content
                         - } else if (user.__t == "Employer") {
                           button#skillSubmit.btn.btn-success(data-type="Employer") Submit
                         - }
-                            
+
 
           td
             div.rightColCont
               div.colCont
                 h3 Results
                 div.searchResult.g-shadow(ng-repeat="result in viewModel.searchResults")
+                  input#id(type="hidden", ng-bind="result._id")
+                  input#type(type="hidden", ng-bind="result.__t")
                   table
                     tbody
                       tr
