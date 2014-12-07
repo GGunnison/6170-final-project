@@ -141,6 +141,79 @@ router.get('/:studentId', utils.isLoggedIn, function (req, res) {
            });
 });
 
+/* Get a student's summary
+ * Must be logged in.
+ *
+ * GET /students/:studentId/summary
+ *
+ * Params:
+ *    - studentId:
+ *        _id of student whose summary to get
+ *
+ * Response:
+ *    - success: 200:
+ *        {String} responds with the requested student's summary
+ *    - error 404:
+ *        if the studentId is not valid
+ *
+ * author: Daniel Sanchez
+ */
+router.get('/:studentId/summary', utils.isLoggedIn, function (req, res) {
+  Student.findById(req.params.studentId, function (err, student) {
+    if (err) {
+      console.log(err);
+      utils.sendErrResponse(res, 500, null);
+    } else if (student) {
+      utils.sendSuccessResponse(res, student.summary);
+    }
+  });
+});
+
+/** Set the summary for a student 
+ *  Only allowed to set your own summary
+ * 
+ * PUT /students/:studentId/summary
+ * 
+ * Params: 
+ *     - studentId: 
+ *         _id of student to set classes for
+ *         must be the logged in student's _id
+ *
+ * Body: 
+ *    - summary: String representing student summary
+ *
+ * Response: 
+ *    - success 200
+ *        if the summary was successfully set
+ *    - error 403
+ *         if the user making the request is not the logged in student
+ *
+ *    - error 404
+ *       if the studentId is not valid
+ *
+ * Author: Daniel Sanchez
+ *
+ */
+router.put('/:studentId/summary', utils.isLoggedInStudent, function (req, res) {
+  if (req.user._id.toString() === req.params.studentId) {
+    var summary = req.body.summary;
+    Student.findByIdAndUpdate(req.params.studentId, 
+            {summary: summary}, 
+            function (err, student) {
+              if (err) {
+                console.log("error at /:studentId/summary", err);
+                utils.sendErrResponse(res, 500, null);
+              } else if (student) {
+                utils.sendSuccessResponse(res, null);
+              } else {
+                utils.sendErrResponse(res, 404, 'student was not found');
+              }
+            });
+  } else {
+    utils.sendErrResponse(res, 403, "you are not allowed to modify other users' information")
+  }
+});
+
 /* Get a student's classes
  * Must be logged in.
  *
