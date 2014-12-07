@@ -5,6 +5,7 @@ var utils     = require('../utils/utils.js');
 var assert    = require('assert');
 var mongoose  = require('mongoose');
 var validator = require('validator');
+var async     = require('async');
 
 // database models
 var Employer = require('../models/EmployerModel.js');
@@ -41,9 +42,10 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       var listings = [];
       employers.forEach( function(employer) {
         for (var i = 0; i < employer.listings.length; i++) {
-          var listing = employer.listings[i] || { skills:{} };
           var keep = false;
-          scores[listing.title] = 0;     
+          if (requiredSkills.length === 0 && desiredSkills.length === 0) keep = true;
+          var listing = employer.listings[i] || { skills:{} };
+          scores[listing.title] = 0;
           for (var j = 0;  j < listing.skills.length; j++) {
             var skill = listing.skills[j];
             // Increment the score and keep it if in required
@@ -56,9 +58,32 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
               scores[listing.title] += 1;
             }
           }
-          if (keep) listings.push(listing);          
+          if (keep) {
+            var responseListing = { listing: listing }
+            responseListing.employerName = employer.name;
+            responseListing.company = employer.company;
+            responseListing.email = employer.email;
+            responseListing.namedSkills = [];
+
+            // Function to get a skill from an id.
+            var getSkill = function(skillId) {
+              Skill.findById(skillId, function (err, foundSkill) {
+                if (err) {
+                  console.log("error at GET /employers", err);
+                  utils.sendErrResponse(res, 500, null);
+                } else {
+                  responseListing.namedSkills.push(foundSkill.name);
+                }
+              });
+            }
+            // Get each skill and put its name into namedSkills
+            async.each(listing.skills, getSkill, function(err) {
+            });
+            listings.push(responseListing);
+          }
         }
       });
+      console.log("listings", listings);
       // Sort by number of total matches
       listings.sort(function(x, y) {
         return scores[x.title] < scores[y.title];
