@@ -88,6 +88,10 @@ var SearchResultsController = function() {
           console.log(res.content);
         });
       });
+
+      $(document).on('click', '.panel-body', function() {
+        $(this).children('.rest').slideToggle();
+      });
   }
 
   return {
