@@ -85,7 +85,6 @@ var SearchResultsController = function() {
               helpers.renderStudents(res.content);
               break
           }
-          console.log(res.content);
         });
       });
 
