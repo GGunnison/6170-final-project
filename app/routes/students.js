@@ -96,7 +96,7 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
       students.sort(function(x, y) {
         return scores[x.name] < scores[y.name];
       });
-      console.log("scores", scores);
+
       // Respond
       utils.sendSuccessResponse(res, students);
     }

@@ -2,11 +2,18 @@ mixin student(student)
   .panel.panel-default
     .panel-body
       #id(style="display:none")= student._id
-      .col-md-6
-        h4= student.name
-        h4= student.email
-        h4 website here
-        p summary goes here
-      .col-md-6
-        for skill in student.skills
-          span.label.label-default(ng-bind="viewModel.skillsMap[skill]")
+      .row
+        .col-md-6
+          h4= student.name
+          h4= student.email
+          h4 website here
+          p summary goes here
+        .col-md-6
+          h4 Skills
+          for skill in student.skills
+            span.label.label-default skill
+      .row
+        .col-md-12
+          h4 Experience
+        .col-md-12
+          h4 Classes
