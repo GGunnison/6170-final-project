@@ -86,43 +86,6 @@ employMeApp.controller("searchCreationController", function($scope) {
         $(this).html('p changed html');
       });
 
-      $("#skillSubmit").on("click", function() {
-        var requiredSkills = [];
-        var desiredSkills = [];
-
-        $(".requiredSkillsDrop .skill span").each(function(i) {
-          var skill_id = $(this).attr("id");
-          requiredSkills.push(skill_id);
-        });
-
-        $(".desiredSkillsDrop .skill span").each(function(i) {
-          var skill_id = $(this).attr("id");
-          desiredSkills.push(skill_id);
-        });
-
-        var data = {
-          requiredSkills: requiredSkills,
-          desiredSkills: desiredSkills,
-          _csrf: public.csrf
-        }
-
-        var ajaxObj = {
-          datatype: "json",
-          type: "GET",
-          data: data
-        }
-
-        if ($(this).attr("data-type") === "Student") {
-          ajaxObj["url"] = "/employers";
-        } else if ($(this).attr("data-type") === "Employer") {
-          ajaxObj["url"] = "/students";
-        }
-
-        $.ajax(ajaxObj).done(function(res) {
-          public.searchResults = res.content;
-          $scope.$apply();
-        });
-      });
     }
 
     exports.dragAndDropInit = function () {
