@@ -1,15 +1,15 @@
 .row
   .col-md-12
     .alert.alert-danger.alert-dismissible(role="alert")
-      #alert alert goes here
+      #alertMessage alert goes here
 .row
   .col-md-12
     .input-group
       span.input-group-addon @
-      input.form-control(type="text", class="form-control", placeholder="Email")
+      input#email.form-control(type="text", placeholder="Email")
 .row
   .col-md-12
-    input.form-control(type="password", class="form-control", placeholder="Password")
+    input#pass.form-control(type="password", placeholder="Password")
 .row
   .col-md-12
-    button.btn.btn-primary(type="button") Sign In
+    button#submit.btn.btn-primary Sign In

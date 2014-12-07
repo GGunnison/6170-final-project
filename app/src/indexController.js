@@ -9,6 +9,7 @@ var IndexController = function() {
 
   var setLocal = function() {
     local.SignupController = require('./signupController');
+    local.LoginController  = require('./loginController');
     local.loginTemplate    = require('../../views/templates/login.jade');
     local.signupTemplate   = require('../../views/templates/signup.jade');
   }
@@ -26,7 +27,7 @@ var IndexController = function() {
 
     exports.renderSignup = function() {
       var signupHTML = local.signupTemplate();
-      document.getElementById('login-signup-form').innerHTML = signupHTML;
+      $('#login-signup-form').html(signupHTML);
       $('#login .slide-bar').removeClass('selected');
       $('#signup .slide-bar').addClass('selected');
     }
@@ -54,10 +55,15 @@ var IndexController = function() {
 
   var eventListeners = function() {
     $('#login').click( function() {
+      console.log('login');
+      var loginController = new local.LoginController();
+      // this order is important
       helpers.renderLogin();
+      loginController.init();
     });
 
     $('#signup').click( function() {
+      console.log('signup');
       var signupController = new local.SignupController();
       // this order is important
       helpers.renderSignup();
@@ -73,6 +79,5 @@ var IndexController = function() {
 
 var indexController = new IndexController();
 $(document).ready(function() {
-  console.log('foo');
   indexController.init();
 });

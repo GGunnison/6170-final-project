@@ -33,8 +33,18 @@ module.exports = function (passport) {
   });
 
   // process the login form
-  router.post('/login', passport.authenticate('login'), function (req, res) {
-    console.log(req);
+  router.post('/login', function (req, res, next) {
+    passport.authenticate('login', function (err, user, info) {
+      if (user) {
+        req.login(user, function (err) {
+          if (err) { console.log(err); return next(err); }
+          return res.status(200).end();
+        });
+      } else {
+        var alertMessage = req.flash('alert')[0] || "Something isn't right.";
+        res.send({ alertMessage: alertMessage });
+      }
+    })(req, res, next);
   });
 
   // SIGNUP
@@ -46,8 +56,12 @@ module.exports = function (passport) {
   // process the signup form
   router.post('/signup', function (req, res, next) {
     passport.authenticate('signup', function (err, user, info) {
-      var message = req.flash('error')[0];
-      res.send({ message: message});
+      if (user) {
+        res.status(200).send(user);
+      } else {
+        var alertMessage = req.flash('alert')[0] || "Something isn't right.";
+        res.send({ alertMessage: alertMessage});
+      }
     })(req, res, next);
   });
 

@@ -21,6 +21,8 @@ var StudentSignupController = function() {
   var init = function() {
     setLocal();
     eventListeners();
+
+    $('.alert').hide();
   }
 
   var eventListeners = function() {
@@ -37,7 +39,13 @@ var StudentSignupController = function() {
         url: '/signup',
         data: data
       }).done( function (data) {
-        console.log(data);
+        if (data.alertMessage) {
+          $('#alertMessage').text(data.alertMessage);
+          $('.alert').show();
+        }
+      }).success( function (user) {
+        // login the user
+        console.log('all good');
       });
     });
   }
