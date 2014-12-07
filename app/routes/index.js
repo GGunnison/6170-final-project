@@ -59,7 +59,7 @@ module.exports = function (passport) {
       if (user) {
         req.login(user, function (err) {
           if (err) { console.log(err); return next(err); }
-          return res.status(404).end();
+          return res.status(200).end();
         });
       } else {
         var alertMessage = req.flash('alert')[0] || "Something isn't right.";
