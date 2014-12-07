@@ -44,6 +44,8 @@ var EmployerSignupController = function() {
           $('#alertMessage').text(data.alertMessage);
           $('.alert').show();
         }
+      }).success( function () {
+        window.location = '/profile/create';
       });
     });
   }

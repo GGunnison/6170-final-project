@@ -43,9 +43,8 @@ var StudentSignupController = function() {
           $('#alertMessage').text(data.alertMessage);
           $('.alert').show();
         }
-      }).success( function (user) {
-        // login the user
-        console.log('all good');
+      }).success( function () {
+        window.location = '/profile/create';
       });
     });
   }

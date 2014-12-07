@@ -57,7 +57,10 @@ module.exports = function (passport) {
   router.post('/signup', function (req, res, next) {
     passport.authenticate('signup', function (err, user, info) {
       if (user) {
-        res.status(200).send(user);
+        req.login(user, function (err) {
+          if (err) { console.log(err); return next(err); }
+          return res.status(200).end();
+        });
       } else {
         var alertMessage = req.flash('alert')[0] || "Something isn't right.";
         res.send({ alertMessage: alertMessage});
