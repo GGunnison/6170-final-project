@@ -50,33 +50,25 @@ router.get('/', utils.isLoggedIn, function(req, res){
 			.populate('mailbox.sentbox')
 			.exec(function(err, employer){
 				if (err) {
-                  console.log(err);
-                  utils.sendErrResponse(res, 500, null);
-                }
-                else{
-
-                	res.render('messages.jade', employer.mailbox)
-				  	// utils.sendSuccessResponse(res, employer.mailbox);
-				  }
-
-			})
-
-	}if (req.user.__t === "Student"){
-
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else {
+          res.render('messages.jade', employer.mailbox)
+      }
+    })
+	} 
+  if (req.user.__t === "Student"){
 		Student.findById(req.user._id)
 			.populate("mailbox.inbox")
 			.populate('mailbox.sentbox')
 			.exec(function(err, student){
 				if (err) {
-                  	console.log(err);
-                  	utils.sendErrResponse(res, 500, null);
-                }
-                else{
-                	res.render('messages.jade', student.mailbox)
-				  	// utils.sendSuccessResponse(res, student.mailbox);
-				  }
-
-			})
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else{
+          res.render('messages.jade', student.mailbox)
+        }
+    })
 	}
 });
 
@@ -97,8 +89,8 @@ router.get('/sentbox', utils.isLoggedIn, function(req, res){
 			.populate('mailbox.sentbox')
 			.exec(function(err, employer){
 				if (err) {
-                  console.log(err);
-                  utils.sendErrResponse(res, 500, null);
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
                 }
                 else{
 				  utils.sendSuccessResponse(res, employer.mailbox.sentbox);
@@ -166,13 +158,32 @@ router.get('/inbox', utils.isLoggedIn, function(req, res){
 	}
 });
 
+/* Send a new message
+*
+* POST /messages/:recipientID
+*
+* Params:
+* 	- to
+* 		  Name of the recipient
+*   - title
+*       Message title
+*   - content
+*       Message body
+* Response:
+*    - success: 200:
+*        if the messages were found and sent
+*    - error 500:
+*        there was an error with one of the user objects
+*/
 router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 
 	new Message({
-		to: req.body.to,
-		from: req.user.name,
-		title: req.body.title,
-		content: req.body.content
+    to      : req.body.to,
+		toId    : req.params.recipientID,
+    from    : req.user.name,
+		fromId  : req.user._id,
+		title   : req.body.title,
+		content : req.body.content
 	}). save(function(err, message) {
 		if (req.user.__t === "Employer"){
 			//Update the receivers info
