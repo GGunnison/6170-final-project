@@ -73,7 +73,6 @@ var SearchResultsController = function() {
     exports.renderListings = function (listings) {
       var listings     = listings || [];
       var listingsHTML = local.listingsTemplate({listings: listings});
-      console.log('render them');
       $('#results').html(listingsHTML);
     }
 

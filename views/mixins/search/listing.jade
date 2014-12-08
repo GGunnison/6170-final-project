@@ -6,19 +6,20 @@ mixin listing(listing)
         .col-md-6
           h4
             strong= listing.title
-          h5= listing.company
-          h5= listing.position
-          h5= listing.location          
+          h5 #{listing.position} | #{listing.company}
+          h5= listing.location
         .col-md-6
-          h3
-            strong Skills
-          for skill in listing.skills
-            span.label.label-default= skill.name
       .row.rest(style='display: none;')
-        .col-md-12
+        .col-md-8
           h4
             strong Description
           div= listing.employerName
           a(href="mailto:#{listing.email}")= listing.email
           br
           p= listing.description
+        .col-md-4
+          h3
+            strong Skills
+          .mixinSkills
+            for skill in listing.skills
+              span.label.label-default= skill.name
