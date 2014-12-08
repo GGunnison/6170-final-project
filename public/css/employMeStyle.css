@@ -6288,6 +6288,7 @@ button.close {
 body {
   background-color: #ECECEC;
   font-family: 'Lato', sans-serif;
+  color: #555555;
 }
 * {
   -webkit-border-radius: 0 !important;

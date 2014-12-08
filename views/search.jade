@@ -14,39 +14,41 @@ block content
       tbody
         tr
           td(width='350px')
-            div.leftColCont
-              div.colCont
+            .leftColCont
+              .refine-search-title
+                h4
+                  strong REFINE SEARCH
+              .colCont
                 table
                   tbody
                     tr(height="0")
                       td
-                        h3 Search by Skills
-                        input.form-control.skillsSearchInput(ng-model="query", placeholder="Search for skills")
+                        input.form-control.skillsSearchInput(ng-model="query", placeholder="skills")
                     tr
                       td
-                        div.leftColSectionCont
+                        div.leftColSectionCont.skills
                           div#skillsCont.leftColSection
                             div.skill(ng-repeat="skill in viewModel.skills | filter:query")
                               span.draggable.label.label-default(id="{{skill._id}}", ng-bind="skill.name")
                     tr
                       td
-                        div.leftColSectionCont
+                        .leftColSectionCont
+                          .dragInstructionTextDiv
+                            h5 REQUIRED
                           div.leftColSection.skillsDrop.requiredSkillsDrop
-                            div.dragInstructionTextDiv
-                              h3 Drag required skills here
                     tr
                       td
-                        div.leftColSectionCont
-                          div.leftColSection.skillsDrop.desiredSkillsDrop
-                            div.dragInstructionTextDiv
-                              h3 Drag desired skills here
-                    tr(height="0")
-                      td
-                        - if (user.__t === "Student") {
-                          button#skillSubmit.btn.btn-primary(data-type="Student") Filter
-                        - } else if (user.__t === "Employer") {
-                          button#skillSubmit.btn.btn-primary(data-type="Employer") Filter
-                        - }
+                        .leftColSectionCont
+                          .dragInstructionTextDiv
+                            h5 DESIRED
+                          .leftColSection.skillsDrop.desiredSkillsDrop
+                    //tr(height="0")
+                    //  td
+                    //    - if (user.__t === "Student") {
+                    //      button#skillSubmit.btn.btn-primary(data-type="Student") Filter
+                    //    - } else if (user.__t === "Employer") {
+                    //      button#skillSubmit.btn.btn-primary(data-type="Employer") Filter
+                    //    - }
 
 
           td
