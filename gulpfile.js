@@ -10,7 +10,9 @@ var gulp       = require('gulp'),
     less       = require('gulp-less');
 
 gulp.task('watch', function () {
-  gulp.watch('./views/**/*.*', ['scripts'])
+  gulp.watch('./views/templates/**/*.*', ['scripts'])
+      .on('change', livereload.changed);
+  gulp.watch('./views/mixins/**/*.*', ['scripts'])
       .on('change', livereload.changed);
   gulp.watch('./app/src/styles/**/*.less', ['less'])
       .on('change', livereload.changed);

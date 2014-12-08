@@ -30,7 +30,7 @@ var SearchResultsController = function() {
       }
 
       var searchType = null;
-      if ($('#skillSubmit').attr("data-type") === "Student") {
+      if ($('#userType').attr("data-type") === "Student") {
         ajaxObj["url"] = "/employers";
         searchType = 'employers';
       } else if ($('#skillSubmit').attr("data-type") === "Employer") {
@@ -96,7 +96,7 @@ var SearchResultsController = function() {
         $(this).children('.rest').slideToggle();
       });
   }
-  
+
   return {
     public: public,
     init: init
