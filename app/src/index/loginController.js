@@ -44,6 +44,26 @@ var LoginController = function() {
         }
       });
     });
+
+    $('#pass.form-control').keydown(function(e) {
+      if (e.keyCode == 13) {
+        var data = { email: $('#email').val(),
+                     password: $('#pass').val()
+                   };
+        $.ajax({
+          type: "POST",
+          url: '/login',
+          data: data
+        }).done( function (data) {
+          if (data.alertMessage) {
+            $('.alert').fadeIn(800);
+          } else {
+            window.location = '/search';
+          }
+        });
+
+      }
+    });
   }
 
   return {
