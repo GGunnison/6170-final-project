@@ -30,7 +30,7 @@ block content
                     h2 Skills
                   div.skillsContainer
                     div.skill.draggedSkill(ng-repeat="(id, name) in viewModel.studentSkills")
-                      span.label.label-default(id="{{id}}", ng-bind="name")
+                      span.label.label-default(id="{{id}}") {{name}}    &#10006;
                     
                   legend
                     h2 Experience
@@ -98,7 +98,7 @@ block content
                     h2 Classes
                   div.classesContainer
                     div.class.draggedSkill(ng-repeat="(id, name) in viewModel.studentClasses")
-                      span.label.label-primary(id="{{id}}") {{id}}: {{name}}
+                      span.label.label-primary(id="{{id}}") {{id}}: {{name}}  &#10006;
 
             td.mainCol(width="350px")
               div.rightColCont
