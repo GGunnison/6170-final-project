@@ -1,7 +1,6 @@
 mixin listing(listing)
   .panel.panel-default
     .panel-body
-      #id(style="display:none;")= listing._id
       .row
         .col-md-6
           h4
@@ -10,7 +9,10 @@ mixin listing(listing)
           h5 Location: #{listing.location}
         .col-md-6
           .contactInfo
-            h5 CONTACT
+            h5(style="display: inline; padding-right: 7px;") CONTACT
+            a.createMessageBtn(style="display: inline;")
+              #id(style="display:none;")= listing._id
+              i.fa.fa-envelope-o
             h5 Recruiter: #{listing.employerName}
             - var email = 'Email: '
             h5= email
