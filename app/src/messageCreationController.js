@@ -15,9 +15,9 @@ var MessageCreationController = function() {
   var helpers = (function() {
     var exports = {};
 
-    exports.renderModal = function() {
-      var modalHTML = local.messageModalTemplate();
-      $('body').append(modalHTML);
+    exports.toggleModal = function () {
+      $('.modal').modal('toggle');
+      // set the modal information
     }
 
     return exports
@@ -28,11 +28,14 @@ var MessageCreationController = function() {
     setLocal();
 
     eventListeners();
+
+    var modalHTML = local.messageModalTemplate();
+    $('body').append(modalHTML);
   }
 
   var eventListeners = function() {
     $('#createMessageBtn').click( function() {
-
+      helpers.toggleModal();
     });
   }
 
