@@ -42,8 +42,8 @@ var MessageCreationController = function() {
     });
 
     $(document).on('click', '#sendMessage', function () {
-      var toName  = $('.createMessageBtn').attr('name');
-      var toId    = $('.createMessageBtn').attr('id');
+      var toName  = $(this).closest('.createMessageBtn').attr('name');
+      var toId    = $(this).closest('.createMessageBtn').attr('id');
       var title   = $('#messageTitle').val();
       var content = $('#messageContent').val();
 
@@ -51,12 +51,12 @@ var MessageCreationController = function() {
         type: "POST",
         url: "/messages/" + toId,
         data: { to      : toName,
-                content : content, 
+                content : content,
                 title   : title
         },
         success: function(data) {
           console.log("success");
-          $('.modal').modal('toggle');          
+          $('.modal').modal('toggle');
         }
       })
     });
