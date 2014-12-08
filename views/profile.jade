@@ -5,6 +5,7 @@ extends layout
 
 block head
   link(rel="stylesheet", href="/css/profile.css")
+  script(type="text/javascript", src="//code.jquery.com/ui/1.11.2/jquery-ui.js")
   script(type="text/javascript", src="/js/profileController.js")
   link(rel="stylesheet", href="/css/select2/select2.css")
   script(type="text/javascript", src="/js/select2/select2.js")
@@ -158,15 +159,17 @@ block content
                                 textarea.listingDescriptionInput.form-control(name="description", placeholder="Description")
                             td
                               div.colContent(style="width: 180px") Click skills on the right to add them to the listing
-                      div.skillsContainer
+                      div.skillsContainer.droppable
+                        div(style="text-align: center")
+                          h3 Drag skills here
                         div.skill.draggedSkill(ng-repeat="(id, name) in viewModel.listingSkills")
-                          span.label.label-default(id="{{id}}", ng-bind="name")
+                          span.label.label-default(id="{{id}}"){{name}}  &#10006;
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     input.btn.btn-success(type="submit", value="Create Listing")
                   br
                   div.listingsContainer
-                    form.listing(ng-repeat="listing in viewModel.listings")
-                      input(type="hidden", name="listingId", value="{{listing._id}}")
+                    form.listing(ng-repeat="(id, listing) in viewModel.listings")
+                      input(type="hidden", name="listingId", value="{{id}}")
                       table
                         tbody
                           tr
@@ -197,14 +200,16 @@ block content
                                 span
                                   b Description
                                 textarea.form-control(name="description", placeholder="Describe your listing", ng-bind="listing.description")
-                            // td
-                              // div.colContent
-                                // input.btn.btn-primary(type="submit", value="Update")
                       div
                         div
                           b Skills
-                        div.skill.draggedSkill(ng-repeat="skill in listing.skills")
-                          span.label.label-default(ng-bind="skill")
+                        div.droppable.skillsDrop(data-listing-id="{{listing._id}}")
+                          div(style="text-align: center")
+                            h3 Drag skills here
+                          div.skill.draggedSkill(ng-repeat="skill in listing.skills", data-skill-name="{{skill}}", data-listing-id="{{listing._id}}")
+                            span.label.label-default {{skill}}  &#10006;
+                      div
+                        input.btn.btn-primary(type="submit", value="Update")
 
             td.mainCol(width="350px")
               div.rightColCont
@@ -219,6 +224,6 @@ block content
                         td
                           div.rightColSectionCont
                             div#skillsCont.rightColSection
-                              div.skill(ng-repeat="skill in viewModel.skills | filter:skillsQuery")
+                              div.skill.draggable(ng-repeat="skill in viewModel.skills | filter:skillsQuery")
                                 span.label.label-default(ng-if="viewModel.studentSkills[skill._id] === undefined" id="{{skill._id}}", ng-bind="skill.name")
     - }

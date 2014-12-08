@@ -24,19 +24,19 @@ block content
                     tr(height="0")
                       td
                         input.form-control.skillsSearchInput(ng-model="query", placeholder="skills")
-                    tr
+                    tr(height="33%")
                       td
                         div.leftColSectionCont.skills
                           div#skillsCont.leftColSection
                             div.skill(ng-repeat="skill in viewModel.skills | filter:query")
                               span.draggable.label.label-default(id="{{skill._id}}", ng-bind="skill.name")
-                    tr
+                    tr(height="33%")
                       td
                         .leftColSectionCont
                           .dragInstructionTextDiv
                             h5 REQUIRED
                           div.leftColSection.skillsDrop.requiredSkillsDrop
-                    tr
+                    tr(height="33%")
                       td
                         .leftColSectionCont
                           .dragInstructionTextDiv
