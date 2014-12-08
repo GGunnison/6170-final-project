@@ -53,11 +53,9 @@ block content
             div.rightColCont
               div.colCont(style='text-align: left')
                 - if (user.__t === 'Student') {
-                  h3 Students
-                - } else {
                   h3 Employer Listings
+                - } else {
+                  h3 Students
                 - }
                 #results
 
-block nav_right
-  a.navbar-brand(href="/logout") Logout

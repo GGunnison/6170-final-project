@@ -17,8 +17,7 @@ router.get('/foo', function(req, res) {
            async.each(students, function(student, cb) {
              student.deepPopulate('classes.skills', function (err) {
                if (err) console.log(err);
-               console.log(student);
-              cb();
+               cb();
              });
            }, function(err) {
              res.send(students)
@@ -61,13 +60,20 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
         utils.sendSuccessResponse(res, students);
       // go thorugh the filtering process
       } else {
+        var populatedStudents = [];
         async.each(students, function(student, cb) {
           student.deepPopulate('classes.skills', function (err) {
             if (err) console.log(err);
+            populatedStudents.push(student);
             console.log(student);
-           cb();
+            cb();
           });
-        }, function (err) {
+        }, function (err, students) {
+          console.log(populatedStudents);
+          console.log('studentsssssssssssssssssssssssssssssssss');
+          var students = populatedStudents;
+          console.log(students);
+
           // Keeps track of each student's score so the we can sort them later
           scores = {};
 
@@ -87,8 +93,9 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
 
               // Classes
               for (var i = 0; i < student.classes.length; i++) {
-                var c = student.classes[i];
+                var c = student.classes[i]._id;
                 Class.findById(c, function (err, klass) {
+                  console.log(klass);
                   for (var j = 0; j < klass.skills.length; j++) {
                     if (klass.skills[j]._id === tag) score += 1;
                   }
@@ -112,7 +119,7 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
 
               // Classes
               for (var i = 0; i < student.classes.length; i++) {
-                var c = student.classes[i];
+                var c = student.classes[i]._id;
                 Class.findById(c, function (err, klass) {
                   for (var j = 0; j < klass.skills.length; j++) {
                     if (klass.skills[j]._id === tag) score += 1;
@@ -130,6 +137,7 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
             return scores[x._id] < scores[y._id];
           });
 
+          console.log('respond');
           // Respond
           utils.sendSuccessResponse(res, students);
         });

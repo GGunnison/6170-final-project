@@ -14,7 +14,7 @@ mixin student(student)
           h3
             strong Skills
           for skill in student.skills
-            span.label.label-default skill
+            span.label.label-default= skill.name
       .row.rest(style='display: none;')
         .col-md-12
           h3
