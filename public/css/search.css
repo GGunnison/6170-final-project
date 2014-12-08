@@ -23,6 +23,10 @@ table {
   height: 100%;
 }
 
+.searchSkillsCont {
+  height: calc(100% - 50px);
+}
+
 .leftColCont {
   background-color: #333;
   height: 100%;
@@ -60,6 +64,7 @@ table {
 .refine-search-title h4 {
   padding-top: 17px;
   margin: 0px;
+  color: #CCC;
 }
 
 .rightColCont {

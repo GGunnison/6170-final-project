@@ -95,6 +95,8 @@ var SearchResultsController = function() {
         public.filter();
       });
 
+      $(document).on('click', 'a', function(e) { e.stopPropagation(); });
+
       $(document).on('click', '.panel-body', function() {
         $(this).children('.rest').slideToggle();
       });
