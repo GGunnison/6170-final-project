@@ -8,7 +8,7 @@ mixin student(student)
         .col-md-6
           h4
             strong= student.name
-          h5= student.email
+          h5(href="mailto:#{student.email}")= student.email            
           h6 summary of my life goes here yay
         .col-md-6
           h3
