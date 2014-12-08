@@ -1,4 +1,5 @@
-h2 Sent
-- console.log(messages.content);
+include ../../mixins/search/message
+
+
 each message in messages.content
-  p= message.title
+  +message(message)

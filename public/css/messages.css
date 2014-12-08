@@ -2,13 +2,27 @@ li.h3
 {
 	clear:both;
 	float:left;
-	border: 1px solid;
+	
 	width: 100px;
 }
 
 ul {
+	margin-left: 75px;
 	width: 110px;
 }
 .message {
 	border: 1px solid;
+}
+
+.row.top{
+
+	margin-top: 100px;
+}
+
+a:hover {
+	border-left: 1px solid;
+}
+
+.selected{
+	border-left: 1px solid;
 }
