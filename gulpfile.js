@@ -35,7 +35,7 @@ gulp.task('less', function() {
 
 gulp.task('scripts', function () {
 
-  var entries = ['indexController.js', 'searchResultsController.js', 'messagesController.js', 'messageModalController.js'];
+  var entries = ['indexController.js', 'searchResultsController.js', 'messagesController.js', 'messageCreationController.js'];
 
 
   entries.forEach( function (fileName) {

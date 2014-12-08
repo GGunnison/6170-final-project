@@ -8,12 +8,18 @@ var MessageCreationController = function() {
   var local = {};
 
   var setLocal = function() {
+    local.messageModalTemplate = require('../../views/templates/mail/messageModal.jade');
   }
 
   // Helper functions
   var helpers = (function() {
     var exports = {};
-    local.messageModalTemplate = require('../../views/templates/mail/messageModal.jade');
+
+    exports.renderModal = function() {
+      var modalHTML = local.messageModalTemplate();
+      $('body').append(modalHTML);
+    }
+
     return exports
   })();
 
@@ -25,6 +31,9 @@ var MessageCreationController = function() {
   }
 
   var eventListeners = function() {
+    $('#createMessageBtn').click( function() {
+
+    });
   }
 
   return {
