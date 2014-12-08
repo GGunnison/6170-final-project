@@ -4,6 +4,8 @@ var SearchResultsController = function() {
   // Public variables, available outside controller
   var public = {
     filter: function () {
+      console.log('filtering');
+
       var requiredSkills = [];
       var desiredSkills  = [];
 
@@ -29,21 +31,26 @@ var SearchResultsController = function() {
         data: data
       }
 
+      console.log($('#userType').val());
+
       var searchType = null;
-      if ($('#userType').attr("data-type") === "Student") {
+      if ($('#userType').val() === "Student") {
         ajaxObj["url"] = "/employers";
         searchType = 'employers';
-      } else if ($('#skillSubmit').attr("data-type") === "Employer") {
+      } else if ($('#userType').val() === "Employer") {
         ajaxObj["url"] = "/students";
         searchType = 'students';
       }
+      console.log(ajaxObj);
 
       $.ajax(ajaxObj).done(function(res) {
+        console.log('response', res);
         switch (searchType) {
           case 'employers':
             helpers.renderListings(res.content);
             break;
           case 'students':
+            console.log(res.content);
             helpers.renderStudents(res.content);
             break;
         }
@@ -66,13 +73,14 @@ var SearchResultsController = function() {
     exports.renderListings = function (listings) {
       var listings     = listings || [];
       var listingsHTML = local.listingsTemplate({listings: listings});
+      console.log('render them');
       $('#results').html(listingsHTML);
     }
 
     exports.renderStudents = function (students) {
       var students     = students || [];
       var studentsHTML = local.studentsTemplate({students: students});
-      $('#results1').html(studentsHTML);
+      $('#results').html(studentsHTML);
     }
 
     return exports
