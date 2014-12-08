@@ -89,7 +89,7 @@ employMeApp.controller("profileController", function($scope) {
     exports.setListings = function(listings) {
       public.listings = {};
 
-      for (var i = 0; i < listings.length; i++) {
+      for (var i = 0; i < public.listings.length; i++) {
         var listing = listings[i];
         var id = listing._id;
         public.listings[id] = listing;
