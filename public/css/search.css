@@ -20,6 +20,7 @@ table {
 }
 
 .leftColCont {
+  background-color: #333;
   height: 100%;
   overflow: auto;
 }
@@ -32,7 +33,7 @@ table {
 
 .leftColSection {
   overflow: auto;
-  border: 1px solid #ccc;
+  background-color: #222;
   border-radius: 5px;
   height: 100%;
   text-align: left;
