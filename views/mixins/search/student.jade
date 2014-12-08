@@ -18,6 +18,7 @@ mixin student(student)
           for klass in student.classes
             for skill in klass.skills
               span.label.label-default= skill.name
+
       .row.rest(style='display: none;')
         .col-md-12
           h3

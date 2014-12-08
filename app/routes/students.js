@@ -10,21 +10,6 @@ var Student = require('../models/StudentModel');
 var Class   = require('../models/ClassModel');
 var Skill   = require('../models/SkillModel');
 
-router.get('/foo', function(req, res) {
-  Student.find({})
-         .populate('skills')
-         .exec( function(err, students) {
-           async.each(students, function(student, cb) {
-             student.deepPopulate('classes.skills', function (err) {
-               if (err) console.log(err);
-               cb();
-             });
-           }, function(err) {
-             res.send(students)
-           });
-         });
-});
-
 /* Filter and order students based off of desired and require skills
  *
  * Only Employers can hit this route.
