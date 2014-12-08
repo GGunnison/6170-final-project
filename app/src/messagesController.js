@@ -18,19 +18,15 @@ var MessagesController = function() {
 
 
     exports.renderInbox = function(data) {
+      console.log('render');
       var inboxHTML = local.inboxTemplate({messages : data});
-      $('#right_side').html(inboxHTML);
-    }
-
-    exports.renderCreate = function() {
-      var createHTML = local.createTemplate();
-      $('#right_side').html(createHTML);
-     }
+        $('#right_side').html(inboxHTML);
+      }
 
     exports.renderSent = function(data) {
       var sentHTML = local.sentTemplate( {messages : data});
-      $('#right_side').html(sentHTML);
-     }
+        $('#right_side').html(sentHTML);
+      }
 
     return exports
   })();
@@ -74,43 +70,22 @@ var MessagesController = function() {
       });
     });
 
-
-    // $('#delete').on('click', function(){
-    //   console.log("hello");
-    //   console.log($('delete').parent.name);
-    //   // $.ajax({
-    //   //   type:"DELETE",
-    //   //   url: '/'+
-    //   // })
-    // });
-
     $(document).on('click', '#delete', function(e) {
       e.stopPropagation();
       var id = $(this).parent().parent().parent().find('#id').text();
       $.ajax({
         type: "DELETE",
         url: '/messages/' + id,
-      success: function(){
-        if($('#sent').hasClass('selected')){
-          $('#sent').click();
-        }else{
-          $('#inbox').click();
+        success: function(){
+          if($('#sent').hasClass('selected')){
+            $('#sent').click();
+          } else {
+            $('#inbox').click();
+          }
         }
-      }
-      
-
+      });
     });
-  });
 
-
-//     $('#myAffix').affix({
-//       offset: {
-//       top: 100,
-//       bottom: function () {
-//         return (this.bottom = $('.footer').outerHeight(true))
-//     }
-//   }
-// })
 
     $(document).on('click', '.panel-body', function() {
         $(this).children('.rest').slideToggle();
