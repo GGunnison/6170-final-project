@@ -8,63 +8,120 @@ block head
   script(type="text/javascript", src="/js/profileController.js")
 
 block content
-  div.container(data-ng-controller="profileController")
+  div.profileContainer(data-ng-controller="profileController")
     - if (user.__t == "Student") {
-      legend
-        h2 Summary
-      textarea.form-control#summaryInput(placeholder="Write your summary here")
-      legend
-        h2 Skills
-      div.skillsContainer
-        - each skill in user.skills
-          div.skill
-            span.label.label-default(id="#{skill}", ng-bind="viewModel.skillsMap[#{skill}]")
-        
-      legend
-        h2 Experience
-      div.experienceContainer
-        div.createExperience
-          form(action="/students/#{user._id}/experience", method="POST")
-            table
-              tbody
-                tr
-                  td
-                    div.colContent
-                      input.form-control(name="company", placeholder="Company")
-                  td
-                    div.colContent
-                      input.form-control(name="position", placeholder="Job position")
-                  td
-                    div.colContent
-                      input.form-control.dateInput(name="startTime", placeholder="Start date")
-                      span &nbsp;-&nbsp;
-                      input.form-control.dateInput(name="endTime", placeholder="End date")
-            table
-              tbody
-                tr
-                  td
-                    div.colContent
-                      textarea.form-control(name="description", placeholder="Describe your experience")
-                  td(width="0")
-                    div.colContent
-                      input.btn.btn-success(type="submit")
-        each experience in user.experience
-          div.experience
-            table
-              tbody
-                tr
-                  td
-                    span= experience.company
-                  td
-                    span= experience.position
-                  td
-                    span= experience.startTime
-                    span &nbsp; - &nbsp; 
-                    span= experience.endTime
-            
+      input#studId(type="hidden", value="#{user._id}")
+      table
+        tbody
+          tr
+            td.mainCol
+              div.leftColCont
+                div.colCont
+                  legend
+                    h2 Summary
+                  textarea.form-control#summaryInput(placeholder="Write your summary here")
+                  div.summaryStatus(ng-if="viewModel.savingSummary") Saving...
+                  div.summaryStatus(ng-if="!viewModel.savingSummary") Saved!
+                  legend
+                    h2 Skills
+                  div.skillsContainer
+                    div.skill.draggedSkill(ng-repeat="(id, name) in viewModel.studentSkills")
+                      span.label.label-default(id="{{id}}", ng-bind="name")
+                    
+                  legend
+                    h2 Experience
+                  div.experienceContainer
+                    div.createExperience
+                      form#experienceForm
+                        table
+                          tbody
+                            tr
+                              td
+                                div.colContent
+                                  input.form-control(name="company", placeholder="Company")
+                              td
+                                div.colContent
+                                  input.form-control(name="position", placeholder="Job position")
 
-      legend
-        h2 Classes
+                        input(type="hidden", name="startTime", value="null")
+                        input(type="hidden", name="endTime", value="null")
+
+                        table
+                          tbody
+                            tr
+                              td(width="100%")
+                                div.colContent
+                                  textarea.form-control(name="description", placeholder="Describe your experience")
+                              td
+                                div.colContent
+                                  input.btn.btn-success(type="submit", value="Create new experience")
+                    form.experience(ng-repeat="experience in viewModel.experiences")
+                      input(type="hidden", name="experienceId", value="{{experience._id}}")
+                      table
+                        tbody
+                          tr
+                            td(width="50%")
+                              div.colContent
+                                span
+                                  b Company
+                                input.form-control(name="company", placeholder="Company", value="{{experience.company}}")
+                            td(width="50%")
+                              div.colContent
+                                span
+                                  b Position
+                                input.form-control(name="position", placeholder="Job position", value="{{experience.position}}")
+                            td
+                              div.colContent
+                                button.deleteExperience.btn.btn-danger
+                                  &times;
+
+                      input(type="hidden", name="startTime", value="null")
+                      input(type="hidden", name="endTime", value="null")
+
+                      table
+                        tbody
+                          tr
+                            td(width="100%")
+                              div.colContent
+                                span
+                                  b Description
+                                textarea.form-control(name="description", placeholder="Describe your experience", ng-bind="experience.description")
+                            td
+                              div.colContent
+                                input.btn.btn-primary(type="submit", value="Update")
+
+                  legend
+                    h2 Classes
+                  div.classesContainer
+                    div.class.draggedSkill(ng-repeat="(id, name) in viewModel.studentClasses")
+                      span.label.label-primary(id="{{id}}") {{id}}: {{name}}
+
+            td.mainCol(width="350px")
+              div.rightColCont
+                div.colCont
+                  table
+                    tbody
+                      tr(height="0")
+                        td
+                          h3 Skills
+                          input.form-control.searchInput(ng-model="skillsQuery" placeholder="Search for skills")
+                      tr
+                        td
+                          div.rightColSectionCont
+                            div#skillsCont.rightColSection
+                              div.skill(ng-repeat="skill in viewModel.skills | filter:skillsQuery")
+                                span.label.label-default(ng-if="viewModel.studentSkills[skill._id] === undefined" id="{{skill._id}}", ng-bind="skill.name")
+                      tr(height="0")
+                        td
+                          h3 Classes
+                          input.form-control.searchInput(ng-model="classQuery" placeholder="Search for classes")
+                      tr
+                        td
+                          div.rightColSectionCont
+                            div#classesCont.rightColSection
+                              div.class(ng-repeat="class in viewModel.klasses | filter:classQuery")
+                                span.label.label-primary(ng-if="viewModel.studentClasses[class._id] === undefined" id="{{class._id}}"){{class._id}}: {{class.name}}
+
     - } else if (user.__t == "Employer") {
 
     - }
