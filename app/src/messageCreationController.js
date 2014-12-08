@@ -36,8 +36,21 @@ var MessageCreationController = function() {
   var eventListeners = function() {
     $(document).on('click', '.createMessageBtn', function () {
       helpers.toggleModal();
+
       $('.modal-title').text('To:  ' + $(this).attr('name'));
       //$('.content').fadeToggle();
+    });
+
+    $(document).on('click', '#sendMessage', function () {
+      var toName  = $('.createMessageBtn').attr('name');
+      var toId    = $('.createMessageBtn').attr('id');
+      var title   = $('#title').val();
+      var message = $('#message').val();
+
+      console.log(toName);
+      console.log('hi', toId);
+      console.log(title);
+      console.log(message);
     });
   }
 
