@@ -34,7 +34,10 @@ gulp.task('less', function() {
 });
 
 gulp.task('scripts', function () {
-  var entries = ['indexController.js', 'searchResultsController.js'];
+
+  var entries = ['indexController.js', 'searchResultsController.js', 'messagesController.js'];
+
+
   entries.forEach( function (fileName) {
     browserify({
         entries: ['./app/src/' + fileName],

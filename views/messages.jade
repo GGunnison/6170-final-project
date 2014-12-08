@@ -1,0 +1,29 @@
+extends layout
+
+block head
+  link(rel="stylesheet", href="/css/messages.css")
+  script(type="text/javascript", src="/js/messagesController.js")
+
+block content
+
+  br
+  br
+  br
+  br
+  br
+  br
+  .col-md-1
+    table
+      tbody
+        tr
+          td(width='100px')
+            ul(class="nav nav-pill nav-stacked")
+              li.h3
+                a#create Create
+              li.h3 
+                a#sent Sent
+              li.h3 
+                a#inbox Inbox
+  .col-md-1
+  .col-md-6
+    div(id="right_side")
