@@ -19,10 +19,14 @@ ul {
 	margin-top: 100px;
 }
 
-a:hover {
+.bullshit:hover {
 	border-left: 1px solid;
 }
 
 .selected{
 	border-left: 1px solid;
+}
+
+#delete {
+	float:right;
 }
