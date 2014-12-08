@@ -53,7 +53,7 @@ router.get('/', utils.isLoggedIn, function(req, res){
           console.log(err);
           utils.sendErrResponse(res, 500, null);
         } else {
-          res.render('messages.jade', employer.mailbox)
+          res.render('messages.jade', employer.mailbox);
       }
     });
 	} 
@@ -66,7 +66,7 @@ router.get('/', utils.isLoggedIn, function(req, res){
           console.log(err);
           utils.sendErrResponse(res, 500, null);
         } else{
-          res.render('messages.jade', student.mailbox)
+          res.render('messages.jade', student.mailbox);
         }
     });
 	}
@@ -185,14 +185,11 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 			Student.findByIdAndUpdate(req.params.recipientID,
 				{$push : {'mailbox.inbox': message._id}})
 				.exec(function(err, student){
-						if (err) {
-		                  console.log(err);
-		                  utils.sendErrResponse(res, 500, null);
-		                }
-		                else{
-						  //utils.sendSuccessResponse(res, student.mailbox.inbox);
-						  }
-					})
+				  if (err) {
+            console.log(err);
+            utils.sendErrResponse(res, 500, null);
+          }
+      });
 			//Update the senders info
 			Employer.findByIdAndUpdate({_id : req.user._id},
 				{$push: {'mailbox.sentbox' : message._id}})
@@ -200,11 +197,10 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 					if (err) {
 						console.log(err);
 						utils.sendErrResponse(res, 500, null);
-					}
-					else{
+					}	else {
 						utils.sendSuccessResponse(res, employer.mailbox.sentbox);
-					  }
-				})
+          }
+      });
     }
     if (req.user.__t === "Student"){
 			//Update the receivers info
@@ -214,10 +210,8 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 					if (err) {
             console.log(err);
             utils.sendErrResponse(res, 500, null);
-          } else {
-            console.log("EMP" + employer)
           }
-				});
+      });
 			//Update the senders info
 			Student.findByIdAndUpdate({_id : req.user._id},
 				{$push : {'mailbox.sentbox' : message._id}})
@@ -226,10 +220,10 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
             console.log(err);
             utils.sendErrResponse(res, 500, null);
           } else {
-            console.log(student.mailbox.sentbox)
+            console.log(student.mailbox.sentbox);
             utils.sendSuccessResponse(res, student.mailbox.sentbox);
           }
-      })
+      });
 		}
 	});
 });
@@ -237,11 +231,11 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 router.delete('/:messageId', utils.isLoggedIn, function(req, res){
 	console.log(req.params.messageId);
 	Message.findById(req.params.messageId, function(err, message){
-		if(err){
+		if (err) {
 			console.log(err);
-            utils.sendErrResponse(res, 500, null);
+      utils.sendErrResponse(res, 500, null);
 		}
-		message.remove()
+		message.remove();
 		utils.sendSuccessResponse(res, {});
 	});
 
