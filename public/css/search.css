@@ -9,7 +9,7 @@ table {
 }
 
 .label {
-  margin: 2px; 3px;
+  margin: 2px;
   display: inline-block;
 }
 
@@ -109,5 +109,10 @@ table {
 
 .skillsDrop {
   height: 80%;
+}
+
+.contactInfo {
+  padding: 2px 10px;
+  background-color: #DDD;
 }
 
