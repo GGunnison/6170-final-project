@@ -100,19 +100,6 @@ var SearchResultsController = function() {
       $(document).on('click', '.panel-body', function() {
         $(this).children('.rest').slideToggle();
       });
-
-      $('#messageSend').on('click', function() {
-        var title = $('#messageTitle'); // REPLACE
-        var body = "BODY REPLACE"; // REPLACE
-        $.ajax({
-          type: "POST",
-          url: "/messages/" + recipId,
-          body: { body: body },
-          success: function(data) {
-            console.log("success");
-          }
-        })
-      });
   }
 
   return {

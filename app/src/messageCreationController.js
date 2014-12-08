@@ -44,13 +44,21 @@ var MessageCreationController = function() {
     $(document).on('click', '#sendMessage', function () {
       var toName  = $('.createMessageBtn').attr('name');
       var toId    = $('.createMessageBtn').attr('id');
-      var title   = $('#title').val();
-      var message = $('#message').val();
+      var title   = $('#messageTitle').val();
+      var content = $('#messageContent').val();
 
-      console.log(toName);
-      console.log('hi', toId);
-      console.log(title);
-      console.log(message);
+      $.ajax({
+        type: "POST",
+        url: "/messages/" + toId,
+        data: { to      : toName,
+                content : content, 
+                title   : title
+        },
+        success: function(data) {
+          console.log("success");
+          $('.modal').modal('toggle');          
+        }
+      })
     });
   }
 
