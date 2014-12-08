@@ -26,7 +26,7 @@ gulp.task('develop', function () {
 });
 
 gulp.task('less', function() {
-  return gulp.src('./app/src/styles/employMeStyle.less')
+  return gulp.src('./app/styles/employMeStyle.less')
              .pipe(less())
              .pipe(gulp.dest('./public/css'))
 });
