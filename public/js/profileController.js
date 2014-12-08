@@ -8,6 +8,7 @@ employMeApp.controller("profileController", function($scope) {
   var setViewModel = function() {
     public.studentSkills = {};
     public.studentClasses = {};
+    public.experiences = [];
     public.skills = [];
     public.klasses = [];
 
@@ -43,6 +44,11 @@ employMeApp.controller("profileController", function($scope) {
       for (var i = 0; i < res.content.length; i++) {
         public.studentClasses[res.content[i]._id] = res.content[i].name;
       }
+      $scope.$apply();
+    });
+
+    ajax.getStudentExperiences(local.studentId).done(function(res) {
+      public.experiences = res.content;
       $scope.$apply();
     });
   }
@@ -157,6 +163,50 @@ employMeApp.controller("profileController", function($scope) {
       });
     }
 
+    exports.getStudentExperiences = function(studentId) {
+      return $.ajax({
+        datatype: "json", 
+        type: "GET", 
+        url: "/students/" + studentId + "/experience"
+      });
+    }
+
+    exports.postStudentExperience = function(studentId, experience) {
+
+      var body = {
+        experience: experience
+      }
+
+      return $.ajax({
+        datatype: "json", 
+        type: "POST", 
+        url: "/students/" + studentId + "/experience", 
+        data: body
+      });
+    }
+
+    exports.putStudentExperience = function(studentId, experienceId, experience) {
+
+      var body = {
+        experience: experience
+      }
+
+      return $.ajax({
+        datatype: "json", 
+        type: "PUT", 
+        url: "/students/" + studentId + "/experience/" + experienceId, 
+        data: body
+      });
+    }
+
+    exports.deleteStudentExperience = function(studentId, experienceId) {
+      return $.ajax({
+        datatype: "json", 
+        type: "DELETE", 
+        url: "/students/" + studentId + "/experience/" + experienceId
+      });
+    }
+
     return exports;
   })();
 
@@ -247,7 +297,58 @@ employMeApp.controller("profileController", function($scope) {
 
       });
     })();
+
+    $("#experienceForm").on("submit", function(e) {
+
+      e.preventDefault();
+
+      var experience = {
+        company: $(this)[0].elements["company"].value, 
+        position: $(this)[0].elements["position"].value, 
+        startTime: "", 
+        endTime: "", 
+        description: $(this)[0].elements["description"].value
+      }
+
+      ajax.postStudentExperience(local.studentId, experience).done(function(res) {
+        ajax.getStudentExperiences(local.studentId).done(function(res) {
+          public.experiences = res.content;
+          $scope.$apply();
+        });
+      });
+    });
   }
+
+  $(".experienceContainer").delegate(".experience", "submit", function(e) {
+
+    e.preventDefault();
+
+    var experienceId = $(this)[0].elements["experienceId"].value;
+
+    var experience = {
+      company: $(this)[0].elements["company"].value, 
+      position: $(this)[0].elements["position"].value, 
+      startTime: "", 
+      endTime: "", 
+      description: $(this)[0].elements["description"].value
+    }
+
+    ajax.putStudentExperience(local.studentId, experienceId, experience);
+
+  });
+
+  $(".experienceContainer").delegate(".deleteExperience", "click", function(e) {
+    e.preventDefault();
+
+    var experienceId = $(this).closest(".experience")[0].elements["experienceId"].value;
+
+    ajax.deleteStudentExperience(local.studentId, experienceId).done(function(res) {
+      ajax.getStudentExperiences(local.studentId).done(function(res) {
+        public.experiences = res.content;
+        $scope.$apply();
+      });
+    });
+  });
 
   init();
 
