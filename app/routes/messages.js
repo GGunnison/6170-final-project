@@ -179,7 +179,7 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 		fromId  : req.user._id,
 		title   : req.body.title,
 		content : req.body.content
-	}). save(function(err, message) {
+	}).save(function(err, message) {
 		if (req.user.__t === "Employer") {
 			//Update the receivers info
 			Student.findByIdAndUpdate(req.params.recipientID,
