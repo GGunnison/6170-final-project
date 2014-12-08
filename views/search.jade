@@ -4,7 +4,8 @@ extends layout
 block head
   link(rel='stylesheet', href='/css/employerSearchCreation.css')
   script(type="text/javascript", src="//code.jquery.com/ui/1.11.2/jquery-ui.js")
-  script(type="text/javascript", src="/js/searchController.js")
+  script(type="text/javascript", src="/js/searchCreationController.js")
+  script(type="text/javascript", src="/js/searchResultsController.js")
 
 block content
   div.cont(data-ng-controller="searchCreationController")
@@ -41,32 +42,20 @@ block content
                               h3 Drag desired skills here
                     tr(height="0")
                       td
-                        - if (user.__t == "Student") {
-                          button#skillSubmit.btn.btn-success(data-type="Student") Submit
-                        - } else if (user.__t == "Employer") {
-                          button#skillSubmit.btn.btn-success(data-type="Employer") Submit
+                        - if (user.__t === "Student") {
+                          button#skillSubmit.btn.btn-primary(data-type="Student") Filter
+                        - } else if (user.__t === "Employer") {
+                          button#skillSubmit.btn.btn-primary(data-type="Employer") Filter
                         - }
 
 
           td
             div.rightColCont
-              div.colCont
-                h3 Results
-                div.searchResult.g-shadow(ng-repeat="result in viewModel.searchResults")
-                  input#id(type="hidden", ng-bind="result._id")
-                  input#type(type="hidden", ng-bind="result.__t")
-                  table
-                    tbody
-                      tr
-                        td(width="50%")
-                          div.infoContainer
-                            h4.resultHeader(ng-bind="result.name")
-                            div.resultBasicInfo
-                              div(ng-bind="result.email")
-                        td(width="50%")
-                          div.infoContainer
-                            h4.resultHeader Skills:
-                            div.resultSkills
-                              div.skill.draggedSkill(ng-repeat="skill in result.skills")
-                                span.label.label-default(ng-bind="viewModel.skillsMap[skill]")
+              div.colCont(style='text-align: left')
+                - if (user.__t === 'Student') {
+                  h3 Employer Listings
+                - } else {
+                  h3 Students
+                - }
+                #results
 

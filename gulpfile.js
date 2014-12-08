@@ -9,7 +9,7 @@ var gulp       = require('gulp'),
     source     = require('vinyl-source-stream');
 
 gulp.task('watch', function () {
-  gulp.watch('./view/**/*.jade', ['scripts'])
+  gulp.watch('./views/**/*.*', ['scripts'])
       .on('change', livereload.changed);
 });
 
@@ -23,7 +23,7 @@ gulp.task('develop', function () {
 });
 
 gulp.task('scripts', function () {
-  var entries = ['indexController.js'];
+  var entries = ['indexController.js', 'searchResultsController.js'];
   entries.forEach( function (fileName) {
     browserify({
         entries: ['./app/src/' + fileName],

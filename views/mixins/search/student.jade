@@ -1,0 +1,26 @@
+include ../experience
+
+mixin student(student)
+  .panel.panel-default.student
+    .panel-body
+      #id(style="display:none")= student._id
+      .row
+        .col-md-6
+          h4
+            strong= student.name
+          h5= student.email
+          h6 summary of my life goes here yay
+        .col-md-6
+          h3
+            strong Skills
+          for skill in student.skills
+            span.label.label-primary= skill.name
+          for klass in student.classes
+            for skill in klass.skills
+              span.label.label-default= skill.name
+
+      .row.rest(style='display: none;')
+        .col-md-12
+          h3
+            strong Experiences
+              +experience()

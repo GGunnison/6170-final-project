@@ -10,8 +10,8 @@ var IndexController = function() {
   var setLocal = function() {
     local.SignupController = require('./index/signupController');
     local.LoginController  = require('./index/loginController');
-    local.loginTemplate    = require('../../views/templates/login.jade');
-    local.signupTemplate   = require('../../views/templates/signup.jade');
+    local.loginTemplate    = require('../../views/templates/index/login.jade');
+    local.signupTemplate   = require('../../views/templates/index/signup.jade');
   }
 
   // Helper functions
@@ -39,23 +39,12 @@ var IndexController = function() {
   var init = function() {
     setLocal();
 
-    sizingJS();
-    $(window).resize(responsiveJS);
-
     eventListeners();
 
     // initialize to having the login up
     var loginController = new local.LoginController();
     helpers.renderLogin();
     loginController.init();
-  }
-
-  var sizingJS = function() {
-
-  }
-
-  var responsiveJS = function() {
-    sizingJS();
   }
 
   var eventListeners = function() {
