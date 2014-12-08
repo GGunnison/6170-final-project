@@ -6306,3 +6306,6 @@ body {
   -moz-border-radius: 0 !important;
   border-radius: 0 !important;
 }
+.createMessageBtn:hover {
+  cursor: pointer;
+}
