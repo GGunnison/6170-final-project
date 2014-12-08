@@ -24,3 +24,6 @@ app/data/db
 .DS_Store
 
 public/js/main.js
+
+public/js/messagesController.js
+public/js/searchResultsController.js
