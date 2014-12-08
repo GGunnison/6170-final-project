@@ -6309,3 +6309,7 @@ body {
 .createMessageBtn:hover {
   cursor: pointer;
 }
+.modal-backdrop.in {
+  z-index: 1039;
+  height: 100%;
+}
