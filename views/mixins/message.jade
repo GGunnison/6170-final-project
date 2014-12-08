@@ -1,4 +1,4 @@
-mixin message(message)
+mixin message(message, hasReply)
   .panel.panel-default
     .panel-body
       #id(style="display:none;")= message._id
@@ -7,9 +7,11 @@ mixin message(message)
           h4.pull-left(style='padding-right:20px')
             = message.title
           h4
-            strong= message.from        
+            strong= message.from
       .row.rest(style='display: none;')
         .col-md-12
           hr
           p= message.content
+          a.createMessageBtn(style="display: inline;", id="#{student._id}", name="#{student.name}")
+            i.fa.fa-envelope-o
           a#delete Delete

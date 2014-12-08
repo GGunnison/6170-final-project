@@ -170,7 +170,7 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 
 	new Message({
 		to: req.body.to,
-		from: req.body.from,
+		from: req.user.name,
 		title: req.body.title,
 		content: req.body.content
 	}). save(function(err, message) {
