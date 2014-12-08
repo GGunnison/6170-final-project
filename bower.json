@@ -1,0 +1,20 @@
+{
+  "name": "sdrammis_gunnison_samedson_dsan_finalProj",
+  "version": "0.0.0",
+  "homepage": "https://github.com/6170-fa14/sdrammis_gunnison_samedson_dsan_finalProj",
+  "authors": [
+    "sdrammis <sdrammis@mit.edu>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1"
+  }
+}
