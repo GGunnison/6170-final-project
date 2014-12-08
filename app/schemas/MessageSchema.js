@@ -4,10 +4,12 @@ var mongoose = require('mongoose');
 
 var MessageSchema = mongoose.Schema({
 
-  to  : String,     //Reciever of message
-  from  : String,   //Sender of message
-  title : String,   //title of message
-  content  : String    //content of message
+  to  : { name: String,
+          _id: String },
+  from  : { name: String,
+            _id: String}
+  title : String,
+  content  : String
 
 });
 
