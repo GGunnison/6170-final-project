@@ -3,16 +3,17 @@ extends layout
 block head
   link(rel="stylesheet", href="/css/messages.css")
   script(type="text/javascript", src="/js/messagesController.js")
+  script(type="text/javascript", src="/js/messageCreationController.js")
 
 block content
 
   .row.top
     .col-md-1
-      
+
       ul(class="nav nav-pill nav-stacked" width='100px' )
-        li.h3 
+        li.h3
           a#inbox Inbox
-        li.h3 
+        li.h3
           a#sent Sent
     .col-md-1
 
