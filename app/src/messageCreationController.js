@@ -9,6 +9,8 @@ var MessageCreationController = function() {
 
   var setLocal = function() {
     local.messageModalTemplate = require('../../views/templates/mail/messageModal.jade');
+    local.toName = null;
+    local.toId   = null;
   }
 
   // Helper functions
@@ -37,15 +39,23 @@ var MessageCreationController = function() {
     $(document).on('click', '.createMessageBtn', function () {
       helpers.toggleModal();
 
+      local.toName = $(this).attr('name');
+      local.toId   = $(this).attr('id');
+
       $('.modal-title').text('To:  ' + $(this).attr('name'));
       //$('.content').fadeToggle();
     });
 
     $(document).on('click', '#sendMessage', function () {
-      var toName  = $(this).closest('.createMessageBtn').attr('name');
-      var toId    = $(this).closest('.createMessageBtn').attr('id');
+      if (local.toName === null && local.toId === null) return false;
+
+      var toName  = local.toName;
+      var toId    = local.toId;
       var title   = $('#messageTitle').val();
       var content = $('#messageContent').val();
+
+      console.log(toName);
+      console.log(toId);
 
       $.ajax({
         type: "POST",
