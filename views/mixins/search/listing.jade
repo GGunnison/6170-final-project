@@ -2,13 +2,23 @@ mixin listing(listing)
   .panel.panel-default
     .panel-body
       #id(style="display:none;")= listing._id
-      .col-md-4
-        h4= listing.title
-        h4= listing.position
-        p= listing.description
-        p= listing.location
-      .col-md-6
-        h4 Skills
-        .resultSkills
+      .row
+        .col-md-6
+          h4
+            strong= listing.title
+          h5= listing.company
+          h5= listing.position
+          h5= listing.location          
+        .col-md-6
+          h3
+            strong Skills
           for skill in listing.skills
             span.label.label-default= skill.name
+      .row.rest(style='display: none;')
+        .col-md-12
+          h4
+            strong Description
+          div= listing.employerName
+          a(href="mailto:#{listing.email}")= listing.email
+          br
+          p= listing.description
