@@ -5,6 +5,7 @@ var utils     = require('../utils/utils.js');
 var assert    = require('assert');
 var mongoose  = require('mongoose');
 var validator = require('validator');
+var async     = require('async');
 
 // database models
 var Employer = require('../models/EmployerModel.js');
@@ -37,34 +38,58 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       console.log("error at GET /employers", err);
       utils.sendErrResponse(res, 500, null);
     } else {
-      var scores = {};
-      var listings = [];
-      employers.forEach( function(employer) {
-        for (var i = 0; i < employer.listings.length; i++) {
-          var listing = employer.listings[i] || { skills:{} };
-          for (var j = 0;  j < listing.skills.length; j++) {
-            var skill = listing.skills[j];
-            var keep = false;            
-            scores[listing.name] = 0;     
-            // Increment the score and keep it if in required
-            if (requiredSkills.indexOf(skill) > -1) {
-              scores[listing.name] += 1;
-              keep = true;
+      async.each(employers, function(employer, cb) {
+        employer.deepPopulate('listings.skills', function (err) {
+          if (err) console.log(err);
+          cb();
+        });
+      }, function(err) {
+        var scores = {};
+        var listings = [];
+        employers.forEach( function(employer) {
+          for (var i = 0; i < employer.listings.length; i++) {
+            var keep = false;
+            // We want empty queries to return everything        
+            if ((requiredSkills.length === 0) && 
+                (desiredSkills.length === 0)) keep = true;
+            var listing = employer.listings[i] || { skills:{} };
+            scores[listing._id] = 0;     
+            for (var j = 0;  j < listing.skills.length; j++) {
+              var skill = listing.skills[j]._id;
+              // Increment the score and keep it if in required
+              if (requiredSkills.indexOf(skill) > -1) {
+                scores[listing._id] += 1;
+                keep = true;
+              }
+              // Increment the score if just desired
+              if (desiredSkills.indexOf(skill) > -1) {
+                scores[listing._id] += 1;
+              }
             }
-            // Increment the score if just desired
-            if (desiredSkills.indexOf(skill) > -1) {
-              scores[listing.name] += 1;
+            if (keep) {
+              // create object to return
+              var responseListing = { 
+                _id          : listing._id,
+                title        : listing.title,
+                description  : listing.description,
+                position     : listing.position,
+                location     : listing.location,
+                skills       : listing.skills,
+                employerName : employer.name,
+                company      : employer.company,
+                email        : employer.email,
+              };
+              listings.push(responseListing);                          
             }
-            if (keep) listings.push(listing);
           }
-        }
+        });
+        // Sort by number of total matches
+        listings.sort(function(x, y) {
+          return scores[x._id] < scores[y._id];
+        });
+        // Send the response
+        utils.sendSuccessResponse(res, listings);   
       });
-      // Sort by number of total matches
-      listings.sort(function(x, y) {
-        return scores[x.name] < scores[y.name];
-      });
-      // Send the response
-      utils.sendSuccessResponse(res, listings);
     }
   });
 });

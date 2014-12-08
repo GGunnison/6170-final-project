@@ -10,12 +10,6 @@ var UserSchema = mongoose.Schema({
         summary  : String, // Summary about the user (either a student or company bio)
         website  : String, // Link to personal or company website
 
-       /*  TODO mailbox schema
-        mailbox  : {
-                    inbox   : [messageSchema],
-                    sentbox : [messageSchema]
-                   }
-        */
 });
 
 module.exports = UserSchema;

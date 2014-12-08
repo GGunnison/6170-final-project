@@ -2,6 +2,7 @@ var mongoose      = require('mongoose'),
     Schema        = mongoose.Schema,
     UserSchema    = require('./UserSchema.js'),
     ListingSchema = require('./ListingSchema.js'),
+    deepPopulate  = require('mongoose-deep-populate'),
     extend        = require('mongoose-schema-extend'),
     bcrypt        = require('bcrypt-nodejs');
 
@@ -12,6 +13,8 @@ var EmployerSchema = UserSchema.extend({
   isVerified : Boolean,
   listings   : [ListingSchema]
 });
+
+EmployerSchema.plugin(deepPopulate);
 
 // generating a hash
 EmployerSchema.methods.generateHash = function(password) {

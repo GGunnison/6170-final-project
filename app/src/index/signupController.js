@@ -10,8 +10,8 @@ var SignupController = function() {
   var setLocal = function() {
     local.studentSignupController  = require('./studentSignupController');
     local.employerSignupController = require('./employerSignupController');
-    local.studentSignupTemplate    = require('../../views/templates/student-signup.jade');
-    local.employerSignupTemplate   = require('../../views/templates/employer-signup.jade');
+    local.studentSignupTemplate    = require('../../../views/templates/index/student-signup.jade');
+    local.employerSignupTemplate   = require('../../../views/templates/index/employer-signup.jade');
   }
 
   // Helper functions
