@@ -10,5 +10,5 @@ mixin listing(listing)
       .col-md-6
         h4 Skills
         .resultSkills
-          for skill in listing.namedSkills
-            span.label.label-default= skill
+          for skill in listing.skills
+            span.label.label-default= skill.name

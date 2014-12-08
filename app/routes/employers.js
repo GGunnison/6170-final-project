@@ -38,68 +38,65 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       console.log("error at GET /employers", err);
       utils.sendErrResponse(res, 500, null);
     } else {
-      var scores = {};
-      var listings = [];
-      employers.forEach( function(employer) {
-        for (var i = 0; i < employer.listings.length; i++) {
-          var keep = false;
-
-          // if no filter then we display all
-          if (requiredSkills.length === 0 && desiredSkills.length === 0) keep = true;
-
-          var listing = employer.listings[i] || { skills:{} };
-
-          scores[listing.title] = 0;
-
-          for (var j = 0;  j < listing.skills.length; j++) {
-            var skill = listing.skills[j];
-            // Increment the score and keep it if in required
-            if (requiredSkills.indexOf(skill) > -1) {
-              scores[listing.title] += 1;
-              keep = true;
+      async.each(employers, function(employer, cb) {
+        employer.deepPopulate('listings.skills', function (err) {
+          if (err) console.log(err);
+          console.log("DEEP: employer", employer);
+          cb();
+        });
+      }, function(err) {
+        var scores = {};
+        var listings = [];
+        employers.forEach( function(employer) {
+          for (var i = 0; i < employer.listings.length; i++) {
+            var keep = false;
+            // We want empty queries to return everything        
+            if ((requiredSkills.length === 0) && 
+                (desiredSkills.length === 0)) keep = true;
+            var listing = employer.listings[i] || { skills:{} };
+            scores[listing._id] = 0;     
+            for (var j = 0;  j < listing.skills.length; j++) {
+              var skill = listing.skills[j]._id;
+              // Increment the score and keep it if in required
+              if (requiredSkills.indexOf(skill) > -1) {
+                scores[listing._id] += 1;
+                keep = true;
+              }
+              // Increment the score if just desired
+              if (desiredSkills.indexOf(skill) > -1) {
+                scores[listing._id] += 1;
+              }
             }
-            // Increment the score if just desired
-            if (desiredSkills.indexOf(skill) > -1) {
-              scores[listing.title] += 1;
+            if (keep) {
+              // create object to return
+              var responseListing = { 
+                _id          : listing._id,
+                title        : listing.title,
+                description  : listing.description,
+                position     : listing.position,
+                location     : listing.location,
+                skills       : listing.skills,
+                employerName : employer.name,
+                company      : employer.company,
+                email        : employer.email,
+                namedSkills  : [],
+              };
+
+              listings.push(responseListing);                          
             }
           }
-          if (keep) {
-            // create object to return
-            var responseListing = { listing: listing }
-            responseListing.employerName = employer.name;
-            responseListing.company      = employer.company;
-            responseListing.email        = employer.email;
-            responseListing.namedSkills  = [];
+        });
 
-            // Function to get a skill from an id.
-            var getSkill = function(skillId) {
-              Skill.findById(skillId, function (err, foundSkill) {
-                if (err) {
-                  console.log("error at GET /employers", err);
-                  utils.sendErrResponse(res, 500, null);
-                } else if (foundSkill) {
-                  responseListing.namedSkills.push(foundSkill);
-                  console.log(responseListing.namedSkills);
-                }
-              });
-            }
-            // Get each skill and put its name into namedSkills
-            async.each(listing.skills, getSkill, function(err) {
-              listings.push(responseListing);
-            });
-          }
-        }
+        // Sort by number of total matches
+        listings.sort(function(x, y) {
+          return scores[x._id] < scores[y._id];
+        });
+
+        console.log(listings);
+
+        // Send the response
+        utils.sendSuccessResponse(res, listings);   
       });
-
-      // Sort by number of total matches
-      listings.sort(function(x, y) {
-        return scores[x.title] < scores[y.title];
-      });
-
-      console.log(listings);
-
-      // Send the response
-      utils.sendSuccessResponse(res, listings);
     }
   });
 });
