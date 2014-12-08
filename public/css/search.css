@@ -18,6 +18,10 @@ table {
   height: 100%;
 }
 
+.searchSkillsCont {
+  height: calc(100% - 50px);
+}
+
 .leftColCont {
   background-color: #333;
   height: 100%;
