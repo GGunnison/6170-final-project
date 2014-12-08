@@ -7,10 +7,16 @@ var utils       = require('../utils/utils.js');
 var Message = mongoose.model('Message', MessageSchema);
 
 // validators
-Message.schema.path('To').validate(utils.checkLength, "Destination cannot be empty");
-Message.schema.path('From').validate(utils.checkLength, "Sender cannot be empty");
-Message.schema.path('Title').validate(utils.checkLength, "Title cannot be empty");
-Message.schema.path('Body').validate(utils.checkLength, "Body cannot be empty");
+Message.schema.path('to').validate(utils.checkLength, "Destination cannot be empty");
+Message.schema.path('from').validate(utils.checkLength, "Sender cannot be empty");
+Message.schema.path('title').validate(utils.checkLength, "Title cannot be empty");
+Message.schema.path('content').validate(utils.checkLength, "Body cannot be empty");
 
+
+// // presave
+// Message.schema.pre('save', function (next) {
+//   utils.escape(this.name);
+//   next();
+// });
 
 module.exports = Message;

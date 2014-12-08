@@ -1,0 +1,16 @@
+mixin message(message)
+  .panel.panel-default
+    .panel-body
+      #id(style="display:none;")= message._id
+      .row
+        .col-md-6
+          h4.pull-left(style='padding-right:20px')
+            = message.title
+          h4
+            strong= message.from        
+      .row.rest(style='display: none;')
+        .col-md-12
+          //- div= listing.employerName
+          //- a(href="mailto:#{listing.email}")= listing.email
+          br
+          p= message.content

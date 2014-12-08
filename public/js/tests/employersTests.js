@@ -24,6 +24,7 @@ QUnit.asyncTest( "GET /employers/:employerId --valid employerId",
     type: 'GET',
     url: '/employers/' + testEmployerId,
     success: function (data, status, res) {
+      console.log("response" + res);
       equal(res.status, 200, "200 status, success");
       equal(data.content.name, 'Test Employer', "correct employer returned");
     }
@@ -157,4 +158,25 @@ QUnit.asyncTest( "DELETE /employers/:employerId/listings/:listingId \
       }).always(start);
     }
   });
+});
+
+QUnit.asyncTest( "POST student /messages/inbox", function( assert ) {
+  expect(2);
+
+  $.ajax({
+    type: 'POST',
+    url: '/messages/4edd40c86762e0fb12000003',
+    data: {
+          to: 'test@mit.edu',
+          from : 'employer@test.edu',
+          title : "hello",
+          content : "First test"
+    },
+    success: function (data, status, res) {
+      console.log(res.responseJSON.content);
+      equal(res.status, 200, "200 status, success");
+      deepEqual(res.responseJSON.content, [], "returned empty inbox");
+
+    }
+  }).always(start);
 });

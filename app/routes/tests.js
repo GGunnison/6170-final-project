@@ -12,4 +12,8 @@ router.get('/employers', function (req, res) {
   res.render('tests/tests.jade', { testType: "employers" });
 });
 
+router.get('/messages', function(req, res) {
+	res.render('tests/tests.jade', {testType: "messages"});
+});
+
 module.exports = router;

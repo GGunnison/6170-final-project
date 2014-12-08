@@ -83,6 +83,7 @@ var classes   = require('./app/routes/classes');
 var profile   = require('./app/routes/profile');
 var search    = require('./app/routes/search');
 var tests     = require('./app/routes/tests');
+var messages  = require('./app/routes/messages');
 
 app.use('/', index);
 app.use('/students', student);
@@ -92,6 +93,7 @@ app.use('/classes', classes);
 app.use('/profile', profile);
 app.use('/search', search);
 app.use('/tests', tests);
+app.use('/messages', messages);
 
 // launch ======================================================================
 app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 3000);
