@@ -24,7 +24,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 *        if the messages were found and sent
 *    - error 500:
 *        there was an error with one of the user objects
-* 
+*
 *	Objects to deal with inside of each user
 *
 *	mailbox  : {
@@ -44,7 +44,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 router.get('/', utils.isLoggedIn, function(req, res){
 
 	if (req.user.__t === "Employer"){
-		
+
 		Employer.findById(req.user._id)
 			.populate("mailbox.inbox")
 			.populate('mailbox.sentbox')
@@ -58,7 +58,7 @@ router.get('/', utils.isLoggedIn, function(req, res){
                 	res.render('messages.jade', employer.mailbox)
 				  	// utils.sendSuccessResponse(res, employer.mailbox);
 				  }
-                
+
 			})
 
 	}if (req.user.__t === "Student"){
@@ -75,7 +75,7 @@ router.get('/', utils.isLoggedIn, function(req, res){
                 	res.render('messages.jade', student.mailbox)
 				  	// utils.sendSuccessResponse(res, student.mailbox);
 				  }
-                
+
 			})
 	}
 });
@@ -103,7 +103,7 @@ router.get('/sentbox', utils.isLoggedIn, function(req, res){
                 else{
 				  utils.sendSuccessResponse(res, employer.mailbox.sentbox);
 				  }
-                
+
 			})
 	}if (req.user.__t == "Student"){
 		Student.findById(req.user._id)
@@ -116,7 +116,7 @@ router.get('/sentbox', utils.isLoggedIn, function(req, res){
                 else{
 				  utils.sendSuccessResponse(res, student.mailbox.sentbox);
 				  }
-                
+
 			})
 	}
 });
@@ -148,8 +148,8 @@ router.get('/inbox', utils.isLoggedIn, function(req, res){
                 else{
 				  utils.sendSuccessResponse(res, employer.mailbox.inbox);
 				  }
-                
-			}) 
+
+			})
 	}if (req.user.__t == "Student"){
 		Student.findById(req.user._id)
 			.populate('mailbox.inbox')
@@ -161,7 +161,7 @@ router.get('/inbox', utils.isLoggedIn, function(req, res){
                 else{
 				  utils.sendSuccessResponse(res, student.mailbox.inbox);
 				  }
-                
+
 			})
 	}
 });
@@ -170,7 +170,7 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 
 	new Message({
 		to: req.body.to,
-		from: req.body.from, 
+		from: req.body.from,
 		title: req.body.title,
 		content: req.body.content
 	}). save(function(err, message) {
@@ -200,7 +200,7 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 					  }
 				})
 	}
-		if (req.user.__t == "Student"){
+		if (req.user.__t === "Student"){
 			//Update the receivers info
 			Employer.findByIdAndUpdate(req.params.recipientID,
 				{$push : {'mailbox.inbox': message._id}})
@@ -232,7 +232,7 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 
 });
 
-router.delete('/:messageId', utils.isLoggedIn, function(req, res){	
+router.delete('/:messageId', utils.isLoggedIn, function(req, res){
 	console.log(req.params.messageId);
 	Message.findById(req.params.messageId, function(err, message){
 		if(err){
@@ -242,7 +242,7 @@ router.delete('/:messageId', utils.isLoggedIn, function(req, res){
 		message.remove()
 		utils.sendSuccessResponse(res, {});
 	});
-	
+
 })
 
 module.exports = router;
