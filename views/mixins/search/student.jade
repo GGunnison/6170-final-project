@@ -20,7 +20,8 @@ mixin student(student)
                 span.label.label-default= skill.name
 
       .row.rest(style='display: none;')
+        hr
         .col-md-12
           div(style="font-size: 16px;") EXPERIENCES
-       //   for experience in student.experiences
-       //     +experience(experience)
+          for experience in student.experience
+            +experience(experience)
