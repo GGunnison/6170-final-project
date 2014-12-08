@@ -54,26 +54,22 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
       console.log(err);
       utils.sendErrResponse(res, 500, null);
     } else {
+      var populatedStudents = [];
+      async.each(students, function(student, cb) {
+        student.deepPopulate('classes.skills', function (err) {
+          if (err) console.log(err);
+          populatedStudents.push(student);
+          console.log(student);
+          cb();
+        });
+      }, function (err, students) {
+        var students = populatedStudents;
 
-      // return all if no filter specified
-      if (requiredSkills.length === 0 && desiredSkills.length === 0) {
-        utils.sendSuccessResponse(res, students);
-      // go thorugh the filtering process
-      } else {
-        var populatedStudents = [];
-        async.each(students, function(student, cb) {
-          student.deepPopulate('classes.skills', function (err) {
-            if (err) console.log(err);
-            populatedStudents.push(student);
-            console.log(student);
-            cb();
-          });
-        }, function (err, students) {
-          console.log(populatedStudents);
-          console.log('studentsssssssssssssssssssssssssssssssss');
-          var students = populatedStudents;
-          console.log(students);
-
+        // return all if no filter specified
+        if (requiredSkills.length === 0 && desiredSkills.length === 0) {
+          utils.sendSuccessResponse(res, students);
+        // go thorugh the filtering process
+        } else {
           // Keeps track of each student's score so the we can sort them later
           scores = {};
 
@@ -93,13 +89,10 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
 
               // Classes
               for (var i = 0; i < student.classes.length; i++) {
-                var c = student.classes[i]._id;
-                Class.findById(c, function (err, klass) {
-                  console.log(klass);
-                  for (var j = 0; j < klass.skills.length; j++) {
-                    if (klass.skills[j]._id === tag) score += 1;
-                  }
-                });
+                var klass = student.classes[i];
+                for (var j = 0; j < klass.skills.length; j++) {
+                  if (klass.skills[j]._id === tag) score += 1;
+                }
               }
             }
 
@@ -119,12 +112,10 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
 
               // Classes
               for (var i = 0; i < student.classes.length; i++) {
-                var c = student.classes[i]._id;
-                Class.findById(c, function (err, klass) {
-                  for (var j = 0; j < klass.skills.length; j++) {
-                    if (klass.skills[j]._id === tag) score += 1;
-                  }
-                });
+                var klass = student.classes[i];
+                for (var j = 0; j < klass.skills.length; j++) {
+                  if (klass.skills[j]._id === tag) score += 1;
+                }
               }
             }
 
@@ -137,12 +128,11 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
             return scores[x._id] < scores[y._id];
           });
 
-          console.log('respond');
           // Respond
           utils.sendSuccessResponse(res, students);
+          }
         });
       }
-    }
   });
 });
 
