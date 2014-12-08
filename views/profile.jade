@@ -6,10 +6,13 @@ extends layout
 block head
   link(rel="stylesheet", href="/css/profile.css")
   script(type="text/javascript", src="/js/profileController.js")
+  link(rel="stylesheet", href="/css/select2/select2.css")
+  script(type="text/javascript", src="/js/select2/select2.js")
 
 block content
   div.profileContainer(data-ng-controller="profileController")
     - if (user.__t == "Student") {
+      input#userType(type="hidden", value="student")
       input#studId(type="hidden", value="#{user._id}")
       table
         tbody
@@ -86,9 +89,9 @@ block content
                                 span
                                   b Description
                                 textarea.form-control(name="description", placeholder="Describe your experience", ng-bind="experience.description")
-                            td
-                              div.colContent
-                                input.btn.btn-primary(type="submit", value="Update")
+                            // td
+                            //   div.colContent
+                            //     input.btn.btn-primary(type="submit", value="Update")
 
                   legend
                     h2 Classes
@@ -123,5 +126,99 @@ block content
                                 span.label.label-primary(ng-if="viewModel.studentClasses[class._id] === undefined" id="{{class._id}}"){{class._id}}: {{class.name}}
 
     - } else if (user.__t == "Employer") {
+      input#userType(type="hidden", value="employer")
+      input#empId(type="hidden", value="#{user._id}")
+      table
+        tbody
+          tr
+            td.mainCol
+              div.leftColCont
+                div.colCont
+                  legend
+                    h2 Listings
+                  form#listingForm
+                    div.listingContainer
+                      table
+                        tbody
+                          tr
+                            td
+                              div.colContent
+                                input.form-control(name="title", placeholder="Title")
+                            td
+                              div.colContent
+                                input.form-control(name="position", placeholder="Position Name")
+                            td
+                              div.colContent
+                                input.form-control(name="location", placeholder="Location")
+                      table
+                        tbody
+                          tr
+                            td(width="100%")
+                              div.colContent
+                                textarea.listingDescriptionInput.form-control(name="description", placeholder="Description")
+                            td
+                              div.colContent(style="width: 180px") Click skills on the right to add them to the listing
+                      div.skillsContainer
+                        div.skill.draggedSkill(ng-repeat="(id, name) in viewModel.listingSkills")
+                          span.label.label-default(id="{{id}}", ng-bind="name")
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    input.btn.btn-success(type="submit", value="Create Listing")
+                  br
+                  div.listingsContainer
+                    form.listing(ng-repeat="listing in viewModel.listings")
+                      input(type="hidden", name="listingId", value="{{listing._id}}")
+                      table
+                        tbody
+                          tr
+                            td(width="33%")
+                              div.colContent
+                                span
+                                  b Title
+                                input.form-control(name="title", placeholder="Title", value="{{listing.title}}")
+                            td(width="33%")
+                              div.colContent
+                                span
+                                  b Position
+                                input.form-control(name="position", placeholder="Job position", value="{{listing.position}}")
+                            td(width="33%")
+                              div.colContent
+                                span
+                                  b Location
+                                input.form-control(name="location", placeholder="Location", value="{{listing.location}}")
+                            td
+                              div.colContent
+                                button.deleteListing.btn.btn-danger
+                                  &times;
+                      table
+                        tbody
+                          tr
+                            td(width="100%")
+                              div.colContent
+                                span
+                                  b Description
+                                textarea.form-control(name="description", placeholder="Describe your listing", ng-bind="listing.description")
+                            td
+                              div.colContent
+                                input.btn.btn-primary(type="submit", value="Update")
+                      div
+                        div
+                          b Skills
+                        div.skill.draggedSkill(ng-repeat="skill in listing.skills")
+                          span.label.label-default(ng-bind="skill")
 
+            td.mainCol(width="350px")
+              div.rightColCont
+                div.colCont
+                  table
+                    tbody
+                      tr(height="0")
+                        td
+                          h3 Skills
+                          input.form-control.searchInput(ng-model="skillsQuery" placeholder="Search for skills")
+                      tr
+                        td
+                          div.rightColSectionCont
+                            div#skillsCont.rightColSection
+                              div.skill(ng-repeat="skill in viewModel.skills | filter:skillsQuery")
+                                span.label.label-default(ng-if="viewModel.studentSkills[skill._id] === undefined" id="{{skill._id}}", ng-bind="skill.name")
     - }
