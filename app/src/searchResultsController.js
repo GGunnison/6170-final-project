@@ -31,8 +31,6 @@ var SearchResultsController = function() {
         data: data
       }
 
-      console.log($('#userType').val());
-
       var searchType = null;
       if ($('#userType').val() === "Student") {
         ajaxObj["url"] = "/employers";
@@ -44,13 +42,11 @@ var SearchResultsController = function() {
       console.log(ajaxObj);
 
       $.ajax(ajaxObj).done(function(res) {
-        console.log('response', res);
         switch (searchType) {
           case 'employers':
             helpers.renderListings(res.content);
             break;
           case 'students':
-            console.log(res.content);
             helpers.renderStudents(res.content);
             break;
         }
