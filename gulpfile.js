@@ -38,6 +38,7 @@ gulp.task('scripts', function () {
   entries.forEach( function (fileName) {
     browserify({
         entries: ['./app/src/' + fileName],
+        standalone: 'main',        
         extensions: ['.js'],
         debug: true
       }).transform('jadeify')
