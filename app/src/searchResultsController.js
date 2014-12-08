@@ -60,6 +60,19 @@ var SearchResultsController = function() {
   var setLocal = function() {
     local.studentsTemplate = require('../../views/templates/search/students.jade');
     local.listingsTemplate = require('../../views/templates/search/employerListings.jade');
+
+    local.sendMessage = function() {
+      var recipId = "SOME STUPID ID"; // REPLACE
+      var body = "BODY REPLACE"; // REPLACE
+      $.ajax({
+        type: "POST",
+        url: "/messages/" + recipId,
+        body: { body: body },
+        success: function(data) {
+          console.log("success");
+        }
+      })
+    };
   }
 
   // Helper functions

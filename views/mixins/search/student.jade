@@ -4,12 +4,13 @@ mixin student(student)
   .panel.panel-default.student
     .panel-body
       #id(style="display:none")= student._id
-      a.createMessageBtn test
       .row
         .col-md-6
           h4(style="display: inline; padding-right: 7px;")
             strong= student.name
-          a(href="mailto:#{student.email}", style="display: inline;")= student.email
+          a(href="mailto:#{student.email}", style="display: inline; padding-right: 7px;")= student.email
+          a.createMessageBtn(style="display: inline;", id="#{student._id}", name="#{student.name}")
+            i.fa.fa-envelope-o
           h6= student.summary
         .col-md-6
           div(style="font-size: 16px;") SKILLS

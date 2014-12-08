@@ -18,7 +18,7 @@ employMeApp.controller("profileController", function($scope) {
     public.savingSummary = false;
 
     public.listingSkills = {};
-    public.listings = [];
+    public.listings = {};
 
     ajax.getAllSkills().done(function(res) {
       public.skills = res.content;
@@ -62,8 +62,7 @@ employMeApp.controller("profileController", function($scope) {
       });
     } else if (local.userType == "employer") {
       ajax.getEmployerListings(local.userId).done(function(res) {
-        public.listings = res.content;
-        console.log(public.listings);
+        helpers.setListings(res.content);
         $scope.$apply();
       });
     }
@@ -79,11 +78,25 @@ employMeApp.controller("profileController", function($scope) {
     } else if (local.userType == "employer") {
       local.userId = $("#empId")[0].value;
     }
+
+    local.dragAndDropInitialized = false;
   }
 
   // Helper functions
   var helpers = (function() {
     var exports = {};
+
+    exports.setListings = function(listings) {
+      public.listings = {};
+
+      for (var i = 0; i < listings.length; i++) {
+        var listing = listings[i];
+        var id = listing._id;
+        public.listings[id] = listing;
+      }
+
+      $scope.$apply();
+    }
 
     return exports;
   })();
@@ -323,6 +336,12 @@ employMeApp.controller("profileController", function($scope) {
 
         });
       })();
+
+      $("#skillsCont").delegate(".skill.draggable", "mouseenter", function() {
+        if (!local.dragAndDropInitialized) {
+          eventListeners.dragAndDropInit();
+        }
+      });
     }
 
     exports.students = function() {
@@ -457,29 +476,16 @@ employMeApp.controller("profileController", function($scope) {
 
         ajax.postEmployerListing(local.userId, listing).done(function(res) {
           ajax.getEmployerListings(local.userId).done(function(res) {
-            public.listings = res.content;
+            helpers.setListings(res.content);
             public.listingSkills = {};
             $scope.$apply();
+
+            $("#listingForm")[0].elements["title"].value = "";
+            $("#listingForm")[0].elements["description"].value = "";
+            $("#listingForm")[0].elements["position"].value = "";
+            $("#listingForm")[0].elements["location"].value = "";
           });
         });
-      });
-
-      $("#skillsCont").delegate(".skill", "click", function() {
-
-        var id = $(this).children().attr("id");
-        var name = public.skillsMap[id];
-
-        public.listingSkills[id] = name;
-        $scope.$apply();
-      });
-
-      $(".skillsContainer").delegate(".skill", "click", function() {
-
-        var id = $(this).children().attr("id");
-        var name = public.skillsMap[id];
-
-        delete public.listingSkills[id];
-        $scope.$apply();
       });
 
       $(".listingsContainer").delegate(".listing", "submit", function(e) {
@@ -487,6 +493,8 @@ employMeApp.controller("profileController", function($scope) {
         e.preventDefault();
 
         var listingId = $(this)[0].elements["listingId"].value;
+
+        var skills = public.listings[listingId].skills;
 
         var listing = {
           title: $(this)[0].elements["title"].value, 
@@ -496,7 +504,7 @@ employMeApp.controller("profileController", function($scope) {
           skills: skills
         };
 
-        ajax.putEmployerListing(local.userId, listingId, experience);
+        ajax.putEmployerListing(local.userId, listingId, listing);
       });
 
       $(".listingsContainer").delegate(".deleteListing", "click", function(e) {
@@ -504,14 +512,72 @@ employMeApp.controller("profileController", function($scope) {
 
         var listingId = $(this).closest(".listing")[0].elements["listingId"].value;
 
+        console.log("listingId: ", listingId);
+
         ajax.deleteEmployerListing(local.userId, listingId).done(function(res) {
           ajax.getEmployerListings(local.userId).done(function(res) {
-            public.listings = res.content;
-            console.log("listing: ", public.listings);
-            $scope.$apply();
+            helpers.setListings(res.content);
           });
         });
       });
+    }
+
+    exports.dragAndDropInit = function() {
+      var xHtml = "  &#10006;";
+      $("#skillsCont").delegate(".draggable", "mouseenter", function(e) {
+        $(this).draggable({
+          appendTo: "body",
+          helper: "clone",
+          revert: 'invalid'
+        });
+      });
+
+      $(".skillsContainer").droppable({
+        drop: function(e, ui) {
+          var id = e.toElement.id;
+          console.log("id: ", id);
+          if (id) {
+            var name = public.skillsMap[id];
+
+            public.listingSkills[id] = name;
+            $scope.$apply();
+          }
+        }
+      }).delegate(".skill", "click", function() {
+        var id = $(this).children().attr("id");
+        console.log("id: ", id);
+        delete public.listingSkills[id];
+        $scope.$apply();
+      });
+
+      $(".skillsDrop").droppable({
+        drop: function(e, ui) {
+          var skillId = e.toElement.id;
+          var listingId = $(this).attr("data-listing-id");
+
+          console.log("listingId: ", listingId);
+
+          if (skillId) {
+            if (public.listings[listingId].skills.indexOf(public.skillsMap[skillId]) <= -1) {
+              public.listings[listingId].skills.push(public.skillsMap[skillId]);
+              $scope.$apply();
+            }
+          }
+        }
+      }).delegate(".skill", "click", function() {
+        var listingId = $(this).attr("data-listing-id");
+        var skillName = $(this).attr("data-skill-name");
+
+        for (var i = 0; i < public.listings[listingId].skills.length; i++) {
+          if (public.listings[listingId].skills[i] == skillName) {
+            public.listings[listingId].skills.splice(i, 1);
+          }
+        }
+
+        $scope.$apply();
+      });
+
+      local.dragAndDropInitialized = true;
     }
 
     return exports;

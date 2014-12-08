@@ -10,7 +10,9 @@ mixin listing(listing)
           h5 Location: #{listing.location}
         .col-md-6
           .contactInfo
-            h5 CONTACT
+            h5(style="display: inline; padding-right: 7px;") CONTACT
+            a.createMessageBtn(style="display: inline;", id="#{listing.employerId}", name="#{listing.employerName}")
+              i.fa.fa-envelope-o
             h5 Recruiter: #{listing.employerName}
             - var email = 'Email: '
             h5= email
