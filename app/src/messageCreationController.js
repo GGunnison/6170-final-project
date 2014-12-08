@@ -36,6 +36,7 @@ var MessageCreationController = function() {
   var eventListeners = function() {
     $(document).on('click', '.createMessageBtn', function () {
       helpers.toggleModal();
+      $('.modal-title').text('To:  ' + $(this).attr('name'));
       //$('.content').fadeToggle();
     });
   }

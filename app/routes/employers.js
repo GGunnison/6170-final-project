@@ -49,11 +49,11 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
         employers.forEach( function(employer) {
           for (var i = 0; i < employer.listings.length; i++) {
             var keep = false;
-            // We want empty queries to return everything        
-            if ((requiredSkills.length === 0) && 
+            // We want empty queries to return everything
+            if ((requiredSkills.length === 0) &&
                 (desiredSkills.length === 0)) keep = true;
             var listing = employer.listings[i] || { skills:{} };
-            scores[listing._id] = 0;     
+            scores[listing._id] = 0;
             for (var j = 0;  j < listing.skills.length; j++) {
               var skill = listing.skills[j]._id;
               // Increment the score and keep it if in required
@@ -68,7 +68,7 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
             }
             if (keep) {
               // create object to return
-              var responseListing = { 
+              var responseListing = {
                 _id          : listing._id,
                 title        : listing.title,
                 description  : listing.description,
@@ -76,10 +76,11 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
                 location     : listing.location,
                 skills       : listing.skills,
                 employerName : employer.name,
+                employerId   : employer._id,
                 company      : employer.company,
                 email        : employer.email,
               };
-              listings.push(responseListing);                          
+              listings.push(responseListing);
             }
           }
         });
@@ -88,7 +89,7 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
           return scores[x._id] < scores[y._id];
         });
         // Send the response
-        utils.sendSuccessResponse(res, listings);   
+        utils.sendSuccessResponse(res, listings);
       });
     }
   });
