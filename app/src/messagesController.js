@@ -9,7 +9,6 @@ var MessagesController = function() {
 
   var setLocal = function() {
     local.inboxTemplate = require('../../views/templates/mail/inbox.jade');
-    local.createTemplate = require('../../views/templates/mail/create.jade');
     local.sentTemplate = require('../../views/templates/mail/sent.jade');
   }
 
@@ -75,12 +74,6 @@ var MessagesController = function() {
       });
     });
 
-    $('#create').on('click', function() {
-      $('#inbox').removeClass('selected');
-      $('#sent').removeClass('selected');
-      $('#create').addClass('selected');
-      helpers.renderCreate();
-    });
 
     // $('#delete').on('click', function(){
     //   console.log("hello");
@@ -93,14 +86,21 @@ var MessagesController = function() {
 
     $(document).on('click', '#delete', function(e) {
       e.stopPropagation();
-      // $ajax({
-      //   type: "DELETE",
-      //   url: '/' +
-      // })
       var id = $(this).parent().parent().parent().find('#id').text();
-      // console.log($('#delete').parent.parent.parent.parent.parent);
+      $.ajax({
+        type: "DELETE",
+        url: '/messages/' + id,
+      success: function(){
+        if($('#sent').hasClass('selected')){
+          $('#sent').click();
+        }else{
+          $('#inbox').click();
+        }
+      }
+      
 
     });
+  });
 
 
 //     $('#myAffix').affix({
