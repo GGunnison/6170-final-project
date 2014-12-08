@@ -55,7 +55,7 @@ router.get('/', utils.isLoggedIn, function(req, res){
         } else {
           res.render('messages.jade', employer.mailbox)
       }
-    })
+    });
 	} 
   if (req.user.__t === "Student"){
 		Student.findById(req.user._id)
@@ -68,7 +68,7 @@ router.get('/', utils.isLoggedIn, function(req, res){
         } else{
           res.render('messages.jade', student.mailbox)
         }
-    })
+    });
 	}
 });
 
@@ -95,21 +95,19 @@ router.get('/sentbox', utils.isLoggedIn, function(req, res){
                 else{
 				  utils.sendSuccessResponse(res, employer.mailbox.sentbox);
 				  }
-
-			})
-	}if (req.user.__t == "Student"){
+    });
+	}
+  if (req.user.__t == "Student"){
 		Student.findById(req.user._id)
 			.populate('mailbox.sentbox')
 			.exec(function(err, student){
 				if (err) {
-                  console.log(err);
-                  utils.sendErrResponse(res, 500, null);
-                }
-                else{
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else{
 				  utils.sendSuccessResponse(res, student.mailbox.sentbox);
-				  }
-
-			})
+		    }
+    });
 	}
 });
 
@@ -134,27 +132,24 @@ router.get('/inbox', utils.isLoggedIn, function(req, res){
 			.populate('mailbox.inbox')
 			.exec(function(err, employer){
 				if (err) {
-                  console.log(err);
-                  utils.sendErrResponse(res, 500, null);
-                }
-                else{
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else {
 				  utils.sendSuccessResponse(res, employer.mailbox.inbox);
-				  }
-
-			})
-	}if (req.user.__t == "Student"){
+        }
+    });
+	}
+  if (req.user.__t == "Student"){
 		Student.findById(req.user._id)
 			.populate('mailbox.inbox')
 			.exec(function(err, student){
 				if (err) {
-                  console.log(err);
-                  utils.sendErrResponse(res, 500, null);
-                }
-                else{
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else {
 				  utils.sendSuccessResponse(res, student.mailbox.inbox);
-				  }
-
-			})
+        }
+    });
 	}
 });
 
@@ -185,7 +180,7 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 		title   : req.body.title,
 		content : req.body.content
 	}). save(function(err, message) {
-		if (req.user.__t === "Employer"){
+		if (req.user.__t === "Employer") {
 			//Update the receivers info
 			Student.findByIdAndUpdate(req.params.recipientID,
 				{$push : {'mailbox.inbox': message._id}})
@@ -210,37 +205,33 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 						utils.sendSuccessResponse(res, employer.mailbox.sentbox);
 					  }
 				})
-	}
-		if (req.user.__t === "Student"){
+    }
+    if (req.user.__t === "Student"){
 			//Update the receivers info
 			Employer.findByIdAndUpdate(req.params.recipientID,
 				{$push : {'mailbox.inbox': message._id}})
 				.exec(function(err, employer){
 					if (err) {
-	                  	console.log(err);
-	                  	utils.sendErrResponse(res, 500, null);
-	                }
-	                else{
-	                	console.log("EMP" + employer)
-					  	//utils.sendSuccessResponse(res, employer.mailbox.inbox);
-					  }
-				})
+            console.log(err);
+            utils.sendErrResponse(res, 500, null);
+          } else {
+            console.log("EMP" + employer)
+          }
+				});
 			//Update the senders info
 			Student.findByIdAndUpdate({_id : req.user._id},
 				{$push : {'mailbox.sentbox' : message._id}})
 				.exec(function(err, student){
 					if (err) {
-	                  	console.log(err);
-	                  	utils.sendErrResponse(res, 500, null);
-	                }
-	                else{
-	                	console.log(student.mailbox.sentbox)
-					  	utils.sendSuccessResponse(res, student.mailbox.sentbox);
-					  }
-				})
+            console.log(err);
+            utils.sendErrResponse(res, 500, null);
+          } else {
+            console.log(student.mailbox.sentbox)
+            utils.sendSuccessResponse(res, student.mailbox.sentbox);
+          }
+      })
 		}
 	});
-
 });
 
 router.delete('/:messageId', utils.isLoggedIn, function(req, res){
