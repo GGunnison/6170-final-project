@@ -5,9 +5,16 @@
             button.close(type='button', data-dismiss='modal')
               span(aria-hidden='true') &times;
               span.sr-only Close
-            h4.modal-title To: to name goes here
+            h4.modal-title To: name goes here
           .modal-body
-            // input box here
+            .row
+              .col-md-1
+                h4(style="display: inline;") Title:
+              .col-md-11
+                input#title(style="display: inline; width: 100%;")
+            .row(style="padding-top: 10px;")
+              .col-md-12
+                textarea#message(rows="5", style="width: 100%;")
           .modal-footer
             button.btn.btn-default(type='button', data-dismiss='modal') Cancel
             button.btn.btn-primary(type='button') Send
