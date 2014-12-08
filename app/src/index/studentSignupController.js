@@ -41,9 +41,9 @@ var StudentSignupController = function() {
       }).done( function (data) {
         if (data.alertMessage) {
           $('#alertMessage').text(data.alertMessage);
-          $('.alert').show();
+          $('.alert').fadeIn(800);
         } else {
-          window.location = '/profile/create';
+          window.location = '/profile';
         }
       });
     });

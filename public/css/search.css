@@ -9,7 +9,7 @@ table {
 }
 
 .label {
-  margin: 2px; 3px;
+  margin: 2px;
   display: inline-block;
 }
 
@@ -64,6 +64,7 @@ table {
 .refine-search-title h4 {
   padding-top: 17px;
   margin: 0px;
+  color: #CCC;
 }
 
 .rightColCont {
@@ -113,5 +114,10 @@ table {
 
 .skillsDrop {
   height: 80%;
+}
+
+.contactInfo {
+  padding: 5px 10px;
+  background-color: #DDD;
 }
 

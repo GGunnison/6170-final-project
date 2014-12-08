@@ -10,6 +10,7 @@ var Student = require('../models/StudentModel');
 var Class   = require('../models/ClassModel');
 var Skill   = require('../models/SkillModel');
 
+
 /* Filter and order students based off of desired and require skills
  *
  * Only Employers can hit this route.

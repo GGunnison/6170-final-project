@@ -34,11 +34,14 @@ gulp.task('less', function() {
 });
 
 gulp.task('scripts', function () {
-  var entries = ['indexController.js', 'searchResultsController.js'];
+
+  var entries = ['indexController.js', 'searchResultsController.js', 'messagesController.js', 'messageCreationController.js'];
+
+
   entries.forEach( function (fileName) {
     browserify({
         entries: ['./app/src/' + fileName],
-        standalone: 'main',        
+        standalone: 'main',
         extensions: ['.js'],
         debug: true
       }).transform('jadeify')

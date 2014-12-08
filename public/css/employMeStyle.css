@@ -6285,6 +6285,17 @@ button.close {
     display: none !important;
   }
 }
+.alert {
+  margin: 0px;
+}
+.modal-dialog {
+  position: absolute;
+  left: 50%;
+  margin-left: -312px;
+  height: 500px;
+  top: 50%;
+  margin-top: -250px;
+}
 body {
   background-color: #ECECEC;
   font-family: 'Lato', sans-serif;
@@ -6294,4 +6305,7 @@ body {
   -webkit-border-radius: 0 !important;
   -moz-border-radius: 0 !important;
   border-radius: 0 !important;
+}
+.createMessageBtn:hover {
+  cursor: pointer;
 }
