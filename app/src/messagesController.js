@@ -26,12 +26,12 @@ var MessagesController = function() {
     exports.renderCreate = function() {
       var createHTML = local.createTemplate();
       $('#right_side').html(createHTML);
-     } 
+     }
 
     exports.renderSent = function(data) {
       var sentHTML = local.sentTemplate( {messages : data});
       $('#right_side').html(sentHTML);
-     } 
+     }
 
     return exports
   })();
@@ -97,8 +97,7 @@ var MessagesController = function() {
       //   type: "DELETE",
       //   url: '/' +
       // })
-      var id = $(this).parent().attr("id");
-      console.log(id);
+      var id = $(this).parent().parent().parent().find('#id').text();
       // console.log($('#delete').parent.parent.parent.parent.parent);
 
     });
@@ -117,7 +116,7 @@ var MessagesController = function() {
         $(this).children('.rest').slideToggle();
       });
   }
-  
+
 
   return {
     public: public,
