@@ -34,8 +34,9 @@ var MessageCreationController = function() {
   }
 
   var eventListeners = function() {
-    $('#createMessageBtn').click( function() {
+    $(document).on('click', '.createMessageBtn', function () {
       helpers.toggleModal();
+      //$('.content').fadeToggle();
     });
   }
 
