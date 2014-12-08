@@ -6285,6 +6285,9 @@ button.close {
     display: none !important;
   }
 }
+.alert {
+  margin: 0px;
+}
 body {
   background-color: #ECECEC;
   font-family: 'Lato', sans-serif;
