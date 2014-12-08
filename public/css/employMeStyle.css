@@ -5497,6 +5497,8 @@ button.close {
 .modal-backdrop.in {
   opacity: 0.5;
   filter: alpha(opacity=50);
+  z-index: 1039;
+  height: 100%;
 }
 .modal-header {
   padding: 15px;
