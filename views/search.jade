@@ -38,17 +38,12 @@ block content
                           div.leftColSection.skillsDrop.requiredSkillsDrop
                     tr
                       td
-                        div.leftColSectionCont
-                          div.leftColSection.skillsDrop.desiredSkillsDrop
-                            div.dragInstructionTextDiv
-                              h3 Drag desired skills here
-                    tr(height="0")
-                      td
-                        - if (user.__t === "Student") {
-                          button#skillSubmit.btn.btn-primary(style="visibility:hidden;", data-type="Student") Filter
-                        - } else if (user.__t === "Employer") {
-                          button#skillSubmit.btn.btn-primary(style="visibility:hidden;", data-type="Employer") Filter
-                        - }
+                        .leftColSectionCont
+                          .dragInstructionTextDiv
+                            h5 DESIRED
+                          .leftColSection.skillsDrop.desiredSkillsDrop
+
+
           td
             div.rightColCont
               div.colCont(style='text-align: left')

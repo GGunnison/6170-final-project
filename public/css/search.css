@@ -8,6 +8,11 @@ table {
   height: 100%;
 }
 
+.label {
+  margin: 2px; 3px;
+  display: inline-block;
+}
+
 .cont {
   height: 100%;
   padding-top: 50px;
@@ -110,33 +115,3 @@ table {
   height: 80%;
 }
 
-/*.mainCol {
-  padding: 0 10px;
-}
-
-.mainCol.rightCol {
-  border-left: 1px solid #aaa;
-}
-
-.skillsCol {
-  height: 100%;
-  overflow: auto;
-  border: 1px solid #aaa;
-  border-radius: 5px;
-}
-
-.draggable {
-  cursor: move;
-}
-
-.skillsDrop {
-  border: 1px solid #aaa;
-  border-radius: 5px;
-  height: 100%;
-  background-color: #eee;
-  padding: 10px;
-}
-
-#skillSubmit {
-  float: right;
-}*/
