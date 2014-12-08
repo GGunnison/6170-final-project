@@ -6,20 +6,31 @@ var gulp       = require('gulp'),
     nodemon    = require('gulp-nodemon'),
     concat     = require('gulp-concat'),
     jade       = require('gulp-jade'),
-    source     = require('vinyl-source-stream');
+    source     = require('vinyl-source-stream'),
+    less       = require('gulp-less');
 
 gulp.task('watch', function () {
-  gulp.watch('./views/**/*.*', ['scripts'])
+  gulp.watch('./views/templates/**/*.*', ['scripts'])
+      .on('change', livereload.changed);
+  gulp.watch('./views/mixins/**/*.*', ['scripts'])
+      .on('change', livereload.changed);
+  gulp.watch('./app/src/styles/**/*.less', ['less'])
       .on('change', livereload.changed);
 });
 
 gulp.task('develop', function () {
   livereload.listen();
   nodemon( {script: './bin/www', ext: 'html js'} )
-    .on('start', ['scripts', 'watch'])
+    .on('start', ['scripts', 'less', 'watch'])
     .on('restart', function () {
       console.log('restarting server');
     });
+});
+
+gulp.task('less', function() {
+  return gulp.src('./app/styles/employMeStyle.less')
+             .pipe(less())
+             .pipe(gulp.dest('./public/css'))
 });
 
 gulp.task('scripts', function () {
@@ -27,6 +38,7 @@ gulp.task('scripts', function () {
   entries.forEach( function (fileName) {
     browserify({
         entries: ['./app/src/' + fileName],
+        standalone: 'main',        
         extensions: ['.js'],
         debug: true
       }).transform('jadeify')

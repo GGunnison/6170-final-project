@@ -2,16 +2,8 @@
 var SearchResultsController = function() {
 
   // Public variables, available outside controller
-  var public = {};
-
-  // Private variables,
-  var local = {};
-
-  var setLocal = function() {
-    local.studentsTemplate = require('../../views/templates/search/students.jade');
-    local.listingsTemplate = require('../../views/templates/search/employerListings.jade');
-
-    local.filter = function () {
+  var public = {
+    filter: function () {
       var requiredSkills = [];
       var desiredSkills  = [];
 
@@ -38,7 +30,7 @@ var SearchResultsController = function() {
       }
 
       var searchType = null;
-      if ($('#skillSubmit').attr("data-type") === "Student") {
+      if ($('#userType').attr("data-type") === "Student") {
         ajaxObj["url"] = "/employers";
         searchType = 'employers';
       } else if ($('#skillSubmit').attr("data-type") === "Employer") {
@@ -53,10 +45,18 @@ var SearchResultsController = function() {
             break;
           case 'students':
             helpers.renderStudents(res.content);
-            break
+            break;
         }
       });
     }
+  };
+
+  // Private variables,
+  var local = {};
+
+  var setLocal = function() {
+    local.studentsTemplate = require('../../views/templates/search/students.jade');
+    local.listingsTemplate = require('../../views/templates/search/employerListings.jade');
   }
 
   // Helper functions
@@ -71,9 +71,8 @@ var SearchResultsController = function() {
 
     exports.renderStudents = function (students) {
       var students     = students || [];
-      console.log(students);
       var studentsHTML = local.studentsTemplate({students: students});
-      $('#results').html(studentsHTML);
+      $('#results1').html(studentsHTML);
     }
 
     return exports
@@ -85,12 +84,12 @@ var SearchResultsController = function() {
     eventListeners();
 
     // populate with all students/listings
-    local.filter();
+    public.filter();
   }
 
   var eventListeners = function() {
       $("#skillSubmit").on("click", function() {
-        local.filter();
+        public.filter();
       });
 
       $(document).on('click', '.panel-body', function() {
@@ -104,7 +103,7 @@ var SearchResultsController = function() {
   }
 }
 
-var searchResultsController = new SearchResultsController();
+searchResultsController = new SearchResultsController();
 $(document).ready(function() {
   searchResultsController.init();
 });

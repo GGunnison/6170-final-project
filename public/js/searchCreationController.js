@@ -143,13 +143,13 @@ employMeApp.controller("searchCreationController", function($scope) {
 
           $("<div class='skill draggedSkill'><span id=" + skillId + " class='label label-default'>" + ui.draggable.text() + xHtml + "</span></div>")
             .appendTo(this);
+          searchResultsController.public.filter();
         }
       });
 
       $(".skillsDrop").on("click", ".skill", function(e) {
         var skillId = $(this).children().attr("id");
         var skillText = $(this).text().substring(0, $(this).text().length - (xHtml.length - 7));
-        console.log("skillText", skillText);
         var skillHtml = $("<div class='skill'><span id=" + skillId + " class='draggable label label-default'>" + skillText + "</span></div>")
 
         $(this).remove();
@@ -160,6 +160,8 @@ employMeApp.controller("searchCreationController", function($scope) {
           helper: "clone",
           revert: "invalid"
         });
+
+        searchResultsController.public.filter();
       });
     }
 
