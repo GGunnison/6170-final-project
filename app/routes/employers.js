@@ -41,7 +41,6 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
       async.each(employers, function(employer, cb) {
         employer.deepPopulate('listings.skills', function (err) {
           if (err) console.log(err);
-          console.log("DEEP: employer", employer);
           cb();
         });
       }, function(err) {
@@ -79,21 +78,15 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
                 employerName : employer.name,
                 company      : employer.company,
                 email        : employer.email,
-                namedSkills  : [],
               };
-
               listings.push(responseListing);                          
             }
           }
         });
-
         // Sort by number of total matches
         listings.sort(function(x, y) {
           return scores[x._id] < scores[y._id];
         });
-
-        console.log(listings);
-
         // Send the response
         utils.sendSuccessResponse(res, listings);   
       });
