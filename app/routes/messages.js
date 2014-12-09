@@ -56,7 +56,7 @@ router.get('/', utils.isLoggedIn, function(req, res){
           res.render('messages.jade', employer.mailbox);
       }
     });
-	} 
+	}
   if (req.user.__t === "Student"){
 		Student.findById(req.user._id)
 			.populate("mailbox.inbox")

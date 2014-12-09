@@ -36,14 +36,15 @@ var MessageCreationController = function() {
   }
 
   var eventListeners = function() {
-    $(document).on('click', '.createMessageBtn', function () {
+    $(document).on('click', '.createMessageBtn', function (e) {
       helpers.toggleModal();
 
       local.toName = $(this).attr('name');
       local.toId   = $(this).attr('id');
 
       $('.modal-title').text('To:  ' + $(this).attr('name'));
-      //$('.content').fadeToggle();
+      $('#messageTitle').val("");
+      $('#messageContent').val("");
     });
 
     $(document).on('click', '#sendMessage', function () {
@@ -54,9 +55,6 @@ var MessageCreationController = function() {
       var title   = $('#messageTitle').val();
       var content = $('#messageContent').val();
 
-      console.log(toName);
-      console.log(toId);
-
       $.ajax({
         type: "POST",
         url: "/messages/" + toId,
@@ -65,7 +63,6 @@ var MessageCreationController = function() {
                 title   : title
         },
         success: function(data) {
-          console.log("success");
           $('.modal').modal('toggle');
         }
       })
