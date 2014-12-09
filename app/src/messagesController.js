@@ -16,7 +16,6 @@ var MessagesController = function() {
   var helpers = (function() {
     var exports = {};
 
-
     exports.renderInbox = function(data) {
       console.log('render');
       var inboxHTML = local.inboxTemplate({messages : data});
@@ -27,6 +26,20 @@ var MessagesController = function() {
       var sentHTML = local.sentTemplate({messages : data});
         $('#right_side').html(sentHTML);
       }
+
+    exports.deleteMessage = function(urlBase, id) {
+      $.ajax({
+        type: "DELETE",
+        url: '/messages/' + urlBase + id,
+        success: function(){
+          if($('#sent').hasClass('selected')){
+            $('#sent').click();
+          } else {
+            $('#inbox').click();
+          }
+        }
+      });
+    }
 
     return exports
   })();
@@ -70,20 +83,15 @@ var MessagesController = function() {
       });
     });
 
-    $(document).on('click', '#delete', function(e) {
+    $(document).on('click', '#deleteInbox', function(e) {
       e.stopPropagation();
-      var id = $(this).parent().parent().parent().find('#id').text();
-      $.ajax({
-        type: "DELETE",
-        url: '/messages/' + id,
-        success: function(){
-          if($('#sent').hasClass('selected')){
-            $('#sent').click();
-          } else {
-            $('#inbox').click();
-          }
-        }
-      });
+      var id = $(this).parent().parent().parent().find('#id').text();      
+      helpers.deleteMessage('inbox/', id);
+    });
+    $(document).on('click', '#deleteSentbox', function(e) {
+      e.stopPropagation();
+      var id = $(this).parent().parent().parent().find('#id').text();      
+      helpers.deleteMessage('sentbox/', id);      
     });
 
 

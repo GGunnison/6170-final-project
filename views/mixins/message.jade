@@ -15,4 +15,6 @@ mixin message(message, hasReply)
           if hasReply
             a.createMessageBtn(style="display: inline;", id="#{message.fromId}", name="#{message.from}")
               i.fa.fa-mail-reply
-          a#delete Delete
+            a#deleteInbox Delete
+          else
+            a#deleteSentbox Delete

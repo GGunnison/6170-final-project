@@ -228,24 +228,67 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 	});
 });
 
-router.delete('/:messageId', utils.isLoggedIn, function(req, res){
-	console.log(req.params.messageId);
-  var messageId = req.params.messageId;
-  var userId = req.user._id;
-  var User;
+router.delete('/inbox/:messageId', function(req, res){
+  var userID = req.user._id
+  var messageId = req.params.messageId
+  var type = req.user.__t;
 
-  if (req.user.__t === "Student") {
-    User = Student;
-  } else if (req.user.__t === "Employer") {
-    User = Employer;    
+  if (type === "Employer"){
+    Employer.findByIdAndUpdate({_id : userID},
+      {$pull : {'mailbox.inbox' : messageId}})
+      .exec(function(err, employer){
+        if (err) {
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else {
+          utils.sendSuccessResponse(res, employer.mailbox.inbox);
+        }
+    });
   }
-
-  User.update({ _id: userId },
-              { $pull: { 'mailbox.inbox' : messageId }});
-  User.update({ _id: userId },
-              { $pull: { 'mailbox.sentbox' : messageId }});
-
-  utils.sendSuccessResponse(res, {});
+  if (type === "Student"){
+    Student.findByIdAndUpdate({_id : userID},
+      {$pull : {'mailbox.inbox' : messageId}})
+      .exec(function(err, student){
+        if (err) {
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else {  
+          utils.sendSuccessResponse(res, student.mailbox.inbox);
+        }
+    });
+  }
 });
+
+router.delete('/sentbox/:messageId', function(req, res){
+  var userID = req.user._id
+  var messageId = req.params.messageId
+  var type = user.__t;
+
+  if (type === "Employer"){
+    Employer.findByIdAndUpdate({_id : userID},
+      {$pull : {'mailbox.sentbox.' : messageId}})
+      .exec(function(err, employer){
+        if (err) {
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else { 
+          utils.sendSuccessResponse(res, employer.mailbox.sentbox);
+        }
+    });
+  }
+  if (type === "Student"){
+    Student.findByIdAndUpdate(userID,
+      {$pull : {'mailbox.sentbox' : messageId}})
+      .exec(function(err, student){
+        if (err) {
+          console.log(err);
+          utils.sendErrResponse(res, 500, null);
+        } else{ 
+          utils.sendSuccessResponse(res, student.mailbox.sentbox);
+        }
+    });
+  }
+});
+
 
 module.exports = router;
