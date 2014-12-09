@@ -2,7 +2,7 @@ Employ.Me
 =========
 
 ##Links
-  [Deployed Employ.me](http://employme-dsan.rhcloud.com/)
+  [Deployed Employ.me](http://employme-dsan.rhcloud.com/)<br>
   [Reflection](./documents/Reflection.pdf)
 
 ###Note
