@@ -1,4 +1,3 @@
-// author(s): Sabrian Drammis, Samuel Edson
 var router   = require('express').Router();
 var utils    = require('../utils/utils.js');
 var assert   = require('assert');
@@ -10,6 +9,7 @@ var Student = require('../models/StudentModel');
 var Class   = require('../models/ClassModel');
 var Skill   = require('../models/SkillModel');
 
+// author(s): Sabrian Drammis, Samuel Edson
 
 /* Filter and order students based off of desired and require skills
  *
@@ -27,33 +27,37 @@ var Skill   = require('../models/SkillModel');
  *   - success 200
  *        responds with a list of ordered studends
  *
- * author: Samuel Edson
+ * author: Samuel Edson, Sabrina Drammis
  */
 router.get('/', utils.isLoggedInEmployer, function(req, res) {
   var requiredSkills = req.query.requiredSkills || [];
-  var desiredSkills  = req.query.desiredSkills || [];
+  var desiredSkills  = req.query.desiredSkills  || [];
 
   Student.find({})
   .populate('skills')
   .exec(function(err, students) {
+
     if (err) {
       console.log(err);
       utils.sendErrResponse(res, 500, null);
     } else {
       var populatedStudents = [];
+
+      // populate the skills for each of the students' classes
       async.each(students, function(student, cb) {
         student.deepPopulate('classes.skills', function (err) {
           if (err) console.log(err);
           populatedStudents.push(student);
-          console.log(student);
           cb();
         });
       }, function (err, students) {
+
         var students = populatedStudents;
 
         // return all if no filter specified
         if (requiredSkills.length === 0 && desiredSkills.length === 0) {
           utils.sendSuccessResponse(res, students);
+
         // go thorugh the filtering process
         } else {
           // Keeps track of each student's score so the we can sort them later
@@ -188,20 +192,20 @@ router.get('/:studentId/summary', utils.isLoggedIn, function (req, res) {
   });
 });
 
-/** Set the summary for a student 
+/** Set the summary for a student
  *  Only allowed to set your own summary
- * 
+ *
  * PUT /students/:studentId/summary
- * 
- * Params: 
- *     - studentId: 
+ *
+ * Params:
+ *     - studentId:
  *         _id of student to set classes for
  *         must be the logged in student's _id
  *
- * Body: 
+ * Body:
  *    - summary: String representing student summary
  *
- * Response: 
+ * Response:
  *    - success 200
  *        if the summary was successfully set
  *    - error 403
@@ -216,8 +220,8 @@ router.get('/:studentId/summary', utils.isLoggedIn, function (req, res) {
 router.put('/:studentId/summary', utils.isLoggedInStudent, function (req, res) {
   if (req.user._id.toString() === req.params.studentId) {
     var summary = req.body.summary;
-    Student.findByIdAndUpdate(req.params.studentId, 
-            {summary: summary}, 
+    Student.findByIdAndUpdate(req.params.studentId,
+            {summary: summary},
             function (err, student) {
               if (err) {
                 console.log("error at /:studentId/summary", err);

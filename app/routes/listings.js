@@ -1,10 +1,10 @@
-// Author: Sabrina Drammis
-
 var router = require('express').Router();
 var utils  = require('../utils/utils.js');
 
 // database models
 var Listing = require('../models/ListingModel.js')
+
+// author: Sabrina Drammis
 
 /* Get all listings
  *

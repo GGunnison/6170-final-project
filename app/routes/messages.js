@@ -1,5 +1,3 @@
-// Author: Grant Gunnison, Sam Edson
-
 var router   = require('express').Router();
 var utils    = require('../utils/utils.js');
 var assert   = require('assert');
@@ -11,6 +9,7 @@ var Async     = require('../../node_modules/async/lib/async');
 var Message   = require('../../app/models/MessageModel');
 var ObjectId  = mongoose.Schema.Types.ObjectId;
 
+// authors: Grant Gunnison, Sam Edson
 
 /* Get all of the users messages
 *
@@ -256,7 +255,7 @@ router.delete('/inbox/:messageId', function(req, res){
         if (err) {
           console.log(err);
           utils.sendErrResponse(res, 500, null);
-        } else {  
+        } else {
           utils.sendSuccessResponse(res, student.mailbox.inbox);
         }
     });
@@ -288,7 +287,7 @@ router.delete('/sentbox/:messageId', function(req, res){
         if (err) {
           console.log(err);
           utils.sendErrResponse(res, 500, null);
-        } else { 
+        } else {
           utils.sendSuccessResponse(res, employer.mailbox.sentbox);
         }
     });
@@ -300,12 +299,11 @@ router.delete('/sentbox/:messageId', function(req, res){
         if (err) {
           console.log(err);
           utils.sendErrResponse(res, 500, null);
-        } else{ 
+        } else{
           utils.sendSuccessResponse(res, student.mailbox.sentbox);
         }
     });
   }
 });
-
 
 module.exports = router;

@@ -19,7 +19,6 @@ var MessageCreationController = function() {
 
     exports.toggleModal = function () {
       $('.modal').modal('toggle');
-      // set the modal information
     }
 
     return exports

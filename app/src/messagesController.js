@@ -9,7 +9,7 @@ var MessagesController = function() {
 
   var setLocal = function() {
     local.inboxTemplate = require('../../views/templates/mail/inbox.jade');
-    local.sentTemplate = require('../../views/templates/mail/sent.jade');
+    local.sentTemplate  = require('../../views/templates/mail/sent.jade');
   }
 
   // Helper functions
@@ -85,13 +85,13 @@ var MessagesController = function() {
 
     $(document).on('click', '#deleteInbox', function(e) {
       e.stopPropagation();
-      var id = $(this).parent().parent().parent().find('#id').text();      
+      var id = $(this).parent().parent().parent().find('#id').text();
       helpers.deleteMessage('inbox/', id);
     });
     $(document).on('click', '#deleteSentbox', function(e) {
       e.stopPropagation();
-      var id = $(this).parent().parent().parent().find('#id').text();      
-      helpers.deleteMessage('sentbox/', id);      
+      var id = $(this).parent().parent().parent().find('#id').text();
+      helpers.deleteMessage('sentbox/', id);
     });
 
 

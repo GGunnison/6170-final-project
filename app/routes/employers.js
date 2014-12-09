@@ -1,5 +1,3 @@
-// Authors: Samuel Edson, Sabrina Drammis
-
 var router    = require('express').Router();
 var utils     = require('../utils/utils.js');
 var assert    = require('assert');
@@ -10,6 +8,8 @@ var async     = require('async');
 // database models
 var Employer = require('../models/EmployerModel.js');
 var Skill    = require('../models/SkillModel');
+
+// authors: Samuel Edson, Sabrina Drammis
 
 /* Returns json list of employers that have at least one
  * requiredSkill in any of their listings. Orders by number
@@ -30,9 +30,9 @@ var Skill    = require('../models/SkillModel');
  */
 router.get('/', utils.isLoggedInStudent, function(req, res) {
   var requiredSkills = req.query.requiredSkills || [];
-  var desiredSkills  = req.query.desiredSkills || [];
-  // Filter employers that do not have one requiredSkill in any of
-  // their listings
+  var desiredSkills  = req.query.desiredSkills  || [];
+
+  // Filter employers that do not have one requiredSkill in any their listings
   Employer.find({}, function(err, employers) {
     if (err) {
       console.log("error at GET /employers", err);
@@ -44,16 +44,20 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
           cb();
         });
       }, function(err) {
-        var scores = {};
+
+        var scores   = {};
         var listings = [];
+
         employers.forEach( function(employer) {
           for (var i = 0; i < employer.listings.length; i++) {
             var keep = false;
             // We want empty queries to return everything
             if ((requiredSkills.length === 0) &&
                 (desiredSkills.length === 0)) keep = true;
+
             var listing = employer.listings[i] || { skills:{} };
             scores[listing._id] = 0;
+
             for (var j = 0;  j < listing.skills.length; j++) {
               var skill = listing.skills[j]._id;
               // Increment the score and keep it if in required
@@ -66,6 +70,7 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
                 scores[listing._id] += 1;
               }
             }
+
             if (keep) {
               // create object to return
               var responseListing = {
@@ -84,10 +89,12 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
             }
           }
         });
+
         // Sort by number of total matches
         listings.sort(function(x, y) {
           return scores[x._id] < scores[y._id];
         });
+
         // Send the response
         utils.sendSuccessResponse(res, listings);
       });
