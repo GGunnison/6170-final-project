@@ -1,12 +1,12 @@
 Employ.Me
 =========
 
-##Links
+###Links
   [Deployed Employ.me](http://employme-dsan.rhcloud.com/)<br>
   [Reflection](./documents/Reflection.pdf)
 
 ###Note
-  We updated the design document. It is called [Revised Revised Design](./documents/RevisedRevisedDesign.pdf).
+  We updated the design document, [Revised Revised Design](./documents/RevisedRevisedDesign.pdf).
 
 ###Code Sources
 We pulled passport functionality from:
