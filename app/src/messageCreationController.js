@@ -1,4 +1,4 @@
-// author: Sabrina Drammis
+// author: Sabrina Drammis, Sam Edson
 var MessageCreationController = function() {
 
   // Public variables, available outside controller
