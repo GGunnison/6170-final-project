@@ -43,7 +43,8 @@ var MessageCreationController = function() {
       local.toId   = $(this).attr('id');
 
       $('.modal-title').text('To:  ' + $(this).attr('name'));
-      //$('.content').fadeToggle();
+      $('#messageTitle').val("");
+      $('#messageContent').val("");
     });
 
     $(document).on('click', '#sendMessage', function () {
@@ -53,9 +54,6 @@ var MessageCreationController = function() {
       var toId    = local.toId;
       var title   = $('#messageTitle').val();
       var content = $('#messageContent').val();
-
-      console.log(toId);
-      console.log(local.toName);
 
       $.ajax({
         type: "POST",

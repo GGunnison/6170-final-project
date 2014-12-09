@@ -461,9 +461,7 @@ employMeApp.controller("profileController", function($scope) {
         var skills = [];
 
         for (skill in public.listingSkills) {
-          var skillObj = {};
-          skillObj[""] = {skill: public.listingSkills[skill]};
-          skills.push(skillObj);
+          skills.push(skill.toString());
         }
 
         var listing = {
@@ -477,6 +475,7 @@ employMeApp.controller("profileController", function($scope) {
         ajax.postEmployerListing(local.userId, listing).done(function(res) {
           ajax.getEmployerListings(local.userId).done(function(res) {
             helpers.setListings(res.content);
+            console.log("listings: ", res.content);
             public.listingSkills = {};
             $scope.$apply();
 
@@ -559,7 +558,7 @@ employMeApp.controller("profileController", function($scope) {
 
           if (skillId) {
             if (public.listings[listingId].skills.indexOf(public.skillsMap[skillId]) <= -1) {
-              public.listings[listingId].skills.push(public.skillsMap[skillId]);
+              public.listings[listingId].skills.push(skillId);
               $scope.$apply();
             }
           }

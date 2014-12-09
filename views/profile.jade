@@ -207,7 +207,7 @@ block content
                           div(style="text-align: center")
                             h3 Drag skills here
                           div.skill.draggedSkill(ng-repeat="skill in listing.skills", data-skill-name="{{skill}}", data-listing-id="{{listing._id}}")
-                            span.label.label-default {{skill}}  &#10006;
+                            span.label.label-default {{viewModel.skillsMap[skill]}}  &#10006;
                       div
                         input.btn.btn-primary(type="submit", value="Update")
 
