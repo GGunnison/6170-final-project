@@ -27,6 +27,10 @@ ul {
 	border-left: 1px solid;
 }
 
-#delete {
+#deleteSentbox {
+	float:right;
+}
+
+#deleteInbox{
 	float:right;
 }
