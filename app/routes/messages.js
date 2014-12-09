@@ -6,10 +6,10 @@ var assert   = require('assert');
 var mongoose = require('mongoose');
 
 var Student   = require('../../app/models/StudentModel');
-var Employer   = require('../../app/models/EmployerModel');
-var Async = require('../../node_modules/async/lib/async');
-var Message = require('../../app/models/MessageModel');
-var ObjectId = mongoose.Schema.Types.ObjectId;
+var Employer  = require('../../app/models/EmployerModel');
+var Async     = require('../../node_modules/async/lib/async');
+var Message   = require('../../app/models/MessageModel');
+var ObjectId  = mongoose.Schema.Types.ObjectId;
 
 
 //Author Grant Gunnison
@@ -230,15 +230,22 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 
 router.delete('/:messageId', utils.isLoggedIn, function(req, res){
 	console.log(req.params.messageId);
-	Message.findById(req.params.messageId, function(err, message){
-		if (err) {
-			console.log(err);
-      utils.sendErrResponse(res, 500, null);
-		}
-		message.remove();
-		utils.sendSuccessResponse(res, {});
-	});
+  var messageId = req.params.messageId;
+  var userId = req.user._id;
+  var User;
 
-})
+  if (req.user.__t === "Student") {
+    User = Student;
+  } else if (req.user.__t === "Employer") {
+    User = Employer;    
+  }
+
+  User.update({ _id: userId },
+              { $pull: { 'mailbox.inbox' : messageId }});
+  User.update({ _id: userId },
+              { $pull: { 'mailbox.sentbox' : messageId }});
+
+  utils.sendSuccessResponse(res, {});
+});
 
 module.exports = router;
