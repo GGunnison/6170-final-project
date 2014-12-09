@@ -228,6 +228,19 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 	});
 });
 
+/* Delete a message from an inbox
+*
+* DELETE /messages/inbox/:recipientID
+*
+* Params:
+* 	- messageId
+* 		  Id of the message to be deleted
+* Response:
+*    - success: 200:
+*        if the messages were found and sent
+*    - error 500:
+*        there was an error with one of the user objects
+*/
 router.delete('/inbox/:messageId', function(req, res){
   var userID = req.user._id
   var messageId = req.params.messageId
@@ -259,6 +272,19 @@ router.delete('/inbox/:messageId', function(req, res){
   }
 });
 
+/* Delete a message from a sentbox
+*
+* DELETE /messages/sentbox/:recipientID
+*
+* Params:
+* 	- messageId
+* 		  Id of the message to be deleted
+* Response:
+*    - success: 200:
+*        if the messages were found and sent
+*    - error 500:
+*        there was an error with one of the user objects
+*/
 router.delete('/sentbox/:messageId', function(req, res){
   var userID = req.user._id
   var messageId = req.params.messageId
