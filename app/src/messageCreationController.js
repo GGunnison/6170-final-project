@@ -36,7 +36,7 @@ var MessageCreationController = function() {
   }
 
   var eventListeners = function() {
-    $(document).on('click', '.createMessageBtn', function () {
+    $(document).on('click', '.createMessageBtn', function (e) {
       helpers.toggleModal();
 
       local.toName = $(this).attr('name');
@@ -54,8 +54,8 @@ var MessageCreationController = function() {
       var title   = $('#messageTitle').val();
       var content = $('#messageContent').val();
 
-      console.log(toName);
       console.log(toId);
+      console.log(local.toName);
 
       $.ajax({
         type: "POST",
@@ -65,7 +65,6 @@ var MessageCreationController = function() {
                 title   : title
         },
         success: function(data) {
-          console.log("success");
           $('.modal').modal('toggle');
         }
       })

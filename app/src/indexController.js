@@ -64,7 +64,6 @@ var IndexController = function() {
 
     $("#login-signup-form").delegate(".form-control", "keyup", function(e) {
       if (e.keyCode == 13) {
-        console.log($("#submit"));
         $("#submit").click();
       }
     })

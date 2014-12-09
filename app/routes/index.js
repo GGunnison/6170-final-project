@@ -41,7 +41,7 @@ module.exports = function (passport) {
           return res.status(200).end();
         });
       } else {
-        var alertMessage = req.flash('alert')[0] || "Something isn't right.";
+        var alertMessage = req.flash('alert')[0] || "Invalid information.";
         res.send({ alertMessage: alertMessage });
       }
     })(req, res, next);

@@ -24,7 +24,7 @@ var MessagesController = function() {
       }
 
     exports.renderSent = function(data) {
-      var sentHTML = local.sentTemplate( {messages : data});
+      var sentHTML = local.sentTemplate({messages : data});
         $('#right_side').html(sentHTML);
       }
 
