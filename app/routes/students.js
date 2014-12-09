@@ -54,75 +54,74 @@ router.get('/', utils.isLoggedInEmployer, function(req, res) {
 
         var students = populatedStudents;
 
-        // return all if no filter specified
-        if (requiredSkills.length === 0 && desiredSkills.length === 0) {
-          utils.sendSuccessResponse(res, students);
 
-        // go thorugh the filtering process
-        } else {
-          // Keeps track of each student's score so the we can sort them later
-          scores = {};
+        // Keeps track of each student's score so the we can sort them later
+        scores = {};
 
-          // Remove all students that do not have at least one requiredSkill
-          // in his/her skills or any classes' skills
-          students = students.filter( function(student) {
-            var score = 0;
-            // Required
-            for (var idx = 0; idx < requiredSkills.length; idx++) {
-              var tag = requiredSkills[idx];
+        // Remove all students that do not have at least one requiredSkill
+        // in his/her skills or any classes' skills
+        students = students.filter( function(student) {
+          var score = 0;
+          // Required
+          for (var idx = 0; idx < requiredSkills.length; idx++) {
+            var tag = requiredSkills[idx];
 
-              // Skills
-              var skills = student.skills;
-              for (var i = 0; i < skills.length; i++) {
-                if (tag === skills[i]._id) score += 1;
-              }
-
-              // Classes
-              for (var i = 0; i < student.classes.length; i++) {
-                var klass = student.classes[i];
-                for (var j = 0; j < klass.skills.length; j++) {
-                  if (klass.skills[j]._id === tag) score += 1;
-                }
-              }
+            // Skills
+            var skills = student.skills;
+            for (var i = 0; i < skills.length; i++) {
+              if (tag === skills[i]._id) score += 1;
             }
 
+            // Classes
+            for (var i = 0; i < student.classes.length; i++) {
+              var klass = student.classes[i];
+              for (var j = 0; j < klass.skills.length; j++) {
+                if (klass.skills[j]._id === tag) score += 1;
+              }
+            }
+          }
+
+          // return all if no filter specified
+          if (requiredSkills.length === 0) {
+            keep = true
+          } else {
             // Only keep it if there was at least one match in the required
             // skills
             var keep = (score !== 0);
+          }
 
-            // Desired
-            for (var idx = 0; idx < desiredSkills.length; idx++) {
-              var tag = desiredSkills[idx];
+          // Desired
+          for (var idx = 0; idx < desiredSkills.length; idx++) {
+            var tag = desiredSkills[idx];
 
-              // Skills
-              var skills = student.skills;
-              for (var i = 0; i < skills.length; i++) {
-                if (tag === skills[i]._id) score += 1;
-              }
-
-              // Classes
-              for (var i = 0; i < student.classes.length; i++) {
-                var klass = student.classes[i];
-                for (var j = 0; j < klass.skills.length; j++) {
-                  if (klass.skills[j]._id === tag) score += 1;
-                }
-              }
+            // Skills
+            var skills = student.skills;
+            for (var i = 0; i < skills.length; i++) {
+              if (tag === skills[i]._id) score += 1;
             }
 
-            if (keep) scores[student._id] = score;
-            return keep;
-          });
-
-          // Sort by the most matches
-          students.sort(function(x, y) {
-            return scores[x._id] < scores[y._id];
-          });
-
-          // Respond
-          utils.sendSuccessResponse(res, students);
+            // Classes
+            for (var i = 0; i < student.classes.length; i++) {
+              var klass = student.classes[i];
+              for (var j = 0; j < klass.skills.length; j++) {
+                if (klass.skills[j]._id === tag) score += 1;
+              }
+            }
           }
+
+          if (keep) scores[student._id] = score;
+          return keep;
         });
-      }
+
+        // Sort by the most matches
+        students.sort(function(x, y) {
+          return scores[x._id] < scores[y._id];
+        });
+
+        // Respond
+        utils.sendSuccessResponse(res, students);
+      });
+    }
   });
 });
 

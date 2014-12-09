@@ -52,8 +52,7 @@ router.get('/', utils.isLoggedInStudent, function(req, res) {
           for (var i = 0; i < employer.listings.length; i++) {
             var keep = false;
             // We want empty queries to return everything
-            if ((requiredSkills.length === 0) &&
-                (desiredSkills.length === 0)) keep = true;
+            if (requiredSkills.length === 0) keep = true;
 
             var listing = employer.listings[i] || { skills:{} };
             scores[listing._id] = 0;
