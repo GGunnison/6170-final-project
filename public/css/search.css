@@ -122,3 +122,14 @@ table {
   background-color: #DDD;
 }
 
+.result {
+  cursor: pointer;
+}
+
+.result:hover {
+  border-color: #66afe9;
+}
+
+.createMessageBtn:hover {
+  border-bottom: 1px solid #336e7b;
+}
