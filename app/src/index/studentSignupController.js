@@ -26,6 +26,8 @@ var StudentSignupController = function() {
   }
 
   var eventListeners = function() {
+
+    //Call /signup for student upon submitting the form
     $('#submit').on('click', function() {
 
       var data = { name: $('#firstName').val() + " " + $('#lastName').val(),

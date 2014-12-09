@@ -1,4 +1,4 @@
-// author: Sabrina Drammis
+// author: Sabrina Drammis, Sam Edson
 var SearchResultsController = function() {
 
   // Public variables, available outside controller
@@ -91,6 +91,7 @@ var SearchResultsController = function() {
   }
 
   var eventListeners = function() {
+
       $("#skillSubmit").on("click", function() {
         public.filter();
       });

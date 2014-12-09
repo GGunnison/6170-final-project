@@ -14,11 +14,4 @@ Message.schema.path('fromId').validate(utils.checkLength, "Sender id cannot be e
 Message.schema.path('title').validate(utils.checkLength, "Title cannot be empty");
 Message.schema.path('content').validate(utils.checkLength, "Body cannot be empty");
 
-
-// presave
-//Message.schema.pre('save', function (next) {
-//  utils.escape(this.name);
-//  next();
-//});
-
 module.exports = Message;

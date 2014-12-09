@@ -56,6 +56,8 @@ var MessagesController = function() {
   }
 
   var eventListeners = function() {
+    
+    //Move between the inbox and sentbox of the mailbox
     $('#inbox').on('click', function() {
       $.ajax({
         type: "GET",
