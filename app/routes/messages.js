@@ -39,9 +39,7 @@ var ObjectId  = mongoose.Schema.Types.ObjectId;
 *
 */
 router.get('/', utils.isLoggedIn, function(req, res){
-
 	if (req.user.__t === "Employer"){
-
 		Employer.findById(req.user._id)
 			.populate("mailbox.inbox")
 			.populate('mailbox.sentbox')
@@ -51,7 +49,7 @@ router.get('/', utils.isLoggedIn, function(req, res){
           utils.sendErrResponse(res, 500, null);
         } else {
           res.render('messages.jade', employer.mailbox);
-      }
+        }
     });
 	}
   if (req.user.__t === "Student"){
@@ -80,7 +78,6 @@ router.get('/', utils.isLoggedIn, function(req, res){
 *        there was an error with one of the user objects
 */
 router.get('/sentbox', utils.isLoggedIn, function(req, res){
-
 	if (req.user.__t === "Employer"){
 		Employer.findById(req.user._id)
 			.populate('mailbox.sentbox')
@@ -88,10 +85,9 @@ router.get('/sentbox', utils.isLoggedIn, function(req, res){
 				if (err) {
           console.log(err);
           utils.sendErrResponse(res, 500, null);
-                }
-                else{
+        } else{
 				  utils.sendSuccessResponse(res, employer.mailbox.sentbox);
-				  }
+        }
     });
 	}
   if (req.user.__t == "Student"){
@@ -123,7 +119,6 @@ router.get('/sentbox', utils.isLoggedIn, function(req, res){
 *        there was an error with one of the user objects
 */
 router.get('/inbox', utils.isLoggedIn, function(req, res){
-
 	if (req.user.__t === "Employer"){
 		Employer.findById(req.user._id)
 			.populate('mailbox.inbox')
@@ -168,7 +163,6 @@ router.get('/inbox', utils.isLoggedIn, function(req, res){
 *        there was an error with one of the user objects
 */
 router.post('/:recipientID', utils.isLoggedIn, function(req, res){
-
 	new Message({
     to      : req.body.to,
 		toId    : req.params.recipientID,
