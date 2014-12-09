@@ -26,6 +26,8 @@ var EmployerSignupController = function() {
   }
 
   var eventListeners = function() {
+
+    //Call /signup when submitting signup form
     $('#submit').on('click', function() {
 
       var data = { name: $('#firstName').val() + " " + $('#lastName').val(),

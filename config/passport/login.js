@@ -46,38 +46,5 @@ module.exports = function(passport){
           return done(null, results.employer);
         return done(null, false, req.flash('alert', 'Invalid information.'))
       });
-// =======
-//             function(err, results){
-//               if (!results[0] && !results[1]){
-//                 return done(null, false, req.flash('loginMessage', 'No user found.'));
-//               }
-//               if (results[0]){
-//                 if (err) {
-//                   console.log(err);
-//                   return done(err);
-//                 }
-//                 if (!results[0].validPassword(password)) {
-//                   return done(null, false, req.flash('loginMessage', 'Incorrect password.'));
-//                 }else{
-//                   console.log("student" + results[0]);
-//                   return done(null, results[0]);
-//                 }
-//               }
-
-//               if (results[1]){
-//                 if (err) {
-//                   console.log(err);
-//                   return done(err);
-//               }
-//                 if (!results[1].validPassword(password)) {
-//                   return done(null, false, req.flash('loginMessage', 'Incorrect password.'));
-//                 }else{
-//                   return done(null, results[1]);
-//               }
-//             }
-
-//             });
-//         });
-// >>>>>>> Stashed changes
     }));
 }

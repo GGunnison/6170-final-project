@@ -35,6 +35,8 @@ var MessageCreationController = function() {
   }
 
   var eventListeners = function() {
+
+    //load the message modal onto the screen
     $(document).on('click', '.createMessageBtn', function (e) {
       helpers.toggleModal();
 
@@ -45,7 +47,8 @@ var MessageCreationController = function() {
       $('#messageTitle').val("");
       $('#messageContent').val("");
     });
-
+    
+    //submit modal message 
     $(document).on('click', '#sendMessage', function () {
       if (local.toName === null && local.toId === null) return false;
 

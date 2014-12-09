@@ -26,6 +26,8 @@ var LoginController = function() {
   }
 
   var eventListeners = function() {
+
+    //Call /login when submitting login form
     $('#submit').on('click', function() {
 
       var data = { email: $('#email').val(),

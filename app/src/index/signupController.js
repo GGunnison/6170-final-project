@@ -45,6 +45,8 @@ var SignupController = function() {
   }
 
   var eventListeners = function() {
+
+    //Change between student and Employer signup sections
     $('#student-tab').click( function() {
       helpers.renderStudentSignup();
 
