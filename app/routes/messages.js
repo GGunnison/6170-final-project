@@ -1,4 +1,4 @@
-// Author: Grant Gunnison
+// Author: Grant Gunnison, Sam Edson
 
 var router   = require('express').Router();
 var utils    = require('../utils/utils.js');
@@ -10,9 +10,6 @@ var Employer  = require('../../app/models/EmployerModel');
 var Async     = require('../../node_modules/async/lib/async');
 var Message   = require('../../app/models/MessageModel');
 var ObjectId  = mongoose.Schema.Types.ObjectId;
-
-
-//Author Grant Gunnison
 
 
 /* Get all of the users messages
@@ -42,9 +39,7 @@ var ObjectId  = mongoose.Schema.Types.ObjectId;
 *
 */
 router.get('/', utils.isLoggedIn, function(req, res){
-
 	if (req.user.__t === "Employer"){
-
 		Employer.findById(req.user._id)
 			.populate("mailbox.inbox")
 			.populate('mailbox.sentbox')
@@ -54,7 +49,7 @@ router.get('/', utils.isLoggedIn, function(req, res){
           utils.sendErrResponse(res, 500, null);
         } else {
           res.render('messages.jade', employer.mailbox);
-      }
+        }
     });
 	}
   if (req.user.__t === "Student"){
@@ -83,7 +78,6 @@ router.get('/', utils.isLoggedIn, function(req, res){
 *        there was an error with one of the user objects
 */
 router.get('/sentbox', utils.isLoggedIn, function(req, res){
-
 	if (req.user.__t === "Employer"){
 		Employer.findById(req.user._id)
 			.populate('mailbox.sentbox')
@@ -91,10 +85,9 @@ router.get('/sentbox', utils.isLoggedIn, function(req, res){
 				if (err) {
           console.log(err);
           utils.sendErrResponse(res, 500, null);
-                }
-                else{
+        } else{
 				  utils.sendSuccessResponse(res, employer.mailbox.sentbox);
-				  }
+        }
     });
 	}
   if (req.user.__t == "Student"){
@@ -126,7 +119,6 @@ router.get('/sentbox', utils.isLoggedIn, function(req, res){
 *        there was an error with one of the user objects
 */
 router.get('/inbox', utils.isLoggedIn, function(req, res){
-
 	if (req.user.__t === "Employer"){
 		Employer.findById(req.user._id)
 			.populate('mailbox.inbox')
@@ -171,7 +163,6 @@ router.get('/inbox', utils.isLoggedIn, function(req, res){
 *        there was an error with one of the user objects
 */
 router.post('/:recipientID', utils.isLoggedIn, function(req, res){
-
 	new Message({
     to      : req.body.to,
 		toId    : req.params.recipientID,
@@ -228,6 +219,19 @@ router.post('/:recipientID', utils.isLoggedIn, function(req, res){
 	});
 });
 
+/* Delete a message from an inbox
+*
+* DELETE /messages/inbox/:recipientID
+*
+* Params:
+* 	- messageId
+* 		  Id of the message to be deleted
+* Response:
+*    - success: 200:
+*        if the messages were found and sent
+*    - error 500:
+*        there was an error with one of the user objects
+*/
 router.delete('/inbox/:messageId', function(req, res){
   var userID = req.user._id
   var messageId = req.params.messageId
@@ -259,6 +263,19 @@ router.delete('/inbox/:messageId', function(req, res){
   }
 });
 
+/* Delete a message from a sentbox
+*
+* DELETE /messages/sentbox/:recipientID
+*
+* Params:
+* 	- messageId
+* 		  Id of the message to be deleted
+* Response:
+*    - success: 200:
+*        if the messages were found and sent
+*    - error 500:
+*        there was an error with one of the user objects
+*/
 router.delete('/sentbox/:messageId', function(req, res){
   var userID = req.user._id
   var messageId = req.params.messageId

@@ -1,4 +1,4 @@
-// author: Grant Gunnison
+// author: Grant Gunnison, Sam Edson
 var MessagesController = function() {
 
   // Public variables, available outside controller
