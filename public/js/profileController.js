@@ -342,6 +342,12 @@ employMeApp.controller("profileController", function($scope) {
           eventListeners.dragAndDropInit();
         }
       });
+
+      $(".listingsContainer").delegate(".skill.draggedSkill", "mouseenter", function() {
+        if (!local.dragAndDropInitialized) {
+          eventListeners.dragAndDropInit();
+        }
+      });
     }
 
     exports.students = function() {
