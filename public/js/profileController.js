@@ -377,8 +377,6 @@ employMeApp.controller("profileController", function($scope) {
         var id = $(this).children().attr("id");
         var name = public.classesMap[id];
 
-        console.log(id);
-        console.log(name);
 
         public.studentClasses[id] = name;
         $scope.$apply();
@@ -454,7 +452,6 @@ employMeApp.controller("profileController", function($scope) {
         var skill_name = $("#skillSelect")[0].options[$("#skillSelect")[0].selectedIndex].text;
 
         public.listingSkills[skill_id] = skill_name;
-        console.log("skills: ", public.listingSkills);
         $scope.$apply();
       });
 
@@ -462,7 +459,6 @@ employMeApp.controller("profileController", function($scope) {
 
         e.preventDefault();
 
-        console.log($(this)[0].elements);
 
         var skills = [];
 
@@ -481,7 +477,6 @@ employMeApp.controller("profileController", function($scope) {
         ajax.postEmployerListing(local.userId, listing).done(function(res) {
           ajax.getEmployerListings(local.userId).done(function(res) {
             helpers.setListings(res.content);
-            console.log("listings: ", res.content);
             public.listingSkills = {};
             $scope.$apply();
 
@@ -517,7 +512,6 @@ employMeApp.controller("profileController", function($scope) {
 
         var listingId = $(this).closest(".listing")[0].elements["listingId"].value;
 
-        console.log("listingId: ", listingId);
 
         ajax.deleteEmployerListing(local.userId, listingId).done(function(res) {
           ajax.getEmployerListings(local.userId).done(function(res) {
@@ -540,7 +534,6 @@ employMeApp.controller("profileController", function($scope) {
       $(".skillsContainer").droppable({
         drop: function(e, ui) {
           var id = e.toElement.id;
-          console.log("id: ", id);
           if (id) {
             var name = public.skillsMap[id];
 
@@ -550,7 +543,6 @@ employMeApp.controller("profileController", function($scope) {
         }
       }).delegate(".skill", "click", function() {
         var id = $(this).children().attr("id");
-        console.log("id: ", id);
         delete public.listingSkills[id];
         $scope.$apply();
       });
@@ -560,7 +552,6 @@ employMeApp.controller("profileController", function($scope) {
           var skillId = e.toElement.id;
           var listingId = $(this).attr("data-listing-id");
 
-          console.log("listingId: ", listingId);
 
           if (skillId) {
             if (public.listings[listingId].skills.indexOf(public.skillsMap[skillId]) <= -1) {
