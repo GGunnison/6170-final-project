@@ -133,3 +133,9 @@ table {
 .createMessageBtn:hover {
   border-bottom: 1px solid #336e7b;
 }
+
+.mixinSkills {
+  max-height: 78px;
+  overflow: auto;
+  border: 1px solid #CCC;
+}
