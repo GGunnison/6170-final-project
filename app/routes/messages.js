@@ -1,4 +1,4 @@
-// Author: Grant Gunnison
+// Author: Grant Gunnison, Sam Edson
 
 var router   = require('express').Router();
 var utils    = require('../utils/utils.js');
@@ -10,9 +10,6 @@ var Employer  = require('../../app/models/EmployerModel');
 var Async     = require('../../node_modules/async/lib/async');
 var Message   = require('../../app/models/MessageModel');
 var ObjectId  = mongoose.Schema.Types.ObjectId;
-
-
-//Author Grant Gunnison
 
 
 /* Get all of the users messages
